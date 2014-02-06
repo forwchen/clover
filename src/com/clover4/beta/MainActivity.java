@@ -16,6 +16,7 @@ import com.clover4.utils.SharedprefHelper;
 
 
 
+
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class MainActivity extends Activity {
 	private String mpassword;
 	private String musrname;
 	private SharedprefHelper mSharedprefHelper;
+	private ProgressDialog mProgressDialog;
 	
 	public class LoginTask extends AsyncTask<Void, Void, Boolean>{
 
@@ -63,8 +65,8 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated method stub
 			Boolean result = true;
 			try {
-				//String LoginURL = "http://61.129.42.58:9083/school/login?user=13307130195&psw=6gjpq3a";
-				String LoginURL = "http://61.129.42.58:9083/school/login?"+"user="+musrname+"&psw="+mpassword;
+				String LoginURL = "http://61.129.42.58:9083/school/login?user=13307130195&psw=6gjpq3a";
+				//String LoginURL = "http://61.129.42.58:9083/school/login?"+"user="+musrname+"&psw="+mpassword;
 				
 				HttpGet mHttpGet = new HttpGet(LoginURL);
 			    DefaultHttpClient mDefaultHttpClient = new DefaultHttpClient();
@@ -77,7 +79,7 @@ public class MainActivity extends Activity {
 			    	if (str.contains("false")) result = false;
 			    }
 			    else {
-			    	result =false;
+			    	result = false;
 			    }
 			    mHttpGet.abort();
 			    
@@ -113,51 +115,73 @@ public class MainActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			// TODO Auto-generated method stub
-
+			Boolean result = true;
 			try {
-				HttpPost localHttpPost = new HttpPost("http://uis1.fudan.edu.cn/amserver/UI/Login");
+				HttpPost mHttpPost = new HttpPost("http://uis1.fudan.edu.cn/amserver/UI/Login");
 			
-				DefaultHttpClient localDefaultHttpClient = new DefaultHttpClient();
-			    localDefaultHttpClient.getParams().setParameter("http.protocol.allow-circular-redirects", Boolean.valueOf(true));
-			    ArrayList localArrayList = new ArrayList();
-			    localArrayList.add(new BasicNameValuePair("IDToken1", "13307130195"));
-			    localArrayList.add(new BasicNameValuePair("IDToken2", "6gjpq3a"));
-			    localHttpPost.setEntity(new UrlEncodedFormEntity(localArrayList, "UTF-8"));
+				DefaultHttpClient mDefaultHttpClient = new DefaultHttpClient();
+			    mDefaultHttpClient.getParams().setParameter("http.protocol.allow-circular-redirects", 
+			    		Boolean.valueOf(true));
+			    ArrayList mArrayList = new ArrayList();
+			    mArrayList.add(new BasicNameValuePair("IDToken1", "13307130195"));
+			    mArrayList.add(new BasicNameValuePair("IDToken2", "6gjpq3a"));
+			    mHttpPost.setEntity(new UrlEncodedFormEntity(mArrayList, "UTF-8"));
 			    
-			    System.out.println("start");
+			    mDefaultHttpClient.execute(mHttpPost);
 			    
-			    localDefaultHttpClient.execute(localHttpPost);
-			
-			    localHttpPost.abort();
-			    
-			    System.out.println("logged in");
-			    
-			    HttpGet localHttpGet = new HttpGet("http://xk.fudan.edu.cn/fdeams/stdCourseTable.action?xq=2013201402");
-			    HttpResponse localHttpResponse = localDefaultHttpClient.execute(localHttpGet);
-			    if (localHttpResponse.getStatusLine().getStatusCode() == 200)
-			    {
-			  
-			      String str = EntityUtils.toString(localHttpResponse.getEntity());
-			      System.out.println(str.replaceAll("\r", ""));
+			    mHttpPost.abort();
 
+			    HttpGet mHttpGet = new HttpGet("http://xk.fudan.edu.cn/fdeams/stdCourseTable.action?xq=2013201402");
+			    HttpResponse mHttpResponse = mDefaultHttpClient.execute(mHttpGet);
+			    if (mHttpResponse.getStatusLine().getStatusCode() == 200)
+			    {
+			    	String stdTable = EntityUtils.toString(mHttpResponse.getEntity());
+			    	System.out.println(stdTable.length());
+			    	if (stdTable.contains("arranges") == false) result = false; 
 			    }
-			    localHttpGet.abort();
+			    else{
+			    	result = false;
+			    }
+			    mHttpGet.abort();
+			    
 
 			} catch (Exception e) {
+				result = false;
+				e.printStackTrace();
 				// TODO: handle exception
 			}
 	    
 		
-			return null;
+			return result;
 	
 		}
 	
+		@Override
 		protected void onPostExecute(Boolean result){
-		
+			mProgressDialog.cancel();
+			if (result == true) {
+				mSharedprefHelper.writeLong("table_downloaded", 1L);
+			}
+			else{
+				Toast.makeText(getApplicationContext(), 
+						"Please check your network connection or use wifi \n try reopening the app", 
+						Toast.LENGTH_LONG);
+			}
 		}
 
 	
-}
+		@Override
+		protected void onPreExecute(){
+			mProgressDialog = new ProgressDialog(MainActivity.this);
+			mProgressDialog.setMessage("Downloading...");
+			mProgressDialog.setCancelable(false);
+			mProgressDialog.show();
+		}
+	}
+	
+	public void doInflate(){
+		
+	}
 	
 	public void doMain(){
 		setContentView(R.layout.activity_main);
