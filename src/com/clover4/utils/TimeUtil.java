@@ -24,7 +24,8 @@ public class TimeUtil {
 		
 		mCalendar = Calendar.getInstance();
 		mCalendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-		dayofweek = mCalendar.DAY_OF_WEEK;
+		mCalendar.setTime(mDate);
+		dayofweek = mCalendar.get(mCalendar.DAY_OF_WEEK);
 		dayofweek = (dayofweek + 6) % 7;
 	}
 }

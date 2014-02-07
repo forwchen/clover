@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<RelativeLayout android:layout_width="fill_parent" 
+                android:layout_height="wrap_content" 
+                android:background="@drawable/list_selector" 
+                android:orientation="horizontal" 
+                android:padding="5dip" 
+                xmlns:android="http://schemas.android.com/apk/res/android">
+	<Button 
+	    	android:id="@+id/btn"
+	    	android:text=""
+	    	android:textSize="40dip"
+	    	android:textColor="#FA7500"
+	    	android:clickable="false"
+	    	android:width="80dp"
+	    	android:height="80dp"
+	    	android:background="#99BA16"
+	    	android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content" 
+	    	android:layout_alignParentLeft="true"
+	    	android:layout_centerVertical="true"/>
+	<TextView android:id="@+id/name" 
+	          android:layout_width="wrap_content" 
+	          android:layout_height="wrap_content" 
+	          android:layout_toRightOf="@id/btn"
+	          android:text="" 
+	          android:textColor="#8BCFE1" 
+	          android:textSize="20dip" 
+	          android:typeface="sans" />
+	<TextView android:id="@+id/time" 
+	          android:layout_width="wrap_content" 
+	          android:layout_height="wrap_content"
+	          android:layout_below="@id/name"
+	          android:layout_toRightOf="@id/btn"
+	          android:text="" 
+	          android:textColor="#B6241B" 
+	          android:textSize="15dip" 
+	          android:typeface="sans" />
+	<TextView android:id="@+id/classroom" 
+	          android:layout_width="wrap_content" 
+	          android:layout_height="wrap_content" 
+	          android:layout_below="@id/time"
+	          android:layout_toRightOf="@id/btn"
+	          android:text="" 
+	          android:textColor="#8BCFE1" 
+	          android:textSize="15dip" 
+	          android:typeface="sans" />
+
+</RelativeLayout>
