@@ -12,7 +12,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 
-import com.clover4.utils.SharedprefHelper;
+import com.clover4.utils.SharedprefUtil;
+import com.clover4.utils.StdTableUtil;
 
 
 
@@ -49,7 +50,7 @@ public class MainActivity extends Activity {
 	private Button mLoginButton;
 	private String mpassword;
 	private String musrname;
-	private SharedprefHelper mSharedprefHelper;
+	private SharedprefUtil mSharedprefUtil;
 	private ProgressDialog mProgressDialog;
 	
 	public class LoginTask extends AsyncTask<Void, Void, Boolean>{
@@ -110,19 +111,19 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
-	public class getStdTable extends AsyncTask<Void, Void, Boolean>{
+	public class getStdTable extends AsyncTask<Void, Void, String>{
 
 		@Override
-		protected Boolean doInBackground(Void... params) {
+		protected String doInBackground(Void... params) {
 			// TODO Auto-generated method stub
-			Boolean result = true;
+			String result = "";
 			try {
 				HttpPost mHttpPost = new HttpPost("http://uis1.fudan.edu.cn/amserver/UI/Login");
 			
 				DefaultHttpClient mDefaultHttpClient = new DefaultHttpClient();
 			    mDefaultHttpClient.getParams().setParameter("http.protocol.allow-circular-redirects", 
 			    		Boolean.valueOf(true));
-			    ArrayList mArrayList = new ArrayList();
+			    ArrayList<BasicNameValuePair> mArrayList = new ArrayList();
 			    mArrayList.add(new BasicNameValuePair("IDToken1", "13307130195"));
 			    mArrayList.add(new BasicNameValuePair("IDToken2", "6gjpq3a"));
 			    mHttpPost.setEntity(new UrlEncodedFormEntity(mArrayList, "UTF-8"));
@@ -135,18 +136,18 @@ public class MainActivity extends Activity {
 			    HttpResponse mHttpResponse = mDefaultHttpClient.execute(mHttpGet);
 			    if (mHttpResponse.getStatusLine().getStatusCode() == 200)
 			    {
-			    	String stdTable = EntityUtils.toString(mHttpResponse.getEntity());
-			    	System.out.println(stdTable.length());
-			    	if (stdTable.contains("arranges") == false) result = false; 
+			    	result = EntityUtils.toString(mHttpResponse.getEntity());
+			    	System.out.println(result.length());
+			    	if (result.contains("arranges") == false) result = ""; 
 			    }
 			    else{
-			    	result = false;
+			    	result = "";
 			    }
 			    mHttpGet.abort();
 			    
 
 			} catch (Exception e) {
-				result = false;
+				result = "";
 				e.printStackTrace();
 				// TODO: handle exception
 			}
@@ -157,10 +158,15 @@ public class MainActivity extends Activity {
 		}
 	
 		@Override
-		protected void onPostExecute(Boolean result){
+		protected void onPostExecute(String result){
 			mProgressDialog.cancel();
-			if (result == true) {
-				mSharedprefHelper.writeLong("table_downloaded", 1L);
+			if (result != "") {
+				mSharedprefUtil.writeLong("table_downloaded", 1L);
+				
+				StdTableUtil mStdTableUtil = new StdTableUtil(new StringBuffer(result));
+				mStdTableUtil.storeTable();
+				
+				doInflate();
 			}
 			else{
 				Toast.makeText(getApplicationContext(), 
@@ -185,14 +191,14 @@ public class MainActivity extends Activity {
 	
 	public void doMain(){
 		setContentView(R.layout.activity_main);
-		mSharedprefHelper.writeLong("logged_in", 1L);
-		Long stdTableStatus = mSharedprefHelper.readLong("table_downloaded");
+		mSharedprefUtil.writeLong("logged_in", 1L);
+		Long stdTableStatus = mSharedprefUtil.readLong("table_downloaded");
 		if (stdTableStatus == 0){
 			getStdTable mgetStdTable = new getStdTable();
 			mgetStdTable.execute((Void)null);
 		}
 		else{
-			
+			doInflate();
 		}
 	}
 	
@@ -208,8 +214,8 @@ public class MainActivity extends Activity {
 		}
 		else f.mkdir();
 		
-		mSharedprefHelper = new SharedprefHelper("setting",getApplicationContext());
-		Long loginStatus = mSharedprefHelper.readLong("logged_in");
+		mSharedprefUtil = new SharedprefUtil("setting",getApplicationContext());
+		Long loginStatus = mSharedprefUtil.readLong("logged_in");
 		
 		if (loginStatus == 0){
 			Log.d(TAG, SUCC);
@@ -233,30 +239,30 @@ public class MainActivity extends Activity {
 					@Override
 					public void onClick(View view) {
 						
-							if (!isNetworkOn()) {
-								Toast.makeText(getApplicationContext(), 
-										"Please check your network connection", Toast.LENGTH_SHORT).show();
-								return;
-							}
-							
-							InputMethodManager  mInputMethodManager = (InputMethodManager)
-									MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-							mInputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS); 
-		        
-							LoginTask mLoginTask = new LoginTask();
-							Boolean result = false;
-							try {
-								result = mLoginTask.execute((Void) null).get();
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} 
-							
-							if (result == false) {
-								mpwdText.requestFocus();
-							}
+						if (!isNetworkOn()) {
+							Toast.makeText(getApplicationContext(), 
+									"Please check your network connection", Toast.LENGTH_SHORT).show();
+							return;
+						}
+						
+						InputMethodManager  mInputMethodManager = (InputMethodManager)
+								MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+						mInputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS); 
+	        
+						LoginTask mLoginTask = new LoginTask();
+						Boolean result = false;
+						try {
+							result = mLoginTask.execute((Void) null).get();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} 
+						
+						if (result == false) {
+							mpwdText.requestFocus();
+						}
 					}
-			});
+				});
 		}
 		else {
 			//setContentView(R.layout.activity_main);
