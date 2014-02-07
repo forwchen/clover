@@ -3,14 +3,14 @@ package com.clover4.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class SharedprefHelper {
+public class SharedprefUtil {
 	
 	Context mContext;
 	String FILE;
 	
 
 
-	public SharedprefHelper(String filename, Context context){
+	public SharedprefUtil(String filename, Context context){
 		FILE = filename;
 		mContext = context;
 	}
