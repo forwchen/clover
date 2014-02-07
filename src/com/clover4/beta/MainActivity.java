@@ -1,6 +1,8 @@
 package com.clover4.beta;
 
 import java.io.File;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
@@ -14,6 +16,7 @@ import org.apache.http.util.EntityUtils;
 
 import com.clover4.utils.SharedprefUtil;
 import com.clover4.utils.StdTableUtil;
+import com.clover4.utils.TimeUtil;
 
 
 
@@ -52,6 +55,7 @@ public class MainActivity extends Activity {
 	private String musrname;
 	private SharedprefUtil mSharedprefUtil;
 	private ProgressDialog mProgressDialog;
+
 	
 	public class LoginTask extends AsyncTask<Void, Void, Boolean>{
 
@@ -186,7 +190,8 @@ public class MainActivity extends Activity {
 	}
 	
 	public void doInflate(){
-		
+		TimeUtil mTimeUtil = new TimeUtil();
+		if ((mTimeUtil.dayofweek == 0) || (mTimeUtil.dayofweek == 6)) return;
 	}
 	
 	public void doMain(){
@@ -206,6 +211,9 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+
+		
 		
 		File f= new File(android.os.Environment.getExternalStorageDirectory()+"/clover");
 		
