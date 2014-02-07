@@ -14,7 +14,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 
+
+
+import com.clover4.utils.ClassTableItem;
 import com.clover4.utils.SharedprefUtil;
+import com.clover4.utils.StdTableLoader;
 import com.clover4.utils.StdTableUtil;
 import com.clover4.utils.TimeUtil;
 
@@ -35,11 +39,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnItemClickListener{
 
 	
 	private final String TAG = "TEST";
@@ -55,6 +62,7 @@ public class MainActivity extends Activity {
 	private String musrname;
 	private SharedprefUtil mSharedprefUtil;
 	private ProgressDialog mProgressDialog;
+	private boolean isFree[]= new boolean[16];
 
 	
 	public class LoginTask extends AsyncTask<Void, Void, Boolean>{
@@ -191,11 +199,34 @@ public class MainActivity extends Activity {
 	
 	public void doInflate(){
 		TimeUtil mTimeUtil = new TimeUtil();
+
 		if ((mTimeUtil.dayofweek == 0) || (mTimeUtil.dayofweek == 6)) return;
+		MainActivity.this.setContentView(R.layout.class_list);
+		
+		
+		System.out.println("sadasdasdasd");
+		
+		StdTableLoader mStdTableLoader = new StdTableLoader();
+		ArrayList<ClassTableItem> ClassList = mStdTableLoader.getTable();
+		
+		for (int i = 0; i < ClassList.size(); i++){
+			if (ClassList.get(i).type == 1) isFree[i] = false;
+			else isFree[i] = true;
+		}
+		
+		System.out.println( ClassList.size());
+		System.out.println("sadasdasdasd");
+		
+		ListView mListView = (ListView) findViewById(R.id.classlist);
+		TableAdapter mTableAdapter = new TableAdapter(MainActivity.this,ClassList);
+		mListView.setAdapter(mTableAdapter);
+		
+		mListView.setOnItemClickListener(MainActivity.this);
+		
 	}
 	
 	public void doMain(){
-		setContentView(R.layout.activity_main);
+		MainActivity.this.setContentView(R.layout.activity_main);
 		mSharedprefUtil.writeLong("logged_in", 1L);
 		Long stdTableStatus = mSharedprefUtil.readLong("table_downloaded");
 		if (stdTableStatus == 0){
@@ -308,6 +339,15 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
+//		if (isFree[arg2]) {
+//			Intent intent = new Intent(MainActivity.this, Editevent.class);
+//			startActivity(intent);
+//		}
 	}
 
 }
