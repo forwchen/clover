@@ -29,11 +29,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Path;
 import android.util.JsonReader;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -239,11 +238,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					
 				}
 			
-			
-//			for (int i = 0; i < classroomsum; i++)
-//				System.out.println(classroom[i].getName()+" : "+classroom[i].allTimeStatus());
-//			System.out.println("Parsing Done");
-//			System.out.println(classroomsum);
 			if (result == true){
 				for (int i = 1; i <= classroomsum; i++){
 					for (int j = 0; j < 14; j++){
@@ -366,20 +360,23 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				}
 			}
 		}
-		
-
-		
+	
 		@Override
 		protected void onPostExecute(Boolean result){
 			if (result == true){
 				mSharedprefUtil.writeLong("isInfoUptoDate", 1L);
+				setNotification();
 			}
 			else{
+				Toast.makeText(getApplicationContext(), "Fetching classroom info failed", Toast.LENGTH_LONG);
 				
 			}
 		}
 	}
 	
+	public void setNotification(){
+		
+	}
 	
 	public void doInflate(){
 		TimeUtil mTimeUtil = new TimeUtil();
@@ -400,26 +397,11 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		mListView.setAdapter(mTableAdapter);
 		
 		mListView.setOnItemClickListener(MainActivity.this);
-		
-		Long classroomInfo = mSharedprefUtil.readLong("isInfoUptoDate");
-		if (classroomInfo == 0){
-			if (! isNetworkOn()){
-				Toast.makeText(getApplicationContext(), "fetch classroominfo failed", Toast.LENGTH_LONG);
-				
-			}
-			else {
-				fetchInfo mfetchInfo = new fetchInfo();
-				mfetchInfo.execute((Void)null);
-			}
-		}
-		else{
-			
-		}
-		
 	}
 	
 	public void doMain(){
 		MainActivity.this.setContentView(R.layout.activity_main);
+				
 		mSharedprefUtil.writeLong("logged_in", 1L);
 		Long stdTableStatus = mSharedprefUtil.readLong("table_downloaded");
 		if (stdTableStatus == 0){
@@ -447,9 +429,25 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		else f.mkdir();
 		
 		
-		
-		
 		mSharedprefUtil = new SharedprefUtil("setting",getApplicationContext());
+		
+		Long classroomInfo = mSharedprefUtil.readLong("isInfoUptoDate");
+		if (classroomInfo == 0){
+			if (! isNetworkOn()){
+				Toast.makeText(getApplicationContext(), "fetch classroominfo failed", Toast.LENGTH_LONG);
+				
+			}
+			else {
+				fetchInfo mfetchInfo = new fetchInfo();
+				mfetchInfo.execute((Void)null);
+			}
+		}
+		else{
+			setNotification();
+		}
+		
+		
+		
 		Long loginStatus = mSharedprefUtil.readLong("logged_in");
 		
 		if (loginStatus == 0){
@@ -530,6 +528,13 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		
 	}
 
+	public boolean onOptionsItemSelected(MenuItem item)  
+	{
+		Intent intent = new Intent(MainActivity.this, SelectBuilding.class);
+        startActivity(intent);
+		return super.onOptionsItemSelected(item);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
