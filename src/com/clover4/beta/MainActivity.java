@@ -415,7 +415,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		TimeUtil mTimeUtil = new TimeUtil();
 
 		if ((mTimeUtil.dayofweek == 0) || (mTimeUtil.dayofweek == 6)) return;
-		MainActivity.this.setContentView(R.layout.class_list);
+		MainActivity.this.setContentView(R.layout.view_class_list);
 		
 		StdTableLoader mStdTableLoader = new StdTableLoader();
 		ArrayList<ClassTableItem> ClassList = mStdTableLoader.getTable();
@@ -492,7 +492,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			 * do login via asynctask----->another process<--wait
 			 * failed-->do again
 			 */
-			setContentView(R.layout.main_login);
+			setContentView(R.layout.view_main_login);
 			mpwdText = (EditText) findViewById(R.id.pwdtext);
 			musrText = (EditText) findViewById(R.id.usrtext);
 			mLoginButton = (Button) findViewById(R.id.loginbtn);

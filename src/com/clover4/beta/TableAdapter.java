@@ -58,7 +58,7 @@ public class TableAdapter extends BaseAdapter {
 		Log.d("tag", mItem.name);
 		
 		if (mItem.type == 1){
-			mView = mLayoutInflater.inflate(R.layout.classtime, null);
+			mView = mLayoutInflater.inflate(R.layout.classtime_list_item, null);
 			TextView name = (TextView)mView.findViewById(R.id.name);
 	        TextView time = (TextView)mView.findViewById(R.id.time);
 	        TextView classroom = (TextView)mView.findViewById(R.id.classroom);
@@ -72,7 +72,7 @@ public class TableAdapter extends BaseAdapter {
 	        
 		}
 		else{
-			mView = mLayoutInflater.inflate(R.layout.freetime, null);
+			mView = mLayoutInflater.inflate(R.layout.freetime_list_item, null);
 			TextView free = (TextView)mView.findViewById(R.id.free);
 			TextView freetm = (TextView)mView.findViewById(R.id.freetm);
 			ImageView arrow = (ImageView)mView.findViewById(R.id.arrow);
