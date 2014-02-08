@@ -25,6 +25,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -261,22 +262,30 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					System.out.println("--->"+classroom[i].name+" "+classroom[i].which);
 				}
 				
-				
-				String dbPath = android.os.Environment.getExternalStorageDirectory()+"/clover/info.db";
-				File dbFile= new File(dbPath);
-				if (dbFile.exists()) dbFile.delete();
-
-				SQLiteDatabase mDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null);
-				for (int i = 1; i <= classroomsum; i++){
-					if (classroom[i].which != classroom[i-1].which) {
-						String createTable = "CREATE TABLE "+CLASSBUILD[classroom[i].which-1]+
-								" (id integer primary key autoincrement, name varchar(10), stat integer)";
-						mDB.execSQL(createTable);
+				try {
+					String dbPath = android.os.Environment.getExternalStorageDirectory()+"/clover/info.db";
+					File dbFile= new File(dbPath);
+					if (dbFile.exists()) dbFile.delete();
+	
+					SQLiteDatabase mDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null);
+					for (int i = 1; i <= classroomsum; i++){
+						if (i== 1 || classroom[i].which != classroom[i-1].which) {
+							String createTable = "CREATE TABLE "+CLASSBUILD[classroom[i].which-1]+
+									" (id integer primary key autoincrement, name varchar(10), stat integer)";
+							mDB.execSQL(createTable);
+						}
+						
+						ContentValues mContentValues = new ContentValues();
+						mContentValues.put("name", classroom[i].name);
+						mContentValues.put("stat", classroom[i].stat);
+						
+						mDB.insert(CLASSBUILD[classroom[i].which-1], null, mContentValues);
 					}
-					
-					
 				}
-				
+				catch (Exception e){
+					result = false;
+					e.printStackTrace();
+				}
 			}
 			
 			
