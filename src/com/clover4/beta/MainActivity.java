@@ -13,17 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-
-
-
-import com.clover4.utils.ClassTableItem;
-import com.clover4.utils.SharedprefUtil;
-import com.clover4.utils.StdTableLoader;
-import com.clover4.utils.StdTableUtil;
-import com.clover4.utils.TimeUtil;
-
-
-
+import com.clover4.beta.utils.*;
 
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
@@ -63,7 +53,14 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private SharedprefUtil mSharedprefUtil;
 	private ProgressDialog mProgressDialog;
 	private boolean isFree[]= new boolean[16];
-
+	
+	public boolean isNetworkOn() {
+		ConnectivityManager connectivity = (ConnectivityManager) 
+				MainActivity.this.getSystemService(MainActivity.this.CONNECTIVITY_SERVICE);
+		if (connectivity.getActiveNetworkInfo() == null) return false;
+		if (! connectivity.getActiveNetworkInfo().isConnected()) return false;
+		return true;
+	}
 	
 	public class LoginTask extends AsyncTask<Void, Void, Boolean>{
 
@@ -115,14 +112,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		
 	}
 	
-	public boolean isNetworkOn() {
-		ConnectivityManager connectivity = (ConnectivityManager) 
-				MainActivity.this.getSystemService(MainActivity.this.CONNECTIVITY_SERVICE);
-		if (connectivity.getActiveNetworkInfo() == null) return false;
-		if (! connectivity.getActiveNetworkInfo().isConnected()) return false;
-		return true;
-	}
-	
 	public class getStdTable extends AsyncTask<Void, Void, String>{
 
 		@Override
@@ -135,7 +124,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				DefaultHttpClient mDefaultHttpClient = new DefaultHttpClient();
 			    mDefaultHttpClient.getParams().setParameter("http.protocol.allow-circular-redirects", 
 			    		Boolean.valueOf(true));
-			    ArrayList<BasicNameValuePair> mArrayList = new ArrayList();
+			    ArrayList<BasicNameValuePair> mArrayList = new ArrayList<BasicNameValuePair>();
 			    mArrayList.add(new BasicNameValuePair("IDToken1", "13307130195"));
 			    mArrayList.add(new BasicNameValuePair("IDToken2", "6gjpq3a"));
 			    mHttpPost.setEntity(new UrlEncodedFormEntity(mArrayList, "UTF-8"));
@@ -203,9 +192,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		if ((mTimeUtil.dayofweek == 0) || (mTimeUtil.dayofweek == 6)) return;
 		MainActivity.this.setContentView(R.layout.class_list);
 		
-		
-		System.out.println("sadasdasdasd");
-		
 		StdTableLoader mStdTableLoader = new StdTableLoader();
 		ArrayList<ClassTableItem> ClassList = mStdTableLoader.getTable();
 		
@@ -213,9 +199,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			if (ClassList.get(i).type == 1) isFree[i] = false;
 			else isFree[i] = true;
 		}
-		
-		System.out.println( ClassList.size());
-		System.out.println("sadasdasdasd");
 		
 		ListView mListView = (ListView) findViewById(R.id.classlist);
 		TableAdapter mTableAdapter = new TableAdapter(MainActivity.this,ClassList);
@@ -252,6 +235,9 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			Log.d(TAG, SUCC);
 		}
 		else f.mkdir();
+		
+		
+		
 		
 		mSharedprefUtil = new SharedprefUtil("setting",getApplicationContext());
 		Long loginStatus = mSharedprefUtil.readLong("logged_in");

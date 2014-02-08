@@ -1,4 +1,4 @@
-package com.clover4.utils;
+package com.clover4.beta.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

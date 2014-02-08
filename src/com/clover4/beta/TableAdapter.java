@@ -2,7 +2,7 @@ package com.clover4.beta;
 
 import java.util.ArrayList;
 
-import com.clover4.utils.*;
+import com.clover4.beta.utils.*;
 
 import android.app.Activity;
 import android.content.Context;

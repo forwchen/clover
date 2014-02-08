@@ -1,4 +1,4 @@
-package com.clover4.utils;
+package com.clover4.beta.utils;
 
 public class Constants {
 	public final String start_time[]={
