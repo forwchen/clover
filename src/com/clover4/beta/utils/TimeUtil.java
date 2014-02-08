@@ -27,5 +27,7 @@ public class TimeUtil {
 		mCalendar.setTime(mDate);
 		dayofweek = mCalendar.get(mCalendar.DAY_OF_WEEK);
 		dayofweek = (dayofweek + 6) % 7;
+		
+		dayofweek = 4;
 	}
 }

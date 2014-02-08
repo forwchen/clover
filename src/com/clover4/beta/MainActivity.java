@@ -1,6 +1,8 @@
 package com.clover4.beta;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +27,10 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Path;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -185,6 +191,186 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			mProgressDialog.show();
 		}
 	}
+
+	public class fetchInfo extends AsyncTask<Void, Void, Boolean>{
+
+		final String[] CLASSBUILD = {"HGD", "HGX", "H2", "H3", "H4", "H5", "H6"}; 
+		final String[] CLASSTIMER = {"morning", "midday", "night"};
+		final int NUMOFCLASSBUILD= 7;
+		final int NUMOFCLASSTIMER = 3;
+		
+		private Classroom[] classroom = new Classroom[300];
+		private int classroomsum = 0;
+		private String sclassroomname = "", scodelesson = "", susedflag = "", sclasstime = "", sclassroomid = "";
+		
+		@Override
+		protected Boolean doInBackground(Void... params) 
+		{
+			// TODO Auto-generated method stub
+			Boolean result = true;
+			for (int i = 1; i < NUMOFCLASSBUILD; i++)
+				for (int j = 0; j < NUMOFCLASSTIMER; j++){
+					
+					HttpResponse mHttpResponse = null;
+					String url = "http://61.129.42.58:9083/sid/queryClassroomService/vid/buildDetail?year=2013&month=11&day=13&timeFlag="+CLASSTIMER[j]+"&idBuilding="+CLASSBUILD[i]+"&returnType=android";
+					String jsonData = new String();
+
+					try 
+					{
+						HttpGet mHttpGet = new HttpGet(url);
+						mHttpResponse = new DefaultHttpClient().execute(mHttpGet);
+						if (mHttpResponse.getStatusLine().getStatusCode() == 200)
+						{
+							jsonData = EntityUtils.toString(mHttpResponse.getEntity());
+							System.out.println(CLASSBUILD[i]+" at "+CLASSTIMER[j]+" is parsing");
+							JsonReader reader = new JsonReader(new StringReader(jsonData));
+							readMessage(reader);
+						}
+						else {
+							result = false;
+						}
+					}
+					catch (Exception e)
+					{
+						result = false;
+						e.printStackTrace();
+					}
+					
+				}
+			
+			
+//			for (int i = 0; i < classroomsum; i++)
+//				System.out.println(classroom[i].getName()+" : "+classroom[i].allTimeStatus());
+//			System.out.println("Parsing Done");
+//			System.out.println(classroomsum);
+			if (result == true){
+				for (int i = 1; i <= classroomsum; i++){
+					for (int j = 0; j < 14; j++){
+						classroom[i].stat += (classroom[i].used[j]<<j);
+						System.out.print(classroom[i].used[j]);
+					}
+					
+					
+					for (int j = 0; j < NUMOFCLASSBUILD; j++){
+						if (classroom[i].name.startsWith(CLASSBUILD[j])){
+							classroom[i].which = j + 1;
+							break;
+						}
+					}
+					
+					System.out.println("--->"+classroom[i].name+" "+classroom[i].which);
+				}
+				
+				
+				String dbPath = android.os.Environment.getExternalStorageDirectory()+"/clover/info.db";
+				File dbFile= new File(dbPath);
+				if (dbFile.exists()) dbFile.delete();
+
+				SQLiteDatabase mDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null);
+				for (int i = 1; i <= classroomsum; i++){
+					if (classroom[i].which != classroom[i-1].which) {
+						String createTable = "CREATE TABLE "+CLASSBUILD[classroom[i].which-1]+
+								" (id integer primary key autoincrement, name varchar(10), stat integer)";
+						mDB.execSQL(createTable);
+					}
+					
+					
+				}
+				
+			}
+			
+			
+			return result;
+		}
+		
+		private void readMessageArray(JsonReader reader) throws IOException
+		{
+			reader.beginArray();
+			while (reader.hasNext())
+			{
+				readMessage(reader);
+			}
+			reader.endArray();
+		}
+		
+		private void readMessage(JsonReader reader) throws IOException
+		{
+			reader.beginObject();
+			while (reader.hasNext())
+			{
+				String tagName = reader.nextName();
+				if ((tagName.equals("jsonp")) || (tagName.equals("data"))) readMessage(reader);
+				else if (tagName.equals("classGroupList")) readMessageArray(reader);
+				else if (tagName.equals("classRoomName"))
+				{
+					sclassroomname = reader.nextString();
+				}
+				else if (tagName.equals("timeList")) readMessageArray(reader);
+				else if (tagName.equals("codeLesson"))
+				{
+					scodelesson = reader.nextString();
+				}
+				else if (tagName.equals("usedFlag"))
+				{
+					susedflag = reader.nextString();
+				}
+				else if (tagName.equals("time"))
+				{
+					sclasstime = reader.nextString();
+					setClassTime(sclassroomname,scodelesson,susedflag);
+				}
+				else if (tagName.equals("classRoomId"))
+				{
+					sclassroomid = reader.nextString();
+				}
+				else reader.skipValue();
+
+			}
+			reader.endObject();
+		}
+		
+		private void setClassTime(String name,String lesson,String flag)
+		{
+			boolean registerflag = false;
+			int usedflag, codelesson = 0;
+			if (flag.equals("true")) usedflag = 1; 
+			else usedflag = 0;
+			
+			for (int i = 0; i < lesson.length(); i++)
+				codelesson = codelesson*10 + (int)(lesson.charAt(i)-'0');
+			
+			if (codelesson <= 14)
+			{
+				for (int i = 1; i <= classroomsum; i++)
+					if (name.equals(classroom[i].name))
+					{
+						classroom[i].setUsed(codelesson,usedflag);
+						registerflag = true;
+						break;
+					}
+				
+				if (!registerflag)
+				{
+					classroomsum++;
+					classroom[classroomsum] = new Classroom(name);
+					classroom[classroomsum].setUsed(codelesson, usedflag);
+				}
+			}
+		}
+		
+
+		
+		@Override
+		protected void onPostExecute(Boolean result){
+			if (result == true){
+				mSharedprefUtil.writeLong("isInfoUptoDate", 1L);
+			}
+			else{
+				
+			}
+		}
+	}
+	
 	
 	public void doInflate(){
 		TimeUtil mTimeUtil = new TimeUtil();
@@ -205,6 +391,21 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		mListView.setAdapter(mTableAdapter);
 		
 		mListView.setOnItemClickListener(MainActivity.this);
+		
+		Long classroomInfo = mSharedprefUtil.readLong("isInfoUptoDate");
+		if (classroomInfo == 0){
+			if (! isNetworkOn()){
+				Toast.makeText(getApplicationContext(), "fetch classroominfo failed", Toast.LENGTH_LONG);
+				
+			}
+			else {
+				fetchInfo mfetchInfo = new fetchInfo();
+				mfetchInfo.execute((Void)null);
+			}
+		}
+		else{
+			
+		}
 		
 	}
 	
