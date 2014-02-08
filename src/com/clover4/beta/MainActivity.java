@@ -1,6 +1,7 @@
 package com.clover4.beta;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.sql.Date;
@@ -20,6 +21,7 @@ import com.clover4.beta.utils.*;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.R.integer;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -239,12 +241,13 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				}
 			
 			if (result == true){
+				
 				for (int i = 1; i <= classroomsum; i++){
 					for (int j = 0; j < 14; j++){
 						classroom[i].stat += (classroom[i].used[j]<<j);
 						System.out.print(classroom[i].used[j]);
 					}
-					
+					classroom[i].toStr();
 					
 					for (int j = 0; j < NUMOFCLASSBUILD; j++){
 						if (classroom[i].name.startsWith(CLASSBUILD[j])){
@@ -262,11 +265,24 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					if (dbFile.exists()) dbFile.delete();
 	
 					SQLiteDatabase mDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null);
+					FileWriter fw;
+					
+					
+					int [] begin = new int[9];
+					int [] end = new int[9];
+					int N = 0;
+					
+					begin[0] = 1;
 					for (int i = 1; i <= classroomsum; i++){
-						if (i== 1 || classroom[i].which != classroom[i-1].which) {
+						if (i == 1 || classroom[i].which != classroom[i-1].which) {
 							String createTable = "CREATE TABLE "+CLASSBUILD[classroom[i].which-1]+
 									" (id integer primary key autoincrement, name varchar(10), stat integer)";
 							mDB.execSQL(createTable);
+							if (i > 1){
+								end[N] = i - 1;
+								N++;
+								begin[N] = i;
+							}
 						}
 						
 						ContentValues mContentValues = new ContentValues();
@@ -274,6 +290,23 @@ public class MainActivity extends Activity implements OnItemClickListener{
 						mContentValues.put("stat", classroom[i].stat);
 						
 						mDB.insert(CLASSBUILD[classroom[i].which-1], null, mContentValues);
+						
+					}
+					end[N] = classroomsum;
+					
+					for (int i = 0; i <= N; i++){
+						fw = new FileWriter(android.os.Environment.getExternalStorageDirectory()
+						+"/clover/"+CLASSBUILD[i]+".txt");
+						
+						for (int j = begin[i]; j <= end[i]; j++){
+							fw.write(classroom[j].name+"\n");
+							fw.write(classroom[j].str.substring(0, 5)+"\n");
+							fw.write(classroom[j].str.substring(5, 10)+"\n");
+							fw.write(classroom[j].str.substring(10, 14)+"\n");
+						}
+						
+						fw.flush();
+						fw.close();
 					}
 				}
 				catch (Exception e){
