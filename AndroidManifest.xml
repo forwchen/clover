@@ -31,6 +31,10 @@
             android:name="com.clover4.beta.SelectBuilding"
             android:label="@string/title_activity_select_building" >
         </activity>
+        <activity
+            android:name="com.clover4.beta.ClassroomInfo"
+            android:label="@string/title_activity_classroon_info" >
+        </activity>
     </application>
 
 </manifest>

@@ -36,4 +36,9 @@ public class Constants {
 		"21:05",
 		"22:00"
 	};
+	
+	public final String[] CLASSBUILD = {"HGD", "HGX", "H2", "H3", "H4", "H5", "H6"}; 
+	public final String[] CLASSTIMER = {"morning", "midday", "night"};
+	public final int NUMOFCLASSBUILD= 7;
+	public final int NUMOFCLASSTIMER = 3;
 }

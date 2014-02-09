@@ -55,7 +55,7 @@ public class TableAdapter extends BaseAdapter {
 		ClassTableItem mItem = mlist.get(position);
 		Constants c = new Constants();
 		
-		Log.d("tag", mItem.name);
+		//Log.d("tag", mItem.name);
 		
 		if (mItem.type == 1){
 			mView = mLayoutInflater.inflate(R.layout.classtime_list_item, null);

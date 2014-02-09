@@ -196,25 +196,23 @@ public class MainActivity extends Activity implements OnItemClickListener{
 
 	public class fetchInfo extends AsyncTask<Void, Void, Boolean>{
 
-		final String[] CLASSBUILD = {"HGD", "HGX", "H2", "H3", "H4", "H5", "H6"}; 
-		final String[] CLASSTIMER = {"morning", "midday", "night"};
-		final int NUMOFCLASSBUILD= 7;
-		final int NUMOFCLASSTIMER = 3;
+		
 		
 		private Classroom[] classroom = new Classroom[300];
 		private int classroomsum = 0;
 		private String sclassroomname = "", scodelesson = "", susedflag = "", sclasstime = "", sclassroomid = "";
+		Constants c = new Constants();
 		
 		@Override
 		protected Boolean doInBackground(Void... params) 
 		{
 			// TODO Auto-generated method stub
 			Boolean result = true;
-			for (int i = 1; i < NUMOFCLASSBUILD; i++)
-				for (int j = 0; j < NUMOFCLASSTIMER; j++){
+			for (int i = 1; i < c.NUMOFCLASSBUILD; i++)
+				for (int j = 0; j < c.NUMOFCLASSTIMER; j++){
 					
 					HttpResponse mHttpResponse = null;
-					String url = "http://61.129.42.58:9083/sid/queryClassroomService/vid/buildDetail?year=2013&month=11&day=13&timeFlag="+CLASSTIMER[j]+"&idBuilding="+CLASSBUILD[i]+"&returnType=android";
+					String url = "http://61.129.42.58:9083/sid/queryClassroomService/vid/buildDetail?year=2013&month=11&day=13&timeFlag="+c.CLASSTIMER[j]+"&idBuilding="+c.CLASSBUILD[i]+"&returnType=android";
 					String jsonData = new String();
 
 					try 
@@ -224,7 +222,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 						if (mHttpResponse.getStatusLine().getStatusCode() == 200)
 						{
 							jsonData = EntityUtils.toString(mHttpResponse.getEntity());
-							System.out.println(CLASSBUILD[i]+" at "+CLASSTIMER[j]+" is parsing");
+							System.out.println(c.CLASSBUILD[i]+" at "+c.CLASSTIMER[j]+" is parsing");
 							JsonReader reader = new JsonReader(new StringReader(jsonData));
 							readMessage(reader);
 						}
@@ -249,8 +247,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					}
 					classroom[i].toStr();
 					
-					for (int j = 0; j < NUMOFCLASSBUILD; j++){
-						if (classroom[i].name.startsWith(CLASSBUILD[j])){
+					for (int j = 0; j < c.NUMOFCLASSBUILD; j++){
+						if (classroom[i].name.startsWith(c.CLASSBUILD[j])){
 							classroom[i].which = j + 1;
 							break;
 						}
@@ -275,7 +273,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					begin[0] = 1;
 					for (int i = 1; i <= classroomsum; i++){
 						if (i == 1 || classroom[i].which != classroom[i-1].which) {
-							String createTable = "CREATE TABLE "+CLASSBUILD[classroom[i].which-1]+
+							String createTable = "CREATE TABLE "+c.CLASSBUILD[classroom[i].which-1]+
 									" (id integer primary key autoincrement, name varchar(10), stat integer)";
 							mDB.execSQL(createTable);
 							if (i > 1){
@@ -289,14 +287,14 @@ public class MainActivity extends Activity implements OnItemClickListener{
 						mContentValues.put("name", classroom[i].name);
 						mContentValues.put("stat", classroom[i].stat);
 						
-						mDB.insert(CLASSBUILD[classroom[i].which-1], null, mContentValues);
+						mDB.insert(c.CLASSBUILD[classroom[i].which-1], null, mContentValues);
 						
 					}
 					end[N] = classroomsum;
 					
 					for (int i = 0; i <= N; i++){
 						fw = new FileWriter(android.os.Environment.getExternalStorageDirectory()
-						+"/clover/"+CLASSBUILD[i]+".txt");
+						+"/clover/"+c.CLASSBUILD[i]+".txt");
 						
 						for (int j = begin[i]; j <= end[i]; j++){
 							fw.write(classroom[j].name+"\n");
