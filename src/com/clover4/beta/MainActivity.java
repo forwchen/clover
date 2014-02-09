@@ -529,15 +529,23 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				});
 		}
 		else {
-			//setContentView(R.layout.activity_main);
+
 			doMain();
 		}
-		/**
-		 * make app dir
-		 * 
-		 */
+
 		
-		
+		try {
+			ClassDBUtil mClassDBUtil = new ClassDBUtil();
+			ArrayList<ClassroomItem> mList = mClassDBUtil.mQuery("H2", 12);
+			for (int i = 0; i<mList.size(); i++){
+				System.out.println(mList.get(i).name);
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			
+			e.printStackTrace();
+		}
 		
 		/**
 		 * set notification
@@ -576,10 +584,10 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
-//		if (isFree[arg2]) {
-//			Intent intent = new Intent(MainActivity.this, Editevent.class);
-//			startActivity(intent);
-//		}
+		if (isFree[arg2]) {
+			Intent intent = new Intent(MainActivity.this, PlanEvent.class);
+			startActivity(intent);
+		}
 	}
 
 }
