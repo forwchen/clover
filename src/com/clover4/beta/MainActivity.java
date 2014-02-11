@@ -16,6 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.clover4.beta.PlanEvent.CustomReceiver;
 import com.clover4.beta.utils.*;
 
 import android.net.ConnectivityManager;
@@ -27,9 +28,11 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.JsonReader;
 import android.util.Log;
@@ -52,6 +55,11 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	
 	//Log.d(TAG, SUCC);
 	
+	boolean updated = false;
+	double latitude = 0;
+	double longitude = 0;
+	GpsService mGpsService;
+	CustomReceiver mCustomReceiver;
 	
 	private EditText mpwdText;
 	private EditText musrText;
@@ -396,7 +404,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		protected void onPostExecute(Boolean result){
 			if (result == true){
 				mSharedprefUtil.writeLong("isInfoUptoDate", 1L);
-				setNotification();
+				
 			}
 			else{
 				Toast.makeText(getApplicationContext(), "Fetching classroom info failed", Toast.LENGTH_LONG);
@@ -405,9 +413,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		}
 	}
 	
-	public void setNotification(){
-		
-	}
 	
 	public void doInflate(){
 		TimeUtil mTimeUtil = new TimeUtil();
@@ -449,7 +454,14 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-
+		updated = getIntent().getBooleanExtra("updated", false);
+		if (! updated) mGpsService = new GpsService(MainActivity.this);
+		else {
+			latitude = getIntent().getDoubleExtra("lat", 0);
+			longitude = getIntent().getDoubleExtra("lon", 0);
+			//Toast.makeText(getApplicationContext(), String.valueOf(latitude)+" "+String.valueOf(longitude), Toast.LENGTH_LONG).show();
+		}
+		mCustomReceiver = new CustomReceiver();
 		
 		
 		File f= new File(android.os.Environment.getExternalStorageDirectory()+"/clover");
@@ -474,7 +486,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			}
 		}
 		else{
-			setNotification();
+			
 		}
 		
 		
@@ -566,6 +578,45 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		
 		
 	}
+	
+	public class CustomReceiver extends BroadcastReceiver {
+
+    	public CustomReceiver() {
+    		// TODO Auto-generated constructor stub
+
+    	}
+
+    	@Override
+    	public void onReceive(Context context, Intent intent) {
+    		// TODO Auto-generated method stub
+    		if ("com.clover.LocationChangedBroadcast".equals(intent.getAction())){
+    			updated = true;
+    			latitude = intent.getDoubleExtra("lat", 0);
+    			longitude = intent.getDoubleExtra("lon", 0);
+    			
+    			//Toast.makeText(context, "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_SHORT).show();
+    		}
+    	}
+
+    }
+	
+	public void onResume(){
+    	super.onResume();
+    	if (!updated) {
+    		registerReceiver(mCustomReceiver, new IntentFilter("com.clover.LocationChangedBroadcast"));
+    		mGpsService.getLocation();
+    	}
+    }
+    
+    
+    public void onPause() {
+    	super.onPause();
+    	if (!updated){
+    		unregisterReceiver(mCustomReceiver);
+    		mGpsService.stopUsingGPS();
+    	}
+	}
+	
 
 	public boolean onOptionsItemSelected(MenuItem item)  
 	{
@@ -586,6 +637,9 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		// TODO Auto-generated method stub
 		if (isFree[arg2]) {
 			Intent intent = new Intent(MainActivity.this, PlanEvent.class);
+			intent.putExtra("updated", updated);
+			intent.putExtra("lon", longitude);
+			intent.putExtra("lat", latitude);
 			startActivity(intent);
 		}
 	}
