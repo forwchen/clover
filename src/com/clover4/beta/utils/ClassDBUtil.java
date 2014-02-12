@@ -11,6 +11,7 @@ public class ClassDBUtil {
 	String dbPath;
 	File dbFile;
 	SQLiteDatabase mDB;
+
 	
 	public ClassDBUtil() {
 		// TODO Auto-generated constructor stub
@@ -24,14 +25,20 @@ public class ClassDBUtil {
 		return dbFile.exists();
 	}
 	
-	public ArrayList<ClassroomItem> mQuery(String table, int timeunit) {
-		ArrayList<ClassroomItem> result = new ArrayList<ClassroomItem>();
+	public ArrayList<String> mQuery(String table, int start_unit, int end_unit) {
+		ArrayList<String> result = new ArrayList<String>();
 		
-		Cursor mCursor = mDB.query(table, new String []{"name","stat"}, "(stat & ?) > 0", new String[] {"9216"} , null, null, null, null);
+		int mask = 0;
+		for (int i = start_unit; i <= end_unit; i++) mask += (1<<i);
+		String MASK = String.valueOf(mask);
+		
+		Cursor mCursor = mDB.query(table, 
+				new String []{"name"}, "((~stat) & "+MASK+") = "+MASK, null, null, null, null, null);
+		String name;
 		while (mCursor.moveToNext()){
-			ClassroomItem mItem = new ClassroomItem();
-			mItem.name = mCursor.getString(mCursor.getColumnIndex("name"));
-			result.add(mItem);
+			
+			name = mCursor.getString(mCursor.getColumnIndex("name"));
+			result.add(name);
 		}
 		
 		return result;

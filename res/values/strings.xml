@@ -9,5 +9,6 @@
     <string name="title_activity_select_building">SelectBuilding</string>
     <string name="title_activity_classroon_info">ClassroonInfo</string>
     <string name="title_activity_plan_event">PlanEvent</string>
+    <string name="title_activity_show_classroom">ShowClassroom</string>
 
 </resources>

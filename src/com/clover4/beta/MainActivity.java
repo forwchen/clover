@@ -69,6 +69,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private SharedprefUtil mSharedprefUtil;
 	private ProgressDialog mProgressDialog;
 	private boolean isFree[]= new boolean[16];
+	private ArrayList<ClassTableItem> ClassList;
 	
 	public boolean isNetworkOn() {
 		ConnectivityManager connectivity = (ConnectivityManager) 
@@ -421,7 +422,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		MainActivity.this.setContentView(R.layout.view_class_list);
 		
 		StdTableLoader mStdTableLoader = new StdTableLoader();
-		ArrayList<ClassTableItem> ClassList = mStdTableLoader.getTable();
+		ClassList = mStdTableLoader.getTable();
 		
 		for (int i = 0; i < ClassList.size(); i++){
 			if (ClassList.get(i).type == 1) isFree[i] = false;
@@ -545,19 +546,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			doMain();
 		}
 
-		
-		try {
-			ClassDBUtil mClassDBUtil = new ClassDBUtil();
-			ArrayList<ClassroomItem> mList = mClassDBUtil.mQuery("H2", 12);
-			for (int i = 0; i<mList.size(); i++){
-				System.out.println(mList.get(i).name);
-			}
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			
-			e.printStackTrace();
-		}
+
 		
 		/**
 		 * set notification
@@ -640,6 +629,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			intent.putExtra("updated", updated);
 			intent.putExtra("lon", longitude);
 			intent.putExtra("lat", latitude);
+			intent.putExtra("start_unit", ClassList.get(arg2).startunit - 1);
+			intent.putExtra("end_unit", ClassList.get(arg2).startunit + ClassList.get(arg2).units - 2);
 			startActivity(intent);
 		}
 	}

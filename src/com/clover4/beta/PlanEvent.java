@@ -8,14 +8,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class PlanEvent extends Activity {
+public class PlanEvent extends Activity implements OnItemClickListener{
 
 	boolean updated = false;
 	double latitude = 0;
 	double longitude = 0;
+	int start_unit;
+	int end_unit;
 	GpsService mGpsService;
 	CustomReceiver mCustomReceiver;
 	
@@ -25,7 +30,11 @@ public class PlanEvent extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_plan_event);
 		
+		start_unit = getIntent().getIntExtra("start_unit", -1);
+		end_unit = getIntent().getIntExtra("end_unit", -1);
+		
 		updated = getIntent().getBooleanExtra("updated", false);
+		
 		if (! updated) mGpsService = new GpsService(PlanEvent.this);
 		else {
 			latitude = getIntent().getDoubleExtra("lat", 0);
@@ -35,10 +44,10 @@ public class PlanEvent extends Activity {
 		mCustomReceiver = new CustomReceiver();
 		
 		
-		ListView mylistview = (ListView) findViewById(R.id.eventlist);
+		ListView mListView = (ListView) findViewById(R.id.eventlist);
 		EventAdapter mAdapter = new EventAdapter(this);
-		mylistview.setAdapter(mAdapter);
-		
+		mListView.setAdapter(mAdapter);
+		mListView.setOnItemClickListener(PlanEvent.this);
 	}
 
 	@Override
@@ -85,5 +94,29 @@ public class PlanEvent extends Activity {
     		unregisterReceiver(mCustomReceiver);
     		mGpsService.stopUsingGPS();
     	}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
+		switch (arg2) {
+		case 0:
+			Intent intent = new Intent(PlanEvent.this, ShowClassroom.class);
+			intent.putExtra("updated", updated);
+			intent.putExtra("lon", longitude);
+			intent.putExtra("lat", latitude);
+			intent.putExtra("start_unit", start_unit);
+			intent.putExtra("end_unit", end_unit);
+			startActivity(intent);
+			break;
+		case 1:
+			
+			break;
+		case 2:
+			
+			break;
+		default:
+			break;
+		}
 	}
 }

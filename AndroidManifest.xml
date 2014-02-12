@@ -40,6 +40,10 @@
             android:name="com.clover4.beta.PlanEvent"
             android:label="@string/title_activity_plan_event" >
         </activity>
+        <activity
+            android:name="com.clover4.beta.ShowClassroom"
+            android:label="@string/title_activity_show_classroom" >
+        </activity>
     </application>
 
 </manifest>
