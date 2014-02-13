@@ -3,39 +3,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
+    android:background="#88ddd2"
     tools:context=".MainActivity" >
-
-    <EditText
-        android:id="@+id/pwdtext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="64dp"
-        android:layout_marginTop="60dp"
-        android:ems="10"
-        android:inputType="textPassword" >
-
-        <requestFocus />
-    </EditText>
 
     <EditText
         android:id="@+id/usrtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/pwdtext"
-        android:layout_marginTop="28dp"
+        android:layout_alignBottom="@+id/pwdtext"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="27dp"
+        android:layout_marginRight="19dp"
         android:ems="10"
         android:inputType="number" />
 
-    <Button
-        android:id="@+id/loginbtn"
+    <EditText
+        android:id="@+id/pwdtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/pwdtext"
+        android:layout_alignLeft="@+id/usrtext"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="100dp"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/textusr"
+        android:textColor="#ffffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/usrtext"
+        android:layout_toLeftOf="@+id/usrtext"
+        android:text="学号："
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textpsw"
+        android:textColor="#ffffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/pwdtext"
+        android:layout_alignLeft="@+id/textusr"
+        android:text="密码："
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/loginbtn"
+        android:alpha="40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/usrtext"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="24dp"
         android:text="@string/logintext" />
 
 </RelativeLayout>

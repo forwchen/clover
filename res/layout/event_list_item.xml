@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
     
         <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -12,7 +12,7 @@
         android:text="@string/hello_world" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/myicon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -21,12 +21,11 @@
         android:src="@drawable/ic_launcher" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/myarrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="33dp"
-        android:layout_toRightOf="@+id/textView1"
-        android:src="@drawable/arrow" />
+        android:layout_alignParentRight="true"
+        android:src="@drawable/marrow" />
 	
 </RelativeLayout>

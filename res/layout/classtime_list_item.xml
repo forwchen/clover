@@ -13,7 +13,7 @@
 	    	android:clickable="false"
 	    	android:width="80dp"
 	    	android:height="80dp"
-	    	android:background="#99BA16"
+	    	android:background="#36fdf8"
 	    	android:layout_width="wrap_content" 
 	        android:layout_height="wrap_content" 
 	    	android:layout_alignParentLeft="true"
@@ -32,7 +32,7 @@
 	          android:layout_below="@id/name"
 	          android:layout_toRightOf="@id/btn"
 	          android:text="" 
-	          android:textColor="#B6241B" 
+	          android:textColor="#f39519" 
 	          android:textSize="15dip" 
 	          android:typeface="sans" />
 	<TextView android:id="@+id/classroom" 

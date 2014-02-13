@@ -15,7 +15,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:width="107dp"
-        android:background="#0a89bb"
+        android:background="#5ddee1"
         android:text="早上" />
     
     <Button
@@ -25,7 +25,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:width="107dp"
-        android:background="#0a89bb"
+        android:background="#5ddee1"
         android:text="中午" />
 
     <Button
@@ -35,7 +35,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:width="107dp"
-        android:background="#0a89bb"
+        android:background="#5ddee1"
         android:text="晚上" />
 
     

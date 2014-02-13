@@ -48,9 +48,9 @@ public class EventAdapter extends BaseAdapter {
 		
 		View mView = convertView;
 		mView = mLayoutInflater.inflate(R.layout.event_list_item, null);
-		ImageView icon = (ImageView)mView.findViewById(R.id.imageView1);
-		ImageView arrow = (ImageView)mView.findViewById(R.id.imageView2);
-		TextView text = (TextView)mView.findViewById(R.id.textView1);
+		ImageView icon = (ImageView)mView.findViewById(R.id.myicon);
+		ImageView arrow = (ImageView)mView.findViewById(R.id.myarrow);
+		TextView text = (TextView)mView.findViewById(R.id.event);
 		switch (position) {
 		case 0:
 			text.setText("找空教室");

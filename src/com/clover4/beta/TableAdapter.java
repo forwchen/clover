@@ -75,7 +75,7 @@ public class TableAdapter extends BaseAdapter {
 			mView = mLayoutInflater.inflate(R.layout.freetime_list_item, null);
 			TextView free = (TextView)mView.findViewById(R.id.free);
 			TextView freetm = (TextView)mView.findViewById(R.id.freetm);
-			ImageView arrow = (ImageView)mView.findViewById(R.id.arrow);
+			ImageView plus = (ImageView)mView.findViewById(R.id.plus);
 			freetm.setText(c.start_time[mItem.startunit]+"-"+c.end_time[mItem.startunit+mItem.units-1]);
 		}
 		
