@@ -5,7 +5,9 @@ import java.util.jar.Attributes.Name;
 
 import com.clover4.beta.utils.ClassDBUtil;
 import com.clover4.beta.utils.Constants;
+import com.clover4.beta.utils.GPSUtil;
 import com.clover4.beta.utils.InfoItem;
+import com.clover4.beta.utils.LocationDBUtil;
 
 import android.R.integer;
 import android.os.Bundle;
@@ -75,13 +77,20 @@ public class ShowClassroom extends Activity {
 				InfoItem mItem = getItem(i);
 				if (!mItem.isEmpty()) {
 					mList.add(mItem);
-					Log.d("tag","asdsad");
 				}
 			}
-			Log.d("asjdhkasjhdasd","asdasdhkashdhkasjds-----------");
+			
 		}
 		else {
-			
+			GPSUtil mGpsUtil = new GPSUtil();
+			ArrayList<Integer> Index = mGpsUtil.getClosest(longitude, latitude);
+			for (int i = 0; i < 7; i++){
+				InfoItem mItem = getItem(Index.get(i));
+				if (!mItem.isEmpty()){
+					mList.add(mItem);
+					if (mList.size() == 3) break;
+				}
+			}
 		}
 		
 		
