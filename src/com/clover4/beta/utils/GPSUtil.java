@@ -66,6 +66,21 @@ public class GPSUtil {
 		return result;
 	}
 	
-	
+	public ArrayList<Double> getDis(double lon, double lat) {
+		ArrayList<Double> result = new ArrayList<Double>();
+		
+		for (int i = 0; i < 7; i++){
+			ArrayList<Double> mlon = mDbUtil.getLon(c.CLASSBUILD[i]);
+			ArrayList<Double> mlat = mDbUtil.getLat(c.CLASSBUILD[i]);
+			double dis = 1e20;
+			for (int j = 0; j < mlon.size(); j++){
+				double d = gps2m(lon, lat, mlon.get(j), mlat.get(j));
+				if (d < dis) dis = d;
+			}
+			result.add(dis);
+		}
+		
+		return result;
+	}
 	
 }

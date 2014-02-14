@@ -73,6 +73,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private ProgressDialog mProgressDialog;
 	private boolean isFree[]= new boolean[16];
 	private ArrayList<ClassTableItem> ClassList;
+	private TimeUtil mTimeUtil = new TimeUtil();
+	private Constants c = new Constants();
 	
 	
 	public boolean isNetworkOn() {
@@ -214,7 +216,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		private Classroom[] classroom = new Classroom[300];
 		private int classroomsum = 0;
 		private String sclassroomname = "", scodelesson = "", susedflag = "", sclasstime = "", sclassroomid = "";
-		Constants c = new Constants();
+		
 		
 		@Override
 		protected Boolean doInBackground(Void... params) 
@@ -408,7 +410,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		@Override
 		protected void onPostExecute(Boolean result){
 			if (result == true){
-				mSharedprefUtil.writeLong("isInfoUptoDate", 1L);
+				mSharedprefUtil.writeLong(mTimeUtil.date, 1L);
 				
 			}
 			else{
@@ -424,7 +426,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		protected Boolean doInBackground(Void... params) {
 			// TODO Auto-generated method stub
 			HttpResponse mHttpResponse = null;
-			TimeUtil mTimeUtil = new TimeUtil();
+
 			//String url = "http://lecture.oss-cn-hangzhou.aliyuncs.com/"+mTimeUtil.date;
 			String url = "http://lecture.oss-cn-hangzhou.aliyuncs.com/2013-12-17";
 			String Data = new String();
@@ -471,7 +473,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	
 	
 	public void doInflate(){
-		TimeUtil mTimeUtil = new TimeUtil();
+		
 
 		if ((mTimeUtil.dayofweek == 0) || (mTimeUtil.dayofweek == 6)) return;
 		MainActivity.this.setContentView(R.layout.view_class_list);
@@ -522,7 +524,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		else {
 			latitude = getIntent().getDoubleExtra("lat", 0);
 			longitude = getIntent().getDoubleExtra("lon", 0);
-			//Toast.makeText(getApplicationContext(), String.valueOf(latitude)+" "+String.valueOf(longitude), Toast.LENGTH_LONG).show();
 		}
 		mCustomReceiver = new CustomReceiver();
 		
@@ -537,7 +538,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		
 		mSharedprefUtil = new SharedprefUtil("setting",getApplicationContext());
 		
-		Long classroomInfo = mSharedprefUtil.readLong("isInfoUptoDate");
+		Long classroomInfo = mSharedprefUtil.readLong(mTimeUtil.date);
 		if (classroomInfo == 0){
 			if (! isNetworkOn()){
 				Toast.makeText(getApplicationContext(), "fetch classroominfo failed", Toast.LENGTH_LONG);
@@ -607,24 +608,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 
 			doMain();
 		}
-
-		
-		/**
-		 * set notification
-		 */
-//		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//		Intent openIntent = new Intent(this,ShowNearest.class);
-//		
-//		PendingIntent mPendingIntent= PendingIntent.getActivity(this, 0, openIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-//		Notification mNotification = new Notification.Builder(this).
-//				setSmallIcon(R.drawable.ic_launcher).
-//				setOngoing(true).
-//				setContentTitle("Cl0ver4"). 
-//				setContentText("show nearest spare classroom").
-//				setContentIntent(mPendingIntent).
-//				build();
-//		
-//		mNotificationManager.notify(202, mNotification);
 		
 		
 	}
@@ -643,6 +626,76 @@ public class MainActivity extends Activity implements OnItemClickListener{
     			updated = true;
     			latitude = intent.getDoubleExtra("lat", 0);
     			longitude = intent.getDoubleExtra("lon", 0);
+    			
+    			GPSUtil mGpsUtil = new GPSUtil();
+    			ArrayList<Double> mList = mGpsUtil.getDis(longitude, latitude);
+    			EventLoader mEventLoader = new EventLoader();
+    			ArrayList<EventItem> lectureList = mEventLoader.loadEvent(1);
+    			ArrayList<EventItem> actList = mEventLoader.loadEvent(0);
+    			boolean lecture_notified = false;
+    			boolean act_notified = false;
+    			NotificationManager mNotificationManager = 
+    					(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    			String nowtime = mTimeUtil.getTime();
+    			
+    			for (int i = 0; i < lectureList.size(); i++){
+    				EventItem mItem = lectureList.get(i);
+    				String stime = mItem.stime.substring(11,16);
+    				if (mTimeUtil.calc(nowtime, stime) < 0.35){
+    					for (int j = 0; j < 7; j++)
+    					if (mItem.building.equals(c.CLASSBUILD[j])){
+    						if (mList.get(j) < 50){
+    							lecture_notified = true;
+    							Intent lectureIntent = new Intent(MainActivity.this,ShowLecture.class);
+    							PendingIntent mPendingIntent= 
+    									PendingIntent.getActivity(MainActivity.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+    							Notification mNotification = new Notification.Builder(MainActivity.this).
+    									setSmallIcon(R.drawable.ic_launcher).
+    									setContentTitle("附近有讲座"). 
+    									setContentText("点击查看").
+    									setContentIntent(mPendingIntent).
+    									setAutoCancel(true).
+    									setDefaults(3).
+    									build();
+    							
+    							mNotificationManager.notify(202, mNotification);
+    							//notify lecture
+    						}
+    						break;
+    					}
+    				}
+    				if (lecture_notified) break;
+    			}
+    			
+    			for (int i = 0; i < actList.size(); i++){
+    				EventItem mItem = actList.get(i);
+    				String stime = mItem.stime.substring(11,16);
+    				if (mTimeUtil.calc(nowtime, stime) < 0.35){
+    					for (int j = 0; j < 7; j++)
+    					if (mItem.building.equals(c.CLASSBUILD[j])){
+    						if (mList.get(j) < 50){
+    							act_notified = true;
+    							Intent lectureIntent = new Intent(MainActivity.this,ShowAct.class);
+    							PendingIntent mPendingIntent= 
+    									PendingIntent.getActivity(MainActivity.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+    							Notification mNotification = new Notification.Builder(MainActivity.this).
+    									setSmallIcon(R.drawable.ic_launcher).
+    									setContentTitle("附近有活动"). 
+    									setContentText("点击查看").
+    									setContentIntent(mPendingIntent).
+    									setAutoCancel(true).
+    									setDefaults(3).
+    									build();
+    							
+    							mNotificationManager.notify(203, mNotification);
+    							
+    							//notify act
+    						}
+    						break;
+    					}
+    				}
+    				if (act_notified) break;
+    			}
     			
     			//Toast.makeText(context, "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_SHORT).show();
     		}
