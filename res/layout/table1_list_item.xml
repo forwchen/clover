@@ -5,7 +5,7 @@
     android:orientation="horizontal" >
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/mbutton5"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,50 +15,49 @@
         />
     
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/mbutton4"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 		android:layout_marginRight="2dp"
-        android:layout_toLeftOf="@+id/button5" 
+        android:layout_toLeftOf="@+id/mbutton5" 
         />
     
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/mbutton3"
 
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="2dp"
-        android:layout_toLeftOf="@+id/button4" 
+        android:layout_toLeftOf="@+id/mbutton4" 
         />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/mbutton2"
 
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="2dp"
-        android:layout_toLeftOf="@+id/button3" 
+        android:layout_toLeftOf="@+id/mbutton3" 
         />
 
     <Button
-        android:id="@+id/button1"
-
+        android:id="@+id/mbutton1"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="2dp"
-        android:layout_toLeftOf="@+id/button2" 
+        android:layout_toLeftOf="@+id/mbutton2" 
         />
 
     <TextView
-        android:id="@+id/classroom"
+        android:id="@+id/mclassroom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
+        android:layout_alignBaseline="@+id/mbutton1"
+        android:layout_alignBottom="@+id/mbutton1"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="5dp"
         android:text=""

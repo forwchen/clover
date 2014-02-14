@@ -59,10 +59,10 @@ public class TableAdapter extends BaseAdapter {
 		
 		if (mItem.type == 1){
 			mView = mLayoutInflater.inflate(R.layout.classtime_list_item, null);
-			TextView name = (TextView)mView.findViewById(R.id.name);
-	        TextView time = (TextView)mView.findViewById(R.id.time);
-	        TextView classroom = (TextView)mView.findViewById(R.id.classroom);
-	        Button btn = (Button)mView.findViewById(R.id.btn);
+			TextView name = (TextView)mView.findViewById(R.id.lesson_name);
+	        TextView time = (TextView)mView.findViewById(R.id.lesson_time);
+	        TextView classroom = (TextView)mView.findViewById(R.id.lesson_classroom);
+	        Button btn = (Button)mView.findViewById(R.id.lesson_btn);
 	        
 	        
 	        btn.setText(mItem.code.toUpperCase().subSequence(0, 1));

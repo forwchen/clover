@@ -1,6 +1,15 @@
 package com.clover4.beta;
 
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+
+import com.clover4.beta.utils.ClassTableItem;
+import com.clover4.beta.utils.EventItem;
+
+import android.R.mipmap;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -29,6 +38,7 @@ public class PlanEvent extends Activity implements OnItemClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_plan_event);
+		
 		
 		start_unit = getIntent().getIntExtra("start_unit", -1);
 		end_unit = getIntent().getIntExtra("end_unit", -1);
@@ -101,19 +111,21 @@ public class PlanEvent extends Activity implements OnItemClickListener{
 		// TODO Auto-generated method stub
 		switch (arg2) {
 		case 0:
-			Intent intent = new Intent(PlanEvent.this, ShowClassroom.class);
-			intent.putExtra("updated", updated);
-			intent.putExtra("lon", longitude);
-			intent.putExtra("lat", latitude);
-			intent.putExtra("start_unit", start_unit);
-			intent.putExtra("end_unit", end_unit);
-			startActivity(intent);
+			Intent SCintent = new Intent(PlanEvent.this, ShowClassroom.class);
+			SCintent.putExtra("updated", updated);
+			SCintent.putExtra("lon", longitude);
+			SCintent.putExtra("lat", latitude);
+			SCintent.putExtra("start_unit", start_unit);
+			SCintent.putExtra("end_unit", end_unit);
+			startActivity(SCintent);
 			break;
 		case 1:
-			
+			Intent SLintent = new Intent(PlanEvent.this, ShowLecture.class);
+			startActivity(SLintent);
 			break;
 		case 2:
-			
+			Intent SAintent = new Intent(PlanEvent.this, ShowAct.class);
+			startActivity(SAintent);
 			break;
 		default:
 			break;

@@ -1,5 +1,6 @@
 package com.clover4.beta;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.R.integer;
 import android.app.Activity;
+import android.app.ExpandableListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -34,6 +36,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.format.DateFormat;
 import android.util.JsonReader;
 import android.util.Log;
 import android.view.Menu;
@@ -70,6 +73,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private ProgressDialog mProgressDialog;
 	private boolean isFree[]= new boolean[16];
 	private ArrayList<ClassTableItem> ClassList;
+	
 	
 	public boolean isNetworkOn() {
 		ConnectivityManager connectivity = (ConnectivityManager) 
@@ -414,6 +418,57 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		}
 	}
 	
+	public class fetchEvent extends AsyncTask<Void, Void, Boolean>{
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+			HttpResponse mHttpResponse = null;
+			TimeUtil mTimeUtil = new TimeUtil();
+			//String url = "http://lecture.oss-cn-hangzhou.aliyuncs.com/"+mTimeUtil.date;
+			String url = "http://lecture.oss-cn-hangzhou.aliyuncs.com/2013-12-17";
+			String Data = new String();
+			Boolean result = true;
+			try 
+			{
+				HttpGet mHttpGet = new HttpGet(url);
+				mHttpResponse = new DefaultHttpClient().execute(mHttpGet);
+				if (mHttpResponse.getStatusLine().getStatusCode() == 200)
+				{
+					Data = EntityUtils.toString(mHttpResponse.getEntity());
+					System.out.println(Data);
+					
+					FileWriter fw;
+					fw = new FileWriter(android.os.Environment.getExternalStorageDirectory()+"/clover/cache");
+					BufferedWriter bw = new BufferedWriter(fw);
+					
+					bw.write(Data);
+					bw.flush();
+					bw.close();
+					
+				}
+				else {
+					result = false;
+				}
+			}
+			catch (Exception e)
+			{
+				result = false;
+				e.printStackTrace();
+			}
+			
+			
+			return result;
+		}
+		
+		public void onPostExecute(Boolean result){
+			if (result == true) {
+				mSharedprefUtil.writeLong("eventDownloaded", 1L);
+			}
+		}
+		
+	}
+	
 	
 	public void doInflate(){
 		TimeUtil mTimeUtil = new TimeUtil();
@@ -434,6 +489,13 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		mListView.setAdapter(mTableAdapter);
 		
 		mListView.setOnItemClickListener(MainActivity.this);
+		
+		
+		Long eventDownloaded = mSharedprefUtil.readLong("eventDownloaded");
+		if (eventDownloaded == 0) {
+			fetchEvent mfetchEvent = new fetchEvent();
+			mfetchEvent.execute((Void) null);
+		}
 	}
 	
 	public void doMain(){
@@ -545,7 +607,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 
 			doMain();
 		}
-
 
 		
 		/**

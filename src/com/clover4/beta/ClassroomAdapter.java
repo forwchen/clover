@@ -58,11 +58,11 @@ public class ClassroomAdapter extends BaseAdapter {
 		
 		if (time_of_day == 2){
 			mView = mLayoutInflater.inflate(R.layout.table2_list_item, null);
-			TextView name = (TextView)mView.findViewById(R.id.classroom);
-			Button button0 = (Button)mView.findViewById(R.id.button1);
-			Button button1 = (Button)mView.findViewById(R.id.button2);
-			Button button2 = (Button)mView.findViewById(R.id.button3);
-			Button button3 = (Button)mView.findViewById(R.id.button4);
+			TextView name = (TextView)mView.findViewById(R.id.nclassroom);
+			Button button0 = (Button)mView.findViewById(R.id.nbutton1);
+			Button button1 = (Button)mView.findViewById(R.id.nbutton2);
+			Button button2 = (Button)mView.findViewById(R.id.nbutton3);
+			Button button3 = (Button)mView.findViewById(R.id.nbutton4);
 			
 			name.setText(mItem.name);
 			if (mItem.stat[time_of_day].charAt(0) == '1') button0.
@@ -88,12 +88,12 @@ public class ClassroomAdapter extends BaseAdapter {
 		}
 		else {
 			mView = mLayoutInflater.inflate(R.layout.table1_list_item, null);
-			TextView name = (TextView)mView.findViewById(R.id.classroom);
-			Button button0 = (Button)mView.findViewById(R.id.button1);
-			Button button1 = (Button)mView.findViewById(R.id.button2);
-			Button button2 = (Button)mView.findViewById(R.id.button3);
-			Button button3 = (Button)mView.findViewById(R.id.button4);
-			Button button4 = (Button)mView.findViewById(R.id.button5);
+			TextView name = (TextView)mView.findViewById(R.id.mclassroom);
+			Button button0 = (Button)mView.findViewById(R.id.mbutton1);
+			Button button1 = (Button)mView.findViewById(R.id.mbutton2);
+			Button button2 = (Button)mView.findViewById(R.id.mbutton3);
+			Button button3 = (Button)mView.findViewById(R.id.mbutton4);
+			Button button4 = (Button)mView.findViewById(R.id.mbutton5);
 			
 			name.setText(mItem.name);
 			if (mItem.stat[time_of_day].charAt(0) == '1') button0.

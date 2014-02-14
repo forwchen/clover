@@ -44,6 +44,14 @@
             android:name="com.clover4.beta.ShowClassroom"
             android:label="@string/title_activity_show_classroom" >
         </activity>
+        <activity
+            android:name="com.clover4.beta.ShowLecture"
+            android:label="@string/title_activity_show_lecture" >
+        </activity>
+        <activity
+            android:name="com.clover4.beta.ShowAct"
+            android:label="@string/title_activity_show" >
+        </activity>
     </application>
 
 </manifest>
