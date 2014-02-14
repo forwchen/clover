@@ -3,6 +3,7 @@ package com.clover4.beta.utils;
 import java.io.File;
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 

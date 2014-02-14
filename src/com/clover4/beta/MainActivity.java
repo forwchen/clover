@@ -2,8 +2,10 @@ package com.clover4.beta;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -534,6 +536,24 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			Log.d(TAG, SUCC);
 		}
 		else f.mkdir();
+		
+		try
+		{
+			InputStream is = getResources().openRawResource(R.raw.location);
+			FileOutputStream fos = 
+				new FileOutputStream(android.os.Environment.getExternalStorageDirectory()+"/clover/location.db");
+			byte[] buffer = new byte[8192];
+			int count = 0;
+			while ((count = is.read(buffer)) >= 0)
+			{
+				fos.write(buffer, 0, count);
+			}
+			fos.close();
+			is.close();
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
 		
 		
 		mSharedprefUtil = new SharedprefUtil("setting",getApplicationContext());
