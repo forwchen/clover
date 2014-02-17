@@ -77,6 +77,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private ArrayList<ClassTableItem> ClassList;
 	private TimeUtil mTimeUtil = new TimeUtil();
 	private Constants c = new Constants();
+	private boolean isGPSregistered = false;
 	
 	
 	public boolean isNetworkOn() {
@@ -229,7 +230,10 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				for (int j = 0; j < c.NUMOFCLASSTIMER; j++){
 					
 					HttpResponse mHttpResponse = null;
-					String url = "http://61.129.42.58:9083/sid/queryClassroomService/vid/buildDetail?year=2013&month=11&day=13&timeFlag="+c.CLASSTIMER[j]+"&idBuilding="+c.CLASSBUILD[i]+"&returnType=android";
+					String url = "http://61.129.42.58:9083/sid/queryClassroomService/vid/buildDetail?"
+							+"year="+mTimeUtil.getyear()+"&month="+mTimeUtil.getmonth()+"&day="+mTimeUtil.getday()+
+							"&timeFlag="+c.CLASSTIMER[j]+"&idBuilding="+c.CLASSBUILD[i]+"&returnType=android";
+					Log.d(TAG, url);
 					String jsonData = new String();
 
 					try 
@@ -412,7 +416,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		@Override
 		protected void onPostExecute(Boolean result){
 			if (result == true){
-				mSharedprefUtil.writeLong(mTimeUtil.date, 1L);
+				mSharedprefUtil.writeLong(mTimeUtil.getdate(), 1L);
 				
 			}
 			else{
@@ -429,8 +433,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			// TODO Auto-generated method stub
 			HttpResponse mHttpResponse = null;
 
-			//String url = "http://lecture.oss-cn-hangzhou.aliyuncs.com/"+mTimeUtil.date;
-			String url = "http://lecture.oss-cn-hangzhou.aliyuncs.com/2013-12-17";
+			String url = "http://lecture.oss-cn-hangzhou.aliyuncs.com/"+mTimeUtil.getdate();
+			//String url = "http://lecture.oss-cn-hangzhou.aliyuncs.com/2013-12-17";
 			String Data = new String();
 			Boolean result = true;
 			try 
@@ -477,7 +481,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	public void doInflate(){
 		
 
-		if ((mTimeUtil.dayofweek == 0) || (mTimeUtil.dayofweek == 6)) return;
+		if ((mTimeUtil.getdayofweek() == 0) || (mTimeUtil.getdayofweek() == 6)) return;
 		MainActivity.this.setContentView(R.layout.view_class_list);
 		
 		StdTableLoader mStdTableLoader = new StdTableLoader();
@@ -558,7 +562,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		
 		mSharedprefUtil = new SharedprefUtil("setting",getApplicationContext());
 		
-		Long classroomInfo = mSharedprefUtil.readLong(mTimeUtil.date);
+		Long classroomInfo = mSharedprefUtil.readLong(mTimeUtil.getdate());
 		if (classroomInfo == 0){
 			if (! isNetworkOn()){
 				Toast.makeText(getApplicationContext(), "fetch classroominfo failed", Toast.LENGTH_LONG);
@@ -693,6 +697,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     				if (mTimeUtil.calc(nowtime, stime) < 0.35){
     					for (int j = 0; j < 7; j++)
     					if (mItem.building.equals(c.CLASSBUILD[j])){
+    						System.out.println(mList.get(j));
     						if (mList.get(j) < 50){
     							act_notified = true;
     							Intent lectureIntent = new Intent(MainActivity.this,ShowAct.class);
@@ -727,6 +732,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     	super.onResume();
     	if (!updated) {
     		registerReceiver(mCustomReceiver, new IntentFilter("com.clover.LocationChangedBroadcast"));
+    		isGPSregistered = true;
     		mGpsService.getLocation();
     	}
     }
@@ -734,7 +740,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     
     public void onPause() {
     	super.onPause();
-    	if (!updated){
+    	if (isGPSregistered){
     		unregisterReceiver(mCustomReceiver);
     		mGpsService.stopUsingGPS();
     	}

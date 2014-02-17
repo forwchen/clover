@@ -20,7 +20,7 @@ public class StdTableLoader {
 		mConstants = new Constants();
 		mTimeUtil = new TimeUtil();
 		Tablefile = android.os.Environment.getExternalStorageDirectory()
-				+"/clover/day"+String.valueOf(mTimeUtil.dayofweek)+".txt";
+				+"/clover/day"+String.valueOf(mTimeUtil.getdayofweek())+".txt";
 	}
 	
 	public ArrayList<ClassTableItem> getTable(){

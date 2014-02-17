@@ -1,6 +1,7 @@
 package com.clover4.beta;
 
 import com.clover4.beta.utils.Constants;
+import com.clover4.beta.utils.TimeUtil;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 public class SelectBuilding extends Activity implements OnItemClickListener{
 
 	Constants c = new Constants();
+	TimeUtil mTimeUtil = new TimeUtil();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,6 +53,7 @@ public class SelectBuilding extends Activity implements OnItemClickListener{
 		
 		Intent intent = new Intent(this, ClassroomInfo.class);
 		intent.putExtra("building_name", c.CLASSBUILD[arg2]);
+		intent.putExtra("unit", mTimeUtil.getunit());
         startActivity(intent);
 	}
 

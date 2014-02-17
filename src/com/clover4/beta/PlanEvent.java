@@ -41,6 +41,7 @@ public class PlanEvent extends Activity implements OnItemClickListener{
 	CustomReceiver mCustomReceiver;
 	private Constants c = new Constants();
 	private TimeUtil mTimeUtil = new TimeUtil();
+	private boolean isGPSregistered = false;
 	
 	
 	@Override
@@ -172,6 +173,7 @@ public class PlanEvent extends Activity implements OnItemClickListener{
     	super.onResume();
     	if (!updated) {
     		registerReceiver(mCustomReceiver, new IntentFilter("com.clover.LocationChangedBroadcast"));
+    		isGPSregistered = true;
     		mGpsService.getLocation();
     	}
     }
@@ -179,7 +181,7 @@ public class PlanEvent extends Activity implements OnItemClickListener{
     
     public void onPause() {
     	super.onPause();
-    	if (!updated){
+    	if (isGPSregistered){
     		unregisterReceiver(mCustomReceiver);
     		mGpsService.stopUsingGPS();
     	}

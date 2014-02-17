@@ -25,6 +25,7 @@ public class ClassroomInfo extends Activity {
 		getActionBar().hide();
 		
 		String building_name = getIntent().getStringExtra("building_name");
+		int unit = getIntent().getIntExtra("unit", 0);
 		
 		String file = android.os.Environment.getExternalStorageDirectory()
 				+"/clover/"+building_name+".txt";
@@ -72,6 +73,20 @@ public class ClassroomInfo extends Activity {
 		final ClassroomAdapter mAdapter0 = new ClassroomAdapter(this,mArrayList,0);
 		final ClassroomAdapter mAdapter1 = new ClassroomAdapter(this,mArrayList,1);
 		final ClassroomAdapter mAdapter2 = new ClassroomAdapter(this,mArrayList,2);
+		
+		switch (unit) {
+		case 0:
+			mylistview.setAdapter(mAdapter0);
+			break;
+		case 1:
+			mylistview.setAdapter(mAdapter1);
+			break;
+		case 2:
+			mylistview.setAdapter(mAdapter2);
+			break;
+		default:
+			break;
+		}
 		
 		button0.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View view){
