@@ -1,21 +1,21 @@
 package com.clover4.beta;
 
 import java.util.ArrayList;
-import java.util.jar.Attributes.Name;
 
 import com.clover4.beta.utils.ClassDBUtil;
 import com.clover4.beta.utils.Constants;
 import com.clover4.beta.utils.GPSUtil;
 import com.clover4.beta.utils.InfoItem;
-import com.clover4.beta.utils.LocationDBUtil;
 
-import android.R.integer;
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.ListView;
 
+/**
+ * 显示特定时间段的空教室
+ *
+ */
 public class ShowClassroom extends Activity {
 
 	boolean updated = false;

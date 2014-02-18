@@ -4,13 +4,21 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+/**
+ * 从存储卡中加载活动信息
+ *
+ */
 public class EventLoader {
 
 	public EventLoader() {
 		// TODO Auto-generated constructor stub
 	}
 
-	
+	/**
+	 * 
+	 * @param i 0加载活动信息，1加载讲座信息
+	 * @return
+	 */
 	public ArrayList<EventItem> loadEvent(int i) {
 		
 		ArrayList<EventItem> eventList = new ArrayList<EventItem>();

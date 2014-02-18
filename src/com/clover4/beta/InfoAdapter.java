@@ -2,8 +2,6 @@ package com.clover4.beta;
 
 import java.util.ArrayList;
 
-import com.clover4.beta.utils.ClassroomItem;
-import com.clover4.beta.utils.Constants;
 import com.clover4.beta.utils.InfoItem;
 
 import android.app.Activity;

@@ -10,6 +10,10 @@ import android.app.Activity;
 import android.view.Menu;
 import android.widget.ListView;
 
+/**
+ * 显示活动界面
+ *
+ */
 public class ShowAct extends Activity {
 
 	@Override

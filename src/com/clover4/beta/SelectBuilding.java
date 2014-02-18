@@ -13,6 +13,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+/**
+ * 选择教学楼的界面
+ *
+ */
 public class SelectBuilding extends Activity implements OnItemClickListener{
 
 	Constants c = new Constants();

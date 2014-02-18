@@ -1,5 +1,9 @@
 package com.clover4.beta.utils;
 
+/**
+ * 记录一个教学楼内空教室个数
+ *
+ */
 public class InfoItem {
 
 	public String name;

@@ -1,12 +1,9 @@
 package com.clover4.beta.utils;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import android.R.bool;
-import android.R.integer;
 
 class ClassItem{
 	
@@ -26,13 +23,20 @@ class ClassItem{
 	}
 }
 
-
+/**
+ * 处理下载的课程表信息
+ *
+ */
 public class StdTableUtil {
 	
 	final private String arg = "arranges[index]";
 	private int[] NumofClass = new int[8];
 	private ClassItem[][] classitem = new ClassItem[8][14];
 
+	/**
+	 * 从str中提取出课程信息
+	 * @param str
+	 */
 	public StdTableUtil(StringBuffer str){
 		
 		for (int i = 0; i < 8; i++) NumofClass[i] = 0;
@@ -63,11 +67,7 @@ public class StdTableUtil {
 			classitem[classweek][NumofClass[classweek]] = 
 					new ClassItem(classweek, classstart, classunit, classcode, classname, classroom, classteacher);
 			
-			//debug
-			System.out.println("day:"+classweek+" "+classstart+" "+classunit+" "+classcode+" "+classname+" "+classroom+" "+classteacher);
 		}
-		
-		System.out.println("Parsing Done");
 	}
 	
 	private int toInt(String str){
@@ -77,6 +77,9 @@ public class StdTableUtil {
 		return temp;
 	}
 
+	/**
+	 * 将课程表信息保存到存储卡上
+	 */
 	public void storeTable(){
 		int havingclass[] = new int[25];
 		for (int week = 1; week <=5; week++){

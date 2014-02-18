@@ -1,5 +1,10 @@
 package com.clover4.beta.utils;
 
+
+/**
+ * 活动信息，用于LAdapter
+ *
+ */
 public class EventItem {
 
 	public String title;

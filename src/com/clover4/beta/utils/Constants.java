@@ -1,6 +1,16 @@
 package com.clover4.beta.utils;
 
+/**
+ * 程序中用到的常量
+ *
+ */
 public class Constants {
+	
+	public final String[] CLASSBUILD = {"HGD", "HGX", "H2", "H3", "H4", "H5", "H6"}; 
+	public final String[] CLASSTIMER = {"morning", "midday", "night"};
+	public final int NUMOFCLASSBUILD= 7;
+	public final int NUMOFCLASSTIMER = 3;
+	
 	public final String start_time[]={
 		"0:00",
 		"8:00",
@@ -37,8 +47,4 @@ public class Constants {
 		"22:00"
 	};
 	
-	public final String[] CLASSBUILD = {"HGD", "HGX", "H2", "H3", "H4", "H5", "H6"}; 
-	public final String[] CLASSTIMER = {"morning", "midday", "night"};
-	public final int NUMOFCLASSBUILD= 7;
-	public final int NUMOFCLASSTIMER = 3;
 }

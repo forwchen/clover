@@ -7,7 +7,10 @@ import java.util.ArrayList;
 
 
 
-
+/**
+ * 从存储卡中加载课程表信息
+ *
+ */
 public class StdTableLoader {
 	
 	ArrayList<ClassTableItem> mArrayList;
@@ -23,6 +26,10 @@ public class StdTableLoader {
 				+"/clover/day"+String.valueOf(mTimeUtil.getdayofweek())+".txt";
 	}
 	
+	/**
+	 * 
+	 * @return 课程信息列表
+	 */
 	public ArrayList<ClassTableItem> getTable(){
 		
 		try {

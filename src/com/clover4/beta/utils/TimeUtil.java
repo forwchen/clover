@@ -5,12 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import android.R.integer;
-import android.provider.ContactsContract.Contacts.Data;
 
 
-
-
+/**
+ * 日期和时间工具
+ *
+ */
 public class TimeUtil {
 	private SimpleDateFormat mSimpleDateFormat;
 	private Date mDate;
@@ -67,6 +67,12 @@ public class TimeUtil {
 		
 		return time;
 	}
+	/**
+	 * 
+	 * @param t1
+	 * @param t2
+	 * @return hours between t1 & t2
+	 */
 	
 	public double calc(String t1, String t2) {
 		double result = 0;
@@ -90,7 +96,12 @@ public class TimeUtil {
 		
 	}
 	
-	
+	/**
+	 * 0 morning
+	 * 1 midday
+	 * 2 night
+	 * @return time of the day
+	 */
 	public int getunit(){
 		mDate = new Date(System.currentTimeMillis());
 		time = mSimpleDateFormat.format(mDate).substring(11, 16);

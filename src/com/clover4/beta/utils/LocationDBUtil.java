@@ -3,10 +3,13 @@ package com.clover4.beta.utils;
 import java.io.File;
 import java.util.ArrayList;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+/**
+ * 访问每个教学楼位置信息的数据库
+ *
+ */
 public class LocationDBUtil {
 
 	String dbPath;
@@ -24,6 +27,11 @@ public class LocationDBUtil {
 		return dbFile.exists();
 	}
 	
+	/**
+	 * 
+	 * @param name
+	 * @return 返回name教学楼的longitude
+	 */
 	public ArrayList<Double> getLon(String name){
 		ArrayList<Double> result = new ArrayList<Double>();
 		
@@ -40,7 +48,11 @@ public class LocationDBUtil {
 		return result;
 	}
 	
-	
+	/**
+	 * 
+	 * @param name
+	 * @return 返回name教学楼的latitude
+	 */
 	public ArrayList<Double> getLat(String name){
 		ArrayList<Double> result = new ArrayList<Double>();
 		

@@ -2,7 +2,6 @@ package com.clover4.beta.utils;
 
 import java.util.ArrayList;
 
-import android.database.CursorJoiner.Result;
 
 public class GPSUtil {
 
@@ -16,7 +15,14 @@ public class GPSUtil {
 		mDbUtil = new LocationDBUtil();
 	}
 
-	
+	/**
+	 * 
+	 * @param lng_a longitude A
+	 * @param lat_a latitude A
+	 * @param lng_b longitude B
+	 * @param lat_b latitude B
+	 * @return 两个经纬度坐标之间的距离
+	 */
 	public double gps2m(double lng_a, double lat_a, double lng_b, double lat_b) {
 		double radLat1 = (lat_a * Math.PI / 180.0);
 		double radLat2 = (lat_b * Math.PI / 180.0);
@@ -29,7 +35,12 @@ public class GPSUtil {
 		return s;
 	}
 	
-	
+	/**
+	 * 将所有教学楼按照离lon,lat点的距离排序返回
+	 * @param lon longitude
+	 * @param lat latitude
+	 * @return 教学楼代号列表
+	 */
 	public ArrayList<Integer> getClosest(double lon, double lat){
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		
@@ -66,6 +77,12 @@ public class GPSUtil {
 		return result;
 	}
 	
+	/**
+	 * 计算所有教学楼离lon,lat的距离
+	 * @param lon longitude
+	 * @param lat latitude
+	 * @return 每个教学楼的距离
+	 */
 	public ArrayList<Double> getDis(double lon, double lat) {
 		ArrayList<Double> result = new ArrayList<Double>();
 		

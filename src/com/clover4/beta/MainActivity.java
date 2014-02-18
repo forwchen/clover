@@ -7,8 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
@@ -19,15 +17,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import com.clover4.beta.PlanEvent.CustomReceiver;
 import com.clover4.beta.utils.*;
 
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.R.integer;
 import android.app.Activity;
-import android.app.ExpandableListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -38,7 +33,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
-import android.text.format.DateFormat;
 import android.util.JsonReader;
 import android.util.Log;
 import android.view.Menu;
@@ -56,7 +50,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 
 	
 	private final String TAG = "TEST";
-	private final String SUCC = "success message";
+	private final String SUCC = "success message at--->";
 	
 	//Log.d(TAG, SUCC);
 	
@@ -79,6 +73,11 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private Constants c = new Constants();
 	private boolean isGPSregistered = false;
 	
+	private final String IS_LOGGED_IN = "IS_LOGGED_IN";
+	private final String IS_TABLE_DOWNLOADED = "IS_TABLE_DOWNLOADED";
+	private final String CLASSROOM_INFO_DATE = "CLASSROOM_INFO_DATE";
+	private final String EVENT_INFO_DATE = "EVENT_INFO_DATE";
+	
 	
 	public boolean isNetworkOn() {
 		ConnectivityManager connectivity = (ConnectivityManager) 
@@ -88,6 +87,10 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		return true;
 	}
 	
+	/**
+	 * 检查用户名密码是否合法
+	 *
+	 */
 	public class LoginTask extends AsyncTask<Void, Void, Boolean>{
 
 		@Override
@@ -101,8 +104,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			// TODO Auto-generated method stub
 			Boolean result = true;
 			try {
-				String LoginURL = "http://61.129.42.58:9083/school/login?user=13307130195&psw=6gjpq3a";
-				//String LoginURL = "http://61.129.42.58:9083/school/login?"+"user="+musrname+"&psw="+mpassword;
+				String LoginURL = "http://61.129.42.58:9083/school/login?"+"user="+musrname+"&psw="+mpassword;
 				
 				HttpGet mHttpGet = new HttpGet(LoginURL);
 			    DefaultHttpClient mDefaultHttpClient = new DefaultHttpClient();
@@ -131,13 +133,17 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		@Override
 		protected void onPostExecute(Boolean result){
 			if (result == true) {
-				//setContentView(R.layout.activity_main);
+				Log.d(TAG, SUCC+"checking usr info");
 				doMain();
 			}
 		}
 		
 	}
 	
+	/**
+	 * 登录并获取课程表信息
+	 *
+	 */
 	public class getStdTable extends AsyncTask<Void, Void, String>{
 
 		@Override
@@ -151,8 +157,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			    mDefaultHttpClient.getParams().setParameter("http.protocol.allow-circular-redirects", 
 			    		Boolean.valueOf(true));
 			    ArrayList<BasicNameValuePair> mArrayList = new ArrayList<BasicNameValuePair>();
-			    mArrayList.add(new BasicNameValuePair("IDToken1", "13307130195"));
-			    mArrayList.add(new BasicNameValuePair("IDToken2", "6gjpq3a"));
+			    mArrayList.add(new BasicNameValuePair("IDToken1", musrname));
+			    mArrayList.add(new BasicNameValuePair("IDToken2", mpassword));
 			    mHttpPost.setEntity(new UrlEncodedFormEntity(mArrayList, "UTF-8"));
 			    
 			    mDefaultHttpClient.execute(mHttpPost);
@@ -164,7 +170,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			    if (mHttpResponse.getStatusLine().getStatusCode() == 200)
 			    {
 			    	result = EntityUtils.toString(mHttpResponse.getEntity());
-			    	System.out.println(result.length());
 			    	if (result.contains("arranges") == false) result = ""; 
 			    }
 			    else{
@@ -188,8 +193,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		protected void onPostExecute(String result){
 			mProgressDialog.cancel();
 			if (result != "") {
-				mSharedprefUtil.writeLong("table_downloaded", 1L);
-				
+				mSharedprefUtil.writeLong(IS_TABLE_DOWNLOADED, 1L);
+				Log.d(TAG, SUCC+"logging in");
 				StdTableUtil mStdTableUtil = new StdTableUtil(new StringBuffer(result));
 				mStdTableUtil.storeTable();
 				
@@ -197,8 +202,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			}
 			else{
 				Toast.makeText(getApplicationContext(), 
-						"Please check your network connection or use wifi \n try reopening the app", 
-						Toast.LENGTH_LONG);
+						"登录失败，请检查网络连接情况。\n 建议使用wifi连接", 
+						Toast.LENGTH_LONG).show();
 			}
 		}
 
@@ -212,13 +217,21 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		}
 	}
 
+	/**
+	 * 下载空教室信息
+	 *
+	 */
 	public class fetchInfo extends AsyncTask<Void, Void, Boolean>{
 
 		
 		
 		private Classroom[] classroom = new Classroom[300];
 		private int classroomsum = 0;
-		private String sclassroomname = "", scodelesson = "", susedflag = "", sclasstime = "", sclassroomid = "";
+		private String sclassroomname = "", 
+					scodelesson = "", 
+					susedflag = "", 
+					sclasstime = "", 
+					sclassroomid = "";
 		
 		
 		@Override
@@ -233,7 +246,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					String url = "http://61.129.42.58:9083/sid/queryClassroomService/vid/buildDetail?"
 							+"year="+mTimeUtil.getyear()+"&month="+mTimeUtil.getmonth()+"&day="+mTimeUtil.getday()+
 							"&timeFlag="+c.CLASSTIMER[j]+"&idBuilding="+c.CLASSBUILD[i]+"&returnType=android";
-					Log.d(TAG, url);
+					
 					String jsonData = new String();
 
 					try 
@@ -243,7 +256,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 						if (mHttpResponse.getStatusLine().getStatusCode() == 200)
 						{
 							jsonData = EntityUtils.toString(mHttpResponse.getEntity());
-							System.out.println(c.CLASSBUILD[i]+" at "+c.CLASSTIMER[j]+" is parsing");
 							JsonReader reader = new JsonReader(new StringReader(jsonData));
 							readMessage(reader);
 						}
@@ -264,7 +276,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				for (int i = 1; i <= classroomsum; i++){
 					for (int j = 0; j < 14; j++){
 						classroom[i].stat += (classroom[i].used[j]<<j);
-						System.out.print(classroom[i].used[j]);
 					}
 					classroom[i].toStr();
 					
@@ -275,7 +286,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 						}
 					}
 					
-					System.out.println("--->"+classroom[i].name+" "+classroom[i].which);
 				}
 				
 				try {
@@ -319,9 +329,9 @@ public class MainActivity extends Activity implements OnItemClickListener{
 						
 						for (int j = begin[i]; j <= end[i]; j++){
 							fw.write(classroom[j].name+"\n");
-							fw.write(classroom[j].str.substring(0, 5)+"\n");
-							fw.write(classroom[j].str.substring(5, 10)+"\n");
-							fw.write(classroom[j].str.substring(10, 14)+"\n");
+							fw.write(classroom[j].used_str.substring(0, 5)+"\n");
+							fw.write(classroom[j].used_str.substring(5, 10)+"\n");
+							fw.write(classroom[j].used_str.substring(10, 14)+"\n");
 						}
 						
 						fw.flush();
@@ -416,16 +426,21 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		@Override
 		protected void onPostExecute(Boolean result){
 			if (result == true){
-				mSharedprefUtil.writeLong(mTimeUtil.getdate(), 1L);
-				
+				mSharedprefUtil.modifyString(CLASSROOM_INFO_DATE, mTimeUtil.getdate());
+				Log.d(TAG, SUCC+"downloading classroom info");
 			}
 			else{
-				Toast.makeText(getApplicationContext(), "Fetching classroom info failed", Toast.LENGTH_LONG);
-				
+				Toast.makeText(getApplicationContext(),
+						"下载空教室信息失败，\n请检查网络连接。",
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	}
 	
+	/**
+	 * 下载讲座、活动信息
+	 *
+	 */
 	public class fetchEvent extends AsyncTask<Void, Void, Boolean>{
 
 		@Override
@@ -434,7 +449,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			HttpResponse mHttpResponse = null;
 
 			String url = "http://lecture.oss-cn-hangzhou.aliyuncs.com/"+mTimeUtil.getdate();
-			//String url = "http://lecture.oss-cn-hangzhou.aliyuncs.com/2013-12-17";
 			String Data = new String();
 			Boolean result = true;
 			try 
@@ -444,7 +458,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				if (mHttpResponse.getStatusLine().getStatusCode() == 200)
 				{
 					Data = EntityUtils.toString(mHttpResponse.getEntity());
-					System.out.println(Data);
 					
 					FileWriter fw;
 					fw = new FileWriter(android.os.Environment.getExternalStorageDirectory()+"/clover/cache");
@@ -471,7 +484,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		
 		public void onPostExecute(Boolean result){
 			if (result == true) {
-				mSharedprefUtil.writeLong("eventDownloaded", 1L);
+				mSharedprefUtil.modifyString(EVENT_INFO_DATE, mTimeUtil.getdate());
+				Log.d(TAG, SUCC+"downloading event info");
 			}
 		}
 		
@@ -499,8 +513,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		mListView.setOnItemClickListener(MainActivity.this);
 		
 		
-		Long eventDownloaded = mSharedprefUtil.readLong("eventDownloaded");
-		if (eventDownloaded == 0) {
+		String EventInfoDate = mSharedprefUtil.readString(EVENT_INFO_DATE);
+		if (EventInfoDate !=mTimeUtil.getdate()) {
 			fetchEvent mfetchEvent = new fetchEvent();
 			mfetchEvent.execute((Void) null);
 		}
@@ -509,9 +523,9 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	public void doMain(){
 		MainActivity.this.setContentView(R.layout.activity_main);
 				
-		mSharedprefUtil.writeLong("logged_in", 1L);
-		Long stdTableStatus = mSharedprefUtil.readLong("table_downloaded");
-		if (stdTableStatus == 0){
+		mSharedprefUtil.writeLong(IS_LOGGED_IN, 1L);
+		Long isTableDownloaded = mSharedprefUtil.readLong(IS_TABLE_DOWNLOADED);
+		if (isTableDownloaded == 0){
 			getStdTable mgetStdTable = new getStdTable();
 			mgetStdTable.execute((Void)null);
 		}
@@ -525,6 +539,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		//初始化GPS Service
 		updated = getIntent().getBooleanExtra("updated", false);
 		if (! updated) mGpsService = new GpsService(MainActivity.this);
 		else {
@@ -533,14 +548,15 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		}
 		mCustomReceiver = new CustomReceiver();
 		
-		
+		//创建应用程序目录
 		File f= new File(android.os.Environment.getExternalStorageDirectory()+"/clover");
 		
 		if (f.exists()) {
-			Log.d(TAG, SUCC);
+			Log.d(TAG, SUCC+"creating app dir");
 		}
 		else f.mkdir();
 		
+		//将location放入程序目录
 		try
 		{
 			InputStream is = getResources().openRawResource(R.raw.location);
@@ -559,14 +575,15 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			e.printStackTrace();
 		}
 		
-		
+		//开始下载空教室信息
 		mSharedprefUtil = new SharedprefUtil("setting",getApplicationContext());
 		
-		Long classroomInfo = mSharedprefUtil.readLong(mTimeUtil.getdate());
-		if (classroomInfo == 0){
+		String ClassroomInfoDate = mSharedprefUtil.readString(CLASSROOM_INFO_DATE);
+		if (ClassroomInfoDate != mTimeUtil.getdate()){
 			if (! isNetworkOn()){
-				Toast.makeText(getApplicationContext(), "fetch classroominfo failed", Toast.LENGTH_LONG);
-				
+				Toast.makeText(getApplicationContext(),
+						"下载空教室信息失败，\n请检查网络连接。",
+						Toast.LENGTH_LONG).show();
 			}
 			else {
 				fetchInfo mfetchInfo = new fetchInfo();
@@ -578,18 +595,11 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		}
 		
 		
-		
-		Long loginStatus = mSharedprefUtil.readLong("logged_in");
+		//开始登录
+		Long loginStatus = mSharedprefUtil.readLong(IS_LOGGED_IN);
 		
 		if (loginStatus == 0){
-			Log.d(TAG, SUCC);
-			/**
-			 * set login view
-			 * get usrname/psword
-			 * check network
-			 * do login via asynctask----->another process<--wait
-			 * failed-->do again
-			 */
+			
 			setContentView(R.layout.view_main_login);
 			mpwdText = (EditText) findViewById(R.id.pwdtext);
 			musrText = (EditText) findViewById(R.id.usrtext);
@@ -605,7 +615,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 						
 						if (!isNetworkOn()) {
 							Toast.makeText(getApplicationContext(), 
-									"Please check your network connection", Toast.LENGTH_SHORT).show();
+									"请打开网络，建议使用wifi连接。",
+									Toast.LENGTH_SHORT).show();
 							return;
 						}
 						
@@ -642,8 +653,11 @@ public class MainActivity extends Activity implements OnItemClickListener{
     		// TODO Auto-generated constructor stub
 
     	}
-
+    	
     	@Override
+    	/**
+    	 * 当获取到GPS位置更新的时候，检查附近有无讲座或者活动，有则提醒
+    	 */
     	public void onReceive(Context context, Intent intent) {
     		// TODO Auto-generated method stub
     		if ("com.clover.LocationChangedBroadcast".equals(intent.getAction())){
@@ -697,7 +711,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
     				if (mTimeUtil.calc(nowtime, stime) < 0.35){
     					for (int j = 0; j < 7; j++)
     					if (mItem.building.equals(c.CLASSBUILD[j])){
-    						System.out.println(mList.get(j));
     						if (mList.get(j) < 50){
     							act_notified = true;
     							Intent lectureIntent = new Intent(MainActivity.this,ShowAct.class);
@@ -722,7 +735,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
     				if (act_notified) break;
     			}
     			
-    			//Toast.makeText(context, "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_SHORT).show();
     		}
     	}
 

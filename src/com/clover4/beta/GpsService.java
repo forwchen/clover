@@ -22,8 +22,8 @@ public class GpsService extends Service implements LocationListener {
 	double longitude = 0;
 	boolean updated = false;
 
-	private static final long MIN_DISTANCE = 5;
-	private static final long MIN_TIME = 1000 * 2;
+	private static final long MIN_DISTANCE = 5; ///minimum distance to update location
+	private static final long MIN_TIME = 1000 * 2; ///minimum time to update location
 
 	protected LocationManager locationManager;
 

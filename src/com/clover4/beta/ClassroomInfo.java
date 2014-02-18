@@ -1,11 +1,9 @@
 package com.clover4.beta;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-import com.clover4.beta.utils.ClassTableItem;
 import com.clover4.beta.utils.ClassroomItem;
 
 import android.os.Bundle;
@@ -15,6 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+/**
+ * 显示空教室信息
+ *
+ */
 public class ClassroomInfo extends Activity {
 
 	@Override

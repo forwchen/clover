@@ -2,10 +2,8 @@ package com.clover4.beta;
 
 import java.util.ArrayList;
 
-import com.clover4.beta.utils.ClassroomItem;
 import com.clover4.beta.utils.EventItem;
 
-import android.R.mipmap;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

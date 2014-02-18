@@ -1,5 +1,9 @@
 package com.clover4.beta.utils;
 
+/**
+ * 教室空闲信息，用于ClassroomAdapter
+ *
+ */
 public class ClassroomItem {
 
 	public String name;

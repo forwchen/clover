@@ -25,6 +25,13 @@ public class ClassDBUtil {
 		return dbFile.exists();
 	}
 	
+	/**
+	 * 查询某教学楼一段时间内空闲的教室
+	 * @param table 表名，即教学楼名称
+	 * @param start_unit 开始时间段
+	 * @param end_unit 结束时间段
+	 * @return 教室名列表
+	 */
 	public ArrayList<String> mQuery(String table, int start_unit, int end_unit) {
 		ArrayList<String> result = new ArrayList<String>();
 		

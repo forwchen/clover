@@ -1,7 +1,5 @@
 package com.clover4.beta;
 
-import com.clover4.beta.utils.ClassroomItem;
-import com.clover4.beta.utils.Constants;
 
 import android.app.Activity;
 import android.content.Context;

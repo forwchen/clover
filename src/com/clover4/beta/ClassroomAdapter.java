@@ -2,11 +2,9 @@ package com.clover4.beta;
 
 import java.util.ArrayList;
 
-import com.clover4.beta.utils.ClassTableItem;
 import com.clover4.beta.utils.Constants;
 import com.clover4.beta.utils.ClassroomItem;
 
-import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

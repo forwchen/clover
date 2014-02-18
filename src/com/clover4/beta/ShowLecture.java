@@ -10,6 +10,10 @@ import android.app.Activity;
 import android.view.Menu;
 import android.widget.ListView;
 
+/**
+ * 显示讲座的界面
+ *
+ */
 public class ShowLecture extends Activity {
 
 	@Override

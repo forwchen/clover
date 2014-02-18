@@ -1,19 +1,17 @@
 package com.clover4.beta;
 
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+
 import java.util.ArrayList;
 
-import com.clover4.beta.utils.ClassTableItem;
+
 import com.clover4.beta.utils.Constants;
 import com.clover4.beta.utils.EventItem;
 import com.clover4.beta.utils.EventLoader;
 import com.clover4.beta.utils.GPSUtil;
 import com.clover4.beta.utils.TimeUtil;
 
-import android.R.mipmap;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Notification;
@@ -27,9 +25,12 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * 选择活动的界面
+ *
+ */
 public class PlanEvent extends Activity implements OnItemClickListener{
 
 	boolean updated = false;
@@ -59,7 +60,6 @@ public class PlanEvent extends Activity implements OnItemClickListener{
 		else {
 			latitude = getIntent().getDoubleExtra("lat", 0);
 			longitude = getIntent().getDoubleExtra("lon", 0);
-			//Toast.makeText(getApplicationContext(), String.valueOf(latitude)+" "+String.valueOf(longitude), Toast.LENGTH_LONG).show();
 		}
 		mCustomReceiver = new CustomReceiver();
 		
@@ -85,6 +85,9 @@ public class PlanEvent extends Activity implements OnItemClickListener{
     	}
 
     	@Override
+    	/**
+    	 * 当获取到GPS位置更新的时候，检查附近有无讲座或者活动，有则提醒
+    	 */
     	public void onReceive(Context context, Intent intent) {
     		// TODO Auto-generated method stub
     		if ("com.clover.LocationChangedBroadcast".equals(intent.getAction())){
