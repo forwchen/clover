@@ -28,7 +28,7 @@ public class ShowClassroom extends Activity {
 	ArrayList<InfoItem> mList = new ArrayList<InfoItem>();
 	
 	public InfoItem getItem(int i){
-		String name = c.CLASSBUILD[i];
+		String name = c.BUILDING[i];
 		ArrayList<String> mArrayList = mClassDBUtil.mQuery(name, start_unit, end_unit);
 		System.out.println(mArrayList.size());
 		InfoItem mItem = new InfoItem();

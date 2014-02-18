@@ -56,7 +56,7 @@ public class SelectBuilding extends Activity implements OnItemClickListener{
 		// TODO Auto-generated method stub
 		
 		Intent intent = new Intent(this, ClassroomInfo.class);
-		intent.putExtra("building_name", c.CLASSBUILD[arg2]);
+		intent.putExtra("building_name", c.BUILDING[arg2]);
 		intent.putExtra("unit", mTimeUtil.getunit());
         startActivity(intent);
 	}

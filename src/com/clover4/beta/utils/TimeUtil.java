@@ -26,16 +26,14 @@ public class TimeUtil {
 		mDate = new Date(System.currentTimeMillis());
 		date = mSimpleDateFormat.format(mDate).substring(0, 10);
 		time = mSimpleDateFormat.format(mDate).substring(11, 16);
-		
-		time = "18:30";
-		date = "2013-12-17";
-		
 		mCalendar = Calendar.getInstance();
 		mCalendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
 		mCalendar.setTime(mDate);
 		dayofweek = mCalendar.get(mCalendar.DAY_OF_WEEK);
 		dayofweek = (dayofweek + 6) % 7;
 		
+		time = "18:30";
+		date = "2013-12-17";
 		dayofweek = 2;
 	}
 	
@@ -71,7 +69,7 @@ public class TimeUtil {
 	 * 
 	 * @param t1
 	 * @param t2
-	 * @return hours between t1 & t2
+	 * @return t1 与 t2 的时间间隔
 	 */
 	
 	public double calc(String t1, String t2) {
@@ -97,10 +95,11 @@ public class TimeUtil {
 	}
 	
 	/**
+	 * 
+	 * @return 一天中所处的时间段
 	 * 0 morning
 	 * 1 midday
 	 * 2 night
-	 * @return time of the day
 	 */
 	public int getunit(){
 		mDate = new Date(System.currentTimeMillis());

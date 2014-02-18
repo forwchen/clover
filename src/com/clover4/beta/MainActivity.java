@@ -73,9 +73,13 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private Constants c = new Constants();
 	private boolean isGPSregistered = false;
 	
+	///SharedPrefernce key
 	private final String IS_LOGGED_IN = "IS_LOGGED_IN";
+	///SharedPrefernce key
 	private final String IS_TABLE_DOWNLOADED = "IS_TABLE_DOWNLOADED";
+	///SharedPrefernce key
 	private final String CLASSROOM_INFO_DATE = "CLASSROOM_INFO_DATE";
+	///SharedPrefernce key
 	private final String EVENT_INFO_DATE = "EVENT_INFO_DATE";
 	
 	
@@ -239,14 +243,14 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		{
 			// TODO Auto-generated method stub
 			Boolean result = true;
-			for (int i = 1; i < c.NUMOFCLASSBUILD; i++)
-				for (int j = 0; j < c.NUMOFCLASSTIMER; j++){
+			for (int i = 1; i < c.NUM_BUILDING; i++)
+				for (int j = 0; j < c.NUM_TIME; j++){
 					
 					HttpResponse mHttpResponse = null;
 					String url = "http://61.129.42.58:9083/sid/queryClassroomService/vid/buildDetail?"
 							+"year="+mTimeUtil.getyear()+"&month="+mTimeUtil.getmonth()+"&day="+mTimeUtil.getday()+
-							"&timeFlag="+c.CLASSTIMER[j]+"&idBuilding="+c.CLASSBUILD[i]+"&returnType=android";
-					
+							"&timeFlag="+c.TIME[j]+"&idBuilding="+c.BUILDING[i]+"&returnType=android";
+					System.out.println(url);
 					String jsonData = new String();
 
 					try 
@@ -272,15 +276,15 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				}
 			
 			if (result == true){
-				
+
 				for (int i = 1; i <= classroomsum; i++){
 					for (int j = 0; j < 14; j++){
 						classroom[i].stat += (classroom[i].used[j]<<j);
 					}
 					classroom[i].toStr();
 					
-					for (int j = 0; j < c.NUMOFCLASSBUILD; j++){
-						if (classroom[i].name.startsWith(c.CLASSBUILD[j])){
+					for (int j = 0; j < c.NUM_BUILDING; j++){
+						if (classroom[i].name.startsWith(c.BUILDING[j])){
 							classroom[i].which = j + 1;
 							break;
 						}
@@ -304,9 +308,10 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					begin[0] = 1;
 					for (int i = 1; i <= classroomsum; i++){
 						if (i == 1 || classroom[i].which != classroom[i-1].which) {
-							String createTable = "CREATE TABLE "+c.CLASSBUILD[classroom[i].which-1]+
+							String createTable = "CREATE TABLE "+c.BUILDING[classroom[i].which-1]+
 									" (id integer primary key autoincrement, name varchar(10), stat integer)";
 							mDB.execSQL(createTable);
+							
 							if (i > 1){
 								end[N] = i - 1;
 								N++;
@@ -318,14 +323,14 @@ public class MainActivity extends Activity implements OnItemClickListener{
 						mContentValues.put("name", classroom[i].name);
 						mContentValues.put("stat", classroom[i].stat);
 						
-						mDB.insert(c.CLASSBUILD[classroom[i].which-1], null, mContentValues);
+						mDB.insert(c.BUILDING[classroom[i].which-1], null, mContentValues);
 						
 					}
 					end[N] = classroomsum;
 					
 					for (int i = 0; i <= N; i++){
 						fw = new FileWriter(android.os.Environment.getExternalStorageDirectory()
-						+"/clover/"+c.CLASSBUILD[i]+".txt");
+						+"/clover/"+c.BUILDING[i]+".txt");
 						
 						for (int j = begin[i]; j <= end[i]; j++){
 							fw.write(classroom[j].name+"\n");
@@ -400,7 +405,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			int usedflag, codelesson = 0;
 			if (flag.equals("true")) usedflag = 1; 
 			else usedflag = 0;
-			
 			for (int i = 0; i < lesson.length(); i++)
 				codelesson = codelesson*10 + (int)(lesson.charAt(i)-'0');
 			
@@ -681,7 +685,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     				String stime = mItem.stime.substring(11,16);
     				if (mTimeUtil.calc(nowtime, stime) < 0.35){
     					for (int j = 0; j < 7; j++)
-    					if (mItem.building.equals(c.CLASSBUILD[j])){
+    					if (mItem.building.equals(c.BUILDING[j])){
     						if (mList.get(j) < 50){
     							lecture_notified = true;
     							Intent lectureIntent = new Intent(MainActivity.this,ShowLecture.class);
@@ -710,7 +714,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     				String stime = mItem.stime.substring(11,16);
     				if (mTimeUtil.calc(nowtime, stime) < 0.35){
     					for (int j = 0; j < 7; j++)
-    					if (mItem.building.equals(c.CLASSBUILD[j])){
+    					if (mItem.building.equals(c.BUILDING[j])){
     						if (mList.get(j) < 50){
     							act_notified = true;
     							Intent lectureIntent = new Intent(MainActivity.this,ShowAct.class);

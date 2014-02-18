@@ -111,7 +111,7 @@ public class PlanEvent extends Activity implements OnItemClickListener{
     				String stime = mItem.stime.substring(11,16);
     				if (mTimeUtil.calc(nowtime, stime) < 0.35){
     					for (int j = 0; j < 7; j++)
-    					if (mItem.building.equals(c.CLASSBUILD[j])){
+    					if (mItem.building.equals(c.BUILDING[j])){
     						if (mList.get(j) < 50){
     							lecture_notified = true;
     							Intent lectureIntent = new Intent(PlanEvent.this,ShowLecture.class);
@@ -140,7 +140,7 @@ public class PlanEvent extends Activity implements OnItemClickListener{
     				String stime = mItem.stime.substring(11,16);
     				if (mTimeUtil.calc(nowtime, stime) < 0.35){
     					for (int j = 0; j < 7; j++)
-    					if (mItem.building.equals(c.CLASSBUILD[j])){
+    					if (mItem.building.equals(c.BUILDING[j])){
     						if (mList.get(j) < 50){
     							act_notified = true;
     							Intent lectureIntent = new Intent(PlanEvent.this,ShowAct.class);

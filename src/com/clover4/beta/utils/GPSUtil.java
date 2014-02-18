@@ -48,8 +48,8 @@ public class GPSUtil {
 		double [] dis = new double[7];
 		
 		for (int i = 0; i < 7; i++){
-			ArrayList<Double> mlon = mDbUtil.getLon(c.CLASSBUILD[i]);
-			ArrayList<Double> mlat = mDbUtil.getLat(c.CLASSBUILD[i]);
+			ArrayList<Double> mlon = mDbUtil.getLon(c.BUILDING[i]);
+			ArrayList<Double> mlat = mDbUtil.getLat(c.BUILDING[i]);
 			dis[i] = 1e20;
 			for (int j = 0; j < mlon.size(); j++){
 				double d = gps2m(lon, lat, mlon.get(j), mlat.get(j));
@@ -87,8 +87,8 @@ public class GPSUtil {
 		ArrayList<Double> result = new ArrayList<Double>();
 		
 		for (int i = 0; i < 7; i++){
-			ArrayList<Double> mlon = mDbUtil.getLon(c.CLASSBUILD[i]);
-			ArrayList<Double> mlat = mDbUtil.getLat(c.CLASSBUILD[i]);
+			ArrayList<Double> mlon = mDbUtil.getLon(c.BUILDING[i]);
+			ArrayList<Double> mlat = mDbUtil.getLat(c.BUILDING[i]);
 			double dis = 1e20;
 			for (int j = 0; j < mlon.size(); j++){
 				double d = gps2m(lon, lat, mlon.get(j), mlat.get(j));

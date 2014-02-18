@@ -27,8 +27,8 @@ public class StdTableLoader {
 	}
 	
 	/**
-	 * 
-	 * @return 课程信息列表
+	 * 从存储卡加载课程表
+	 * @return 课程表元素列表
 	 */
 	public ArrayList<ClassTableItem> getTable(){
 		

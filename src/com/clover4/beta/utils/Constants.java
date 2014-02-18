@@ -6,11 +6,12 @@ package com.clover4.beta.utils;
  */
 public class Constants {
 	
-	public final String[] CLASSBUILD = {"HGD", "HGX", "H2", "H3", "H4", "H5", "H6"}; 
-	public final String[] CLASSTIMER = {"morning", "midday", "night"};
-	public final int NUMOFCLASSBUILD= 7;
-	public final int NUMOFCLASSTIMER = 3;
+	public final String[] BUILDING = {"HGD", "HGX", "H2", "H3", "H4", "H5", "H6"}; 
+	public final String[] TIME = {"morning", "midday", "night"};
+	public final int NUM_BUILDING= 7;
+	public final int NUM_TIME = 3;
 	
+	///各时间段开始时间
 	public final String start_time[]={
 		"0:00",
 		"8:00",
@@ -28,7 +29,7 @@ public class Constants {
 		"20:20",
 		"21:15"
 	};
-
+	///各时间段结束时间
 	public final String end_time[]={
 		"0:00",
 		"8:45",

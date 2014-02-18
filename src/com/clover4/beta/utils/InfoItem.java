@@ -6,8 +6,11 @@ package com.clover4.beta.utils;
  */
 public class InfoItem {
 
+	///教学楼名
 	public String name;
+	///每个楼层的空教室，字符串形式
 	public String[] floor = new String[5];
+	///每个楼层的空教室数量
 	public int [] count = new int[5];
 	
 	public InfoItem() {

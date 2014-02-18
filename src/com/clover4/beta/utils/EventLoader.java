@@ -17,7 +17,7 @@ public class EventLoader {
 	/**
 	 * 
 	 * @param i 0加载活动信息，1加载讲座信息
-	 * @return
+	 * @return EventItem列表
 	 */
 	public ArrayList<EventItem> loadEvent(int i) {
 		

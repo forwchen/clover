@@ -6,12 +6,16 @@ package com.clover4.beta.utils;
  */
 public class Classroom 
 {
+	///教室名称
 	public String name;
-	public String used_str;
+	///位于哪座教学楼
 	public int which;
-	public int stat;
+	///教室使用情况，0空，1占用
 	public int[] used;
-
+	///字符串形式表示
+	public String used_str;
+	///二进制形式表示
+	public int stat;
 	
 	public Classroom(String NAME)
 	{

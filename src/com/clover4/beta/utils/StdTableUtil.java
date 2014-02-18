@@ -5,6 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
+/**
+ * 临时的课程信息类
+ *
+ */
 class ClassItem{
 	
 	public int week;
