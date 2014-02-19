@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.clover4.beta.utils.*;
 
+import android.R.string;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,12 +19,14 @@ public class TableAdapter extends BaseAdapter {
 
 	private Activity mActivity;
 	private static LayoutInflater mLayoutInflater=null;
+	private TimeUtil mTimeUtil;
 	private ArrayList<ClassTableItem> mlist = new ArrayList<ClassTableItem>();
 	
 	public TableAdapter(Activity A, ArrayList<ClassTableItem> AL) {
 		// TODO Auto-generated constructor stub
 		mActivity = A;
 		mlist = AL;
+		mTimeUtil = new TimeUtil();
 		mLayoutInflater = (LayoutInflater)mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -53,8 +56,11 @@ public class TableAdapter extends BaseAdapter {
 		View mView = convertView;
 		ClassTableItem mItem = mlist.get(position);
 		Constants c = new Constants();
+		String etime = c.end_time[mItem.startunit+mItem.units-1];
+		if (etime.length() == 4) etime = "0"+etime;
+		boolean flag = mTimeUtil.lt(etime, mTimeUtil.getTime());
 		
-		//Log.d("tag", mItem.name);
+		
 		
 		if (mItem.type == 1){
 			mView = mLayoutInflater.inflate(R.layout.classtime_list_item, null);
@@ -64,6 +70,8 @@ public class TableAdapter extends BaseAdapter {
 	        TextView classroom = (TextView)mView.findViewById(R.id.lesson_classroom);
 	        Button btn = (Button)mView.findViewById(R.id.lesson_btn);
 	        
+	        if (flag) btn.setBackgroundColor(btn.getContext().getResources().getColor(R.color.past_color));
+	        else btn.setBackgroundColor(btn.getContext().getResources().getColor(R.color.future_color));
 	        
 	        btn.setText(mItem.code.toUpperCase().subSequence(0, 1));
 	        name.setText(mItem.name);
@@ -78,6 +86,8 @@ public class TableAdapter extends BaseAdapter {
 			TextView freetm = (TextView)mView.findViewById(R.id.freetm);
 			ImageView plus = (ImageView)mView.findViewById(R.id.plus);
 			freetm.setText(c.start_time[mItem.startunit]+"-"+c.end_time[mItem.startunit+mItem.units-1]);
+			if (flag) free.setTextColor(free.getContext().getResources().getColor(R.color.past_color));
+			else free.setTextColor(free.getContext().getResources().getColor(R.color.future_color));
 		}
 		
 		

@@ -1,7 +1,7 @@
 package com.clover4.beta.utils;
 
 /**
- * 记录一个教学楼内空教室个数
+ * 记录一个教学楼内空教室个数,用于InfoAdapter
  *
  */
 public class InfoItem {

@@ -31,13 +31,13 @@ public class TimeUtil {
 		mCalendar.setTime(mDate);
 		dayofweek = mCalendar.get(mCalendar.DAY_OF_WEEK);
 		dayofweek = (dayofweek + 6) % 7;
+	
 		
-		time = "18:30";
-		date = "2013-12-17";
-		dayofweek = 2;
 	}
 	
 	public int getdayofweek() {
+		dayofweek = 2;
+		
 		return dayofweek;
 	}
 	
@@ -54,6 +54,8 @@ public class TimeUtil {
 	}
 	
 	public String getdate() {
+		date = "2013-12-17";
+		
 		return date;
 	}
 	
@@ -61,7 +63,7 @@ public class TimeUtil {
 		mDate = new Date(System.currentTimeMillis());
 		time = mSimpleDateFormat.format(mDate).substring(11, 16);
 		
-		time = "18:30";
+		time = "10:30";
 		
 		return time;
 	}
@@ -74,7 +76,7 @@ public class TimeUtil {
 	
 	public double calc(String t1, String t2) {
 		double result = 0;
-		System.out.println(t1+" "+t2);
+		
 		int h1 = Integer.parseInt(t1.substring(0,2));
 		int h2 = Integer.parseInt(t2.substring(0,2));
 		int m1 = Integer.parseInt(t1.substring(3,5));
@@ -108,5 +110,22 @@ public class TimeUtil {
 		if (h<=11) return 0;
 		if (h<=17) return 1;
 		return 2;
+	}
+	
+	/**
+	 * time compare
+	 * @param t1
+	 * @param t2
+	 * @return t1 is earlier than t2
+	 */
+	public boolean lt(String t1, String t2){
+		int h1 = Integer.parseInt(t1.substring(0,2));
+		int h2 = Integer.parseInt(t2.substring(0,2));
+		int m1 = Integer.parseInt(t1.substring(3,5));
+		int m2 = Integer.parseInt(t2.substring(3,5));
+		if (h1 < h2) return true;
+		if (h1 > h2) return false;
+		if (m1 <= m2) return true;
+		return false;
 	}
 }

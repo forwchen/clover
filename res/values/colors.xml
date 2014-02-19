@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name = "cli_lesson_btn_text">#6fdfba</color>
-    <color name = "cli_lesson_btn_bg">#f8ed7b</color>
+    <color name = "cli_lesson_btn_text">#6faedf</color>
+    <color name = "cli_lesson_btn_bg">#95e571</color>
     <color name = "cli_lesson_name_text">#000000</color>
     <color name = "cli_lesson_time_text">#000000</color>
     <color name = "cli_lesson_classroom_text">#d1d1d1</color>
     <color name = "cli_row_bg">#ffffff</color>
-    <color name = "fli_free_text">#71e471</color>
+    <color name = "cli_row_bg_hover">#d1d1d1</color>
+    <color name = "fli_free_text">#95e571</color>
     <color name = "fli_freetm_text">#000000</color>
     <color name = "vcl_list_divider">#d1d1d1</color>
+    <color name = "past_color">#f8ed7b</color>
+    <color name = "future_color">#95e571</color>
+    <color name = "ili_info_btn_hgd">#f5714b</color>
+    <color name = "ili_info_btn_hgx">#f5c44b</color>
+    <color name = "ili_info_btn_h2">#d8ec48</color>
+    <color name = "ili_info_btn_h3">#71db42</color>
+    <color name = "ili_info_btn_h4">#40d3a2</color>
+    <color name = "ili_info_btn_h5">#4093d3</color>
+    <color name = "ili_info_btn_h6">#e6465e</color>
+    <color name = "ili_info_btn_text">#ffffff</color>
+    
 </resources>

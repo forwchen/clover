@@ -10,40 +10,48 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView1"
-        android:layout_marginLeft="64dp"
+        android:layout_toRightOf="@+id/info_btn"
+        android:layout_marginLeft="5dp"
         android:text="" />
     
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
+        android:layout_toRightOf="@+id/info_btn"
         android:layout_below="@+id/textView2"
+        android:layout_marginLeft="5dp"
         android:text="" />
     
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
+        android:layout_toRightOf="@+id/info_btn"
         android:layout_below="@+id/textView3"
+        android:layout_marginLeft="5dp"
         android:text="" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
+        android:layout_toRightOf="@+id/info_btn"
         android:layout_below="@+id/textView1"
+        android:layout_marginLeft="5dp"
         android:text="" />
 
-    <ImageView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_launcher" />
+    <Button 
+	    	android:id="@+id/info_btn"
+	    	android:text=""
+	    	android:textSize="40dip"
+	    	android:textColor="@color/ili_info_btn_text"
+	    	android:clickable="false"
+	    	android:width="75dp"
+	    	android:height="75dp"
+	    	android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content" 
+	    	android:layout_alignParentLeft="true"
+	    	android:layout_centerVertical="true"/>
 
 </RelativeLayout>

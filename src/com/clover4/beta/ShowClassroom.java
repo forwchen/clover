@@ -23,6 +23,7 @@ public class ShowClassroom extends Activity {
 	double longitude = 0;
 	int start_unit;
 	int end_unit;
+	final int MAX_PERROW = 5;
 	Constants c = new Constants();
 	ClassDBUtil mClassDBUtil = new ClassDBUtil();
 	ArrayList<InfoItem> mList = new ArrayList<InfoItem>();
@@ -30,22 +31,39 @@ public class ShowClassroom extends Activity {
 	public InfoItem getItem(int i){
 		String name = c.BUILDING[i];
 		ArrayList<String> mArrayList = mClassDBUtil.mQuery(name, start_unit, end_unit);
-		System.out.println(mArrayList.size());
+		
 		InfoItem mItem = new InfoItem();
 		mItem.name = name;
 		
 		for (int j = 0; j < mArrayList.size(); j++){
 			String classroom = mArrayList.get(j);
+			
+			if (i == 0){
+				if (j < 4){
+					mItem.count[2]++;
+					mItem.floor[2] = mItem.floor[2] + classroom.substring(name.length()) +" ";
+				}
+				else if (j < 8){
+					mItem.count[3]++;
+					mItem.floor[3] = mItem.floor[3] + classroom.substring(name.length()) +" ";
+				}else if (j < 12){
+					mItem.count[1]++;
+					mItem.floor[1] = mItem.floor[1] + classroom.substring(name.length()) +" ";
+				}
+				
+				continue;
+			}
+			
 			int floor = (int)(classroom.charAt(name.length()) - '0');
 			if (floor < 4){
-				if (mItem.count[floor] < 3){
-					mItem.floor[floor] = mItem.floor[floor] + classroom +" ";
+				if (mItem.count[floor] < MAX_PERROW){
+					mItem.floor[floor] = mItem.floor[floor] + classroom.substring(name.length()) +" ";
 				}
 				mItem.count[floor]++;
 			}
 			else {
-				if (mItem.count[4] < 3){
-					mItem.floor[4] = mItem.floor[4] + classroom +" ";
+				if (mItem.count[4] < MAX_PERROW){
+					mItem.floor[4] = mItem.floor[4] + classroom.substring(name.length()) +" ";
 				}
 				mItem.count[4]++;
 			}
@@ -53,8 +71,8 @@ public class ShowClassroom extends Activity {
 	
 		
 		for (int j = 1; j <= 4; j++){
-			if (mItem.count[j] > 3) mItem.floor[j] = 
-					mItem.floor[j] + "..." + String.valueOf(mItem.count[j]-3) + "+";
+			if (mItem.count[j] > MAX_PERROW) mItem.floor[j] = 
+					mItem.floor[j] + "..." + String.valueOf(mItem.count[j] - MAX_PERROW) + "+";
 		}
 		
 		return mItem;
@@ -71,7 +89,7 @@ public class ShowClassroom extends Activity {
 		start_unit = getIntent().getIntExtra("start_unit", -1);
 		end_unit = getIntent().getIntExtra("end_unit", -1);
 		
-		System.out.println(start_unit+" "+end_unit);
+		
 		if (!updated){
 			for (int i = 0; i < 7; i++){
 				InfoItem mItem = getItem(i);
