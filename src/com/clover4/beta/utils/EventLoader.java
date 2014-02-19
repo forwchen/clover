@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public class EventLoader {
 
+	Constants c = new Constants();
 	public EventLoader() {
 		// TODO Auto-generated constructor stub
 	}
@@ -23,7 +24,7 @@ public class EventLoader {
 		
 		ArrayList<EventItem> eventList = new ArrayList<EventItem>();
 		
-		String cache = android.os.Environment.getExternalStorageDirectory()+"/clover/cache";
+		String cache = c.appdir+"/cache";
 		
 		try {
 			FileReader fr;

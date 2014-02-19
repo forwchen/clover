@@ -25,7 +25,7 @@ public class SelectBuilding extends Activity implements OnItemClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_building);
-		
+		getActionBar().hide();
 		ListView mylistview = (ListView) findViewById(R.id.buildinglist);
 		String[] data = new String[]
 		{

@@ -16,7 +16,8 @@
         android:layout_alignParentTop="true"
         android:width="107dp"
         android:background="#5ddee1"
-        android:text="早上" />
+        android:text="早上" 
+        android:textColor="@color/aci_btn_text"/>
     
     <Button
         android:id="@+id/midday"
@@ -26,7 +27,8 @@
         android:layout_centerHorizontal="true"
         android:width="107dp"
         android:background="#5ddee1"
-        android:text="中午" />
+        android:text="中午" 
+        android:textColor="@color/aci_btn_text"/>
 
     <Button
         android:id="@+id/night"
@@ -36,7 +38,8 @@
         android:layout_alignParentTop="true"
         android:width="107dp"
         android:background="#5ddee1"
-        android:text="晚上" />
+        android:text="晚上" 
+        android:textColor="@color/aci_btn_text"/>
 
     
 

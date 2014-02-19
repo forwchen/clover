@@ -42,7 +42,7 @@ public class PlanEvent extends Activity implements OnItemClickListener{
 	CustomReceiver mCustomReceiver;
 	private Constants c = new Constants();
 	private TimeUtil mTimeUtil = new TimeUtil();
-	private boolean isGPSregistered = false;
+
 	
 	
 	@Override
@@ -119,7 +119,7 @@ public class PlanEvent extends Activity implements OnItemClickListener{
     									PendingIntent.getActivity(PlanEvent.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
     							Notification mNotification = new Notification.Builder(PlanEvent.this).
     									setSmallIcon(R.drawable.ic_launcher).
-    									setContentTitle("附近有讲座"). 
+    									setContentTitle("附近 "+mItem.place+" 有讲座"). 
     									setContentText("点击查看").
     									setContentIntent(mPendingIntent).
     									setAutoCancel(true).
@@ -148,7 +148,7 @@ public class PlanEvent extends Activity implements OnItemClickListener{
     									PendingIntent.getActivity(PlanEvent.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
     							Notification mNotification = new Notification.Builder(PlanEvent.this).
     									setSmallIcon(R.drawable.ic_launcher).
-    									setContentTitle("附近有活动"). 
+    									setContentTitle("附近 "+mItem.place+" 有活动"). 
     									setContentText("点击查看").
     									setContentIntent(mPendingIntent).
     									setAutoCancel(true).
@@ -164,8 +164,7 @@ public class PlanEvent extends Activity implements OnItemClickListener{
     				}
     				if (act_notified) break;
     			}
-    			
-    			//Toast.makeText(context, "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_SHORT).show();
+    		unregisterReceiver(this);
     		}
     	}
 
@@ -176,7 +175,6 @@ public class PlanEvent extends Activity implements OnItemClickListener{
     	super.onResume();
     	if (!updated) {
     		registerReceiver(mCustomReceiver, new IntentFilter("com.clover.LocationChangedBroadcast"));
-    		isGPSregistered = true;
     		mGpsService.getLocation();
     	}
     }
@@ -184,7 +182,7 @@ public class PlanEvent extends Activity implements OnItemClickListener{
     
     public void onPause() {
     	super.onPause();
-    	if (isGPSregistered){
+    	if (!updated){
     		unregisterReceiver(mCustomReceiver);
     		mGpsService.stopUsingGPS();
     	}

@@ -15,10 +15,11 @@ public class LocationDBUtil {
 	String dbPath;
 	File dbFile;
 	SQLiteDatabase mDB;
+	Constants c = new Constants();
 	
 	public LocationDBUtil() {
 		// TODO Auto-generated constructor stub
-		dbPath = android.os.Environment.getExternalStorageDirectory()+"/clover/location.db";
+		dbPath = c.appdir+"/location.db";
 		dbFile= new File(dbPath);
 		if (dbFile.exists()) mDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null);
 	}

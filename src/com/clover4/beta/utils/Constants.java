@@ -10,6 +10,8 @@ public class Constants {
 	public final String[] TIME = {"morning", "midday", "night"};
 	public final int NUM_BUILDING= 7;
 	public final int NUM_TIME = 3;
+	///应用程序目录
+	public String appdir;
 	
 	///各时间段开始时间
 	public final String start_time[]={
@@ -47,5 +49,10 @@ public class Constants {
 		"21:05",
 		"22:00"
 	};
+	
+	public Constants() {
+		// TODO Auto-generated constructor stub
+		appdir = android.os.Environment.getExternalStorageDirectory()+"/.clover";
+	}
 	
 }

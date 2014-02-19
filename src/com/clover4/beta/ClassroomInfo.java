@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 import com.clover4.beta.utils.ClassroomItem;
+import com.clover4.beta.utils.Constants;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -19,6 +20,7 @@ import android.widget.ListView;
  */
 public class ClassroomInfo extends Activity {
 
+	Constants c = new Constants();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,8 +31,7 @@ public class ClassroomInfo extends Activity {
 		String building_name = getIntent().getStringExtra("building_name");
 		int unit = getIntent().getIntExtra("unit", 0);
 		
-		String file = android.os.Environment.getExternalStorageDirectory()
-				+"/clover/"+building_name+".txt";
+		String file = c.appdir+"/"+building_name+".txt";
 		
 		ArrayList<ClassroomItem> mArrayList = new ArrayList<ClassroomItem>();
 		
@@ -79,12 +80,21 @@ public class ClassroomInfo extends Activity {
 		switch (unit) {
 		case 0:
 			mylistview.setAdapter(mAdapter0);
+			setbright(button0);
+			setdark(button1);
+			setdark(button2);
 			break;
 		case 1:
 			mylistview.setAdapter(mAdapter1);
+			setbright(button1);
+			setdark(button0);
+			setdark(button2);
 			break;
 		case 2:
 			mylistview.setAdapter(mAdapter2);
+			setbright(button2);
+			setdark(button1);
+			setdark(button0);
 			break;
 		default:
 			break;
@@ -93,25 +103,40 @@ public class ClassroomInfo extends Activity {
 		button0.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View view){
 				mylistview.setAdapter(mAdapter0);
-				button0.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+				setbright(button0);
+				setdark(button1);
+				setdark(button2);
 			}
 		});
 		
 		button1.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View view){
 				mylistview.setAdapter(mAdapter1);
-				button1.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
+				setbright(button1);
+				setdark(button0);
+				setdark(button2);
 			}
 		});
 		
 		button2.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View view){
 				mylistview.setAdapter(mAdapter2);
+				setbright(button2);
+				setdark(button1);
+				setdark(button0);
 			}
 		});
 		
 	}
-
+	
+	public void setbright(Button btn){
+			btn.setBackgroundColor(getResources().getColor(R.color.aci_btn_bright));
+	}
+	
+	public void setdark(Button btn){
+		btn.setBackgroundColor(getResources().getColor(R.color.aci_btn_dark));
+}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

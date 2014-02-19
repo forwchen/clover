@@ -23,6 +23,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.clover4.beta.MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,26 +33,32 @@
         </activity>
         <activity
             android:name="com.clover4.beta.SelectBuilding"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_select_building" >
         </activity>
         <activity
             android:name="com.clover4.beta.ClassroomInfo"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_classroon_info" >
         </activity>
         <activity
             android:name="com.clover4.beta.PlanEvent"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_plan_event" >
         </activity>
         <activity
             android:name="com.clover4.beta.ShowClassroom"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_show_classroom" >
         </activity>
         <activity
             android:name="com.clover4.beta.ShowLecture"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_show_lecture" >
         </activity>
         <activity
             android:name="com.clover4.beta.ShowAct"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_show" >
         </activity>
     </application>

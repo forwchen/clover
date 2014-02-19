@@ -62,26 +62,27 @@ public class ClassroomAdapter extends BaseAdapter {
 			Button button2 = (Button)mView.findViewById(R.id.nbutton3);
 			Button button3 = (Button)mView.findViewById(R.id.nbutton4);
 			
+
 			name.setText(mItem.name);
 			if (mItem.stat[time_of_day].charAt(0) == '1') button0.
-			setBackgroundColor(button0.getContext().getResources().getColor(android.R.color.holo_red_light));
+			setBackgroundColor(button0.getContext().getResources().getColor(R.color.tli_btn_red));
 			else button0.
-			setBackgroundColor(button0.getContext().getResources().getColor(android.R.color.holo_green_light));
+			setBackgroundColor(button0.getContext().getResources().getColor(R.color.tli_btn_green));
 			
 			if (mItem.stat[time_of_day].charAt(1) == '1') button1.
-			setBackgroundColor(button1.getContext().getResources().getColor(android.R.color.holo_red_light));
+			setBackgroundColor(button1.getContext().getResources().getColor(R.color.tli_btn_red));
 			else button1.
-			setBackgroundColor(button1.getContext().getResources().getColor(android.R.color.holo_green_light));
+			setBackgroundColor(button1.getContext().getResources().getColor(R.color.tli_btn_green));
 			
 			if (mItem.stat[time_of_day].charAt(2) == '1') button2.
-			setBackgroundColor(button2.getContext().getResources().getColor(android.R.color.holo_red_light));
+			setBackgroundColor(button2.getContext().getResources().getColor(R.color.tli_btn_red));
 			else button2.
-			setBackgroundColor(button2.getContext().getResources().getColor(android.R.color.holo_green_light));
+			setBackgroundColor(button2.getContext().getResources().getColor(R.color.tli_btn_green));
 			
 			if (mItem.stat[time_of_day].charAt(3) == '1') button3.
-			setBackgroundColor(button3.getContext().getResources().getColor(android.R.color.holo_red_light));
+			setBackgroundColor(button3.getContext().getResources().getColor(R.color.tli_btn_red));
 			else button3.
-			setBackgroundColor(button3.getContext().getResources().getColor(android.R.color.holo_green_light));
+			setBackgroundColor(button3.getContext().getResources().getColor(R.color.tli_btn_green));
 			
 		}
 		else {
@@ -95,29 +96,29 @@ public class ClassroomAdapter extends BaseAdapter {
 			
 			name.setText(mItem.name);
 			if (mItem.stat[time_of_day].charAt(0) == '1') button0.
-			setBackgroundColor(button0.getContext().getResources().getColor(android.R.color.holo_red_light));
+			setBackgroundColor(button0.getContext().getResources().getColor(R.color.tli_btn_red));
 			else button0.
-			setBackgroundColor(button0.getContext().getResources().getColor(android.R.color.holo_green_light));
+			setBackgroundColor(button0.getContext().getResources().getColor(R.color.tli_btn_green));
 			
 			if (mItem.stat[time_of_day].charAt(1) == '1') button1.
-			setBackgroundColor(button1.getContext().getResources().getColor(android.R.color.holo_red_light));
+			setBackgroundColor(button1.getContext().getResources().getColor(R.color.tli_btn_red));
 			else button1.
-			setBackgroundColor(button1.getContext().getResources().getColor(android.R.color.holo_green_light));
+			setBackgroundColor(button1.getContext().getResources().getColor(R.color.tli_btn_green));
 			
 			if (mItem.stat[time_of_day].charAt(2) == '1') button2.
-			setBackgroundColor(button2.getContext().getResources().getColor(android.R.color.holo_red_light));
+			setBackgroundColor(button2.getContext().getResources().getColor(R.color.tli_btn_red));
 			else button2.
-			setBackgroundColor(button2.getContext().getResources().getColor(android.R.color.holo_green_light));
+			setBackgroundColor(button2.getContext().getResources().getColor(R.color.tli_btn_green));
 			
 			if (mItem.stat[time_of_day].charAt(3) == '1') button3.
-			setBackgroundColor(button3.getContext().getResources().getColor(android.R.color.holo_red_light));
+			setBackgroundColor(button3.getContext().getResources().getColor(R.color.tli_btn_red));
 			else button3.
-			setBackgroundColor(button3.getContext().getResources().getColor(android.R.color.holo_green_light));
+			setBackgroundColor(button3.getContext().getResources().getColor(R.color.tli_btn_green));
 			
 			if (mItem.stat[time_of_day].charAt(4) == '1') button4.
-			setBackgroundColor(button4.getContext().getResources().getColor(android.R.color.holo_red_light));
+			setBackgroundColor(button4.getContext().getResources().getColor(R.color.tli_btn_red));
 			else button4.
-			setBackgroundColor(button4.getContext().getResources().getColor(android.R.color.holo_green_light));
+			setBackgroundColor(button4.getContext().getResources().getColor(R.color.tli_btn_green));
 		}
 		
 		return mView;

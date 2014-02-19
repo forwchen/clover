@@ -49,15 +49,21 @@ public class EventAdapter extends BaseAdapter {
 		ImageView icon = (ImageView)mView.findViewById(R.id.myicon);
 		ImageView arrow = (ImageView)mView.findViewById(R.id.myarrow);
 		TextView text = (TextView)mView.findViewById(R.id.event);
+		 
+		
+		
 		switch (position) {
 		case 0:
 			text.setText("找空教室");
+			icon.setImageDrawable(icon.getContext().getResources().getDrawable(R.drawable.emptyclass));
 			break;
 		case 1:
 			text.setText("去听讲座");
+			icon.setImageDrawable(icon.getContext().getResources().getDrawable(R.drawable.lecture));
 			break;
 		case 2:
 			text.setText("有什么活动");
+			icon.setImageDrawable(icon.getContext().getResources().getDrawable(R.drawable.activity));
 			break;
 		default:
 			break;

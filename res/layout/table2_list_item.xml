@@ -54,7 +54,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="5dp"
         android:text=""
-        android:textColor="#0a89bb"
+        android:textColor="@color/tli_text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

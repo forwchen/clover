@@ -38,6 +38,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -71,7 +72,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private ArrayList<ClassTableItem> ClassList;
 	private TimeUtil mTimeUtil = new TimeUtil();
 	private Constants c = new Constants();
-	private boolean isGPSregistered = false;
 	
 	///SharedPrefernce key
 	private final String IS_LOGGED_IN = "IS_LOGGED_IN";
@@ -293,7 +293,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				}
 				
 				try {
-					String dbPath = android.os.Environment.getExternalStorageDirectory()+"/clover/info.db";
+					String dbPath = c.appdir+"/info.db";
 					File dbFile= new File(dbPath);
 					if (dbFile.exists()) dbFile.delete();
 	
@@ -329,8 +329,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					end[N] = classroomsum;
 					
 					for (int i = 0; i <= N; i++){
-						fw = new FileWriter(android.os.Environment.getExternalStorageDirectory()
-						+"/clover/"+c.BUILDING[i]+".txt");
+						fw = new FileWriter(c.appdir+"/"+c.BUILDING[i]+".txt");
 						
 						for (int j = begin[i]; j <= end[i]; j++){
 							fw.write(classroom[j].name+"\n");
@@ -464,7 +463,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					Data = EntityUtils.toString(mHttpResponse.getEntity());
 					
 					FileWriter fw;
-					fw = new FileWriter(android.os.Environment.getExternalStorageDirectory()+"/clover/cache");
+					fw = new FileWriter(c.appdir+"/cache");
 					BufferedWriter bw = new BufferedWriter(fw);
 					
 					bw.write(Data);
@@ -553,7 +552,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		mCustomReceiver = new CustomReceiver();
 		
 		//创建应用程序目录
-		File f= new File(android.os.Environment.getExternalStorageDirectory()+"/clover");
+		File f= new File(c.appdir);
 		
 		if (f.exists()) {
 			Log.d(TAG, SUCC+"creating app dir");
@@ -565,7 +564,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		{
 			InputStream is = getResources().openRawResource(R.raw.location);
 			FileOutputStream fos = 
-				new FileOutputStream(android.os.Environment.getExternalStorageDirectory()+"/clover/location.db");
+				new FileOutputStream(c.appdir+"/location.db");
 			byte[] buffer = new byte[8192];
 			int count = 0;
 			while ((count = is.read(buffer)) >= 0)
@@ -609,7 +608,35 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			musrText = (EditText) findViewById(R.id.usrtext);
 			mLoginButton = (Button) findViewById(R.id.loginbtn);
 			
+			final String pwdHint = mpwdText.getHint().toString();
+			mpwdText.setOnFocusChangeListener(new OnFocusChangeListener(){
+
+				@Override
+				public void onFocusChange(View v, boolean hasFocus) {
+					// TODO Auto-generated method stub
+					if (hasFocus){
+						mpwdText.setHint(null);
+					}
+					else {
+						mpwdText.setHint(pwdHint);
+					}
+				}
+			});
 			
+			final String usrHint = musrText.getHint().toString();
+			musrText.setOnFocusChangeListener(new OnFocusChangeListener(){
+
+				@Override
+				public void onFocusChange(View v, boolean hasFocus) {
+					// TODO Auto-generated method stub
+					if (hasFocus){
+						musrText.setHint(null);
+					}
+					else {
+						musrText.setHint(usrHint);
+					}
+				}
+			});
 			
 			mLoginButton.setOnClickListener(
 				new View.OnClickListener() {
@@ -693,7 +720,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     									PendingIntent.getActivity(MainActivity.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
     							Notification mNotification = new Notification.Builder(MainActivity.this).
     									setSmallIcon(R.drawable.ic_launcher).
-    									setContentTitle("附近有讲座"). 
+    									setContentTitle("附近 "+mItem.place+" 有讲座"). 
     									setContentText("点击查看").
     									setContentIntent(mPendingIntent).
     									setAutoCancel(true).
@@ -722,7 +749,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     									PendingIntent.getActivity(MainActivity.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
     							Notification mNotification = new Notification.Builder(MainActivity.this).
     									setSmallIcon(R.drawable.ic_launcher).
-    									setContentTitle("附近有活动"). 
+    									setContentTitle("附近 "+mItem.place+" 有活动"). 
     									setContentText("点击查看").
     									setContentIntent(mPendingIntent).
     									setAutoCancel(true).
@@ -738,7 +765,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     				}
     				if (act_notified) break;
     			}
-    			
+    		unregisterReceiver(this);
     		}
     	}
 
@@ -748,7 +775,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
     	super.onResume();
     	if (!updated) {
     		registerReceiver(mCustomReceiver, new IntentFilter("com.clover.LocationChangedBroadcast"));
-    		isGPSregistered = true;
     		mGpsService.getLocation();
     	}
     }
@@ -756,7 +782,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     
     public void onPause() {
     	super.onPause();
-    	if (isGPSregistered){
+    	if (!updated){
     		unregisterReceiver(mCustomReceiver);
     		mGpsService.stopUsingGPS();
     	}

@@ -36,6 +36,7 @@ public class StdTableUtil {
 	final private String arg = "arranges[index]";
 	private int[] NumofClass = new int[8];
 	private ClassItem[][] classitem = new ClassItem[8][14];
+	Constants c = new Constants();
 
 	/**
 	 * 从str中提取出课程信息
@@ -98,8 +99,7 @@ public class StdTableUtil {
 			
 			try {
 				FileWriter fw;
-				fw = new FileWriter(android.os.Environment.getExternalStorageDirectory()
-						+"/clover"+"/day"+String.valueOf(week)+".txt");
+				fw = new FileWriter(c.appdir+"/day"+String.valueOf(week)+".txt");
 				BufferedWriter bw = new BufferedWriter(fw);
 				
 				int i = 1 ,j = 1;

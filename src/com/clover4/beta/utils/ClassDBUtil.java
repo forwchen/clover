@@ -11,11 +11,11 @@ public class ClassDBUtil {
 	String dbPath;
 	File dbFile;
 	SQLiteDatabase mDB;
-
+	Constants c = new Constants();
 	
 	public ClassDBUtil() {
 		// TODO Auto-generated constructor stub
-		dbPath = android.os.Environment.getExternalStorageDirectory()+"/clover/info.db";
+		dbPath = c.appdir+"/info.db";
 		dbFile= new File(dbPath);
 		if (dbFile.exists()) mDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null);
 	}

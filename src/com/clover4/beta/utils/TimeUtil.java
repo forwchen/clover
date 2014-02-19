@@ -63,7 +63,7 @@ public class TimeUtil {
 		mDate = new Date(System.currentTimeMillis());
 		time = mSimpleDateFormat.format(mDate).substring(11, 16);
 		
-		time = "10:30";
+		time = "18:30";
 		
 		return time;
 	}
@@ -108,7 +108,7 @@ public class TimeUtil {
 		time = mSimpleDateFormat.format(mDate).substring(11, 16);
 		int h = Integer.parseInt(time.substring(0,2));
 		if (h<=11) return 0;
-		if (h<=17) return 1;
+		if (h<=16) return 1;
 		return 2;
 	}
 	

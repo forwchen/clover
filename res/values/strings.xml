@@ -5,12 +5,12 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">You are free today!</string>
     <string name="logintext">Login</string>
-    <string name="info">INFO</string>
     <string name="title_activity_select_building">SelectBuilding</string>
     <string name="title_activity_classroon_info">ClassroonInfo</string>
-    <string name="title_activity_plan_event">PlanEvent</string>
-    <string name="title_activity_show_classroom">ShowClassroom</string>
-    <string name="title_activity_show_lecture">ShowLecture</string>
-    <string name="title_activity_show">ShowAct</string>
-
+    <string name="title_activity_plan_event">复旦助手</string>
+    <string name="title_activity_show_classroom">空闲的教室</string>
+    <string name="title_activity_show_lecture">今日讲座</string>
+    <string name="title_activity_show">今日活动</string>
+	<string name="pwdHint">请输入您的UIS密码</string>
+	<string name="usrHint">请输入您的学号</string>
 </resources>

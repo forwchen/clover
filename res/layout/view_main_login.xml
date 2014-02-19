@@ -1,60 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="#88ddd2"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    
     tools:context=".MainActivity" >
 
-    <EditText
-        android:id="@+id/usrtext"
-        android:layout_width="wrap_content"
+    <RelativeLayout 
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/pwdtext"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="27dp"
-        android:layout_marginRight="19dp"
-        android:ems="10"
-        android:inputType="number" />
+        android:layout_marginTop="90dp"
+        android:padding="15dip" >
+        
 
-    <EditText
-        android:id="@+id/pwdtext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/usrtext"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
-        android:ems="10"
-        android:inputType="textPassword" />
+        <EditText
+	        android:id="@+id/usrtext"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	    	android:padding="6dip"
+	        android:hint="@string/usrHint"
+	        android:background="@drawable/login_usr"
+	        android:ems="25"
+	        android:textSize="22sp"
+	        android:inputType="number" />
 
-    <TextView
-        android:id="@+id/textusr"
-        android:textColor="#ffffff"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/usrtext"
-        android:layout_toLeftOf="@+id/usrtext"
-        android:text="学号："
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    	<EditText
+    	    android:id="@+id/pwdtext"
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="wrap_content"
+    	    android:padding="6dip"
+			android:layout_below="@id/usrtext"
+    	    android:background="@drawable/login_psw"
+    	    android:ems="15"
+    	    android:textSize="22sp"
+    	    android:hint="@string/pwdHint"
+    	    android:inputType="textPassword" />
+    
+    	<Button
+	        android:id="@+id/loginbtn"
+	        android:background="@drawable/login_btn"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/pwdtext"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="24dp"
+	        android:text="@string/logintext"
+	        android:textColor="@color/vml_login_btn_text" />
+        
+    </RelativeLayout>
+    
+    
 
-    <TextView
-        android:id="@+id/textpsw"
-        android:textColor="#ffffff"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/pwdtext"
-        android:layout_alignLeft="@+id/textusr"
-        android:text="密码："
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <Button
-        android:id="@+id/loginbtn"
-        android:alpha="40"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/usrtext"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:text="@string/logintext" />
-
-</RelativeLayout>
+</LinearLayout>

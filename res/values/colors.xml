@@ -5,6 +5,7 @@
     <color name = "cli_lesson_name_text">#000000</color>
     <color name = "cli_lesson_time_text">#000000</color>
     <color name = "cli_lesson_classroom_text">#d1d1d1</color>
+    <color name = "cli_menu_icon_bg">#d1d1d1</color>
     <color name = "cli_row_bg">#ffffff</color>
     <color name = "cli_row_bg_hover">#d1d1d1</color>
     <color name = "fli_free_text">#95e571</color>
@@ -20,5 +21,16 @@
     <color name = "ili_info_btn_h5">#4093d3</color>
     <color name = "ili_info_btn_h6">#e6465e</color>
     <color name = "ili_info_btn_text">#ffffff</color>
+    <color name = "vml_login_bg">#ffffff</color>
+    <color name = "vml_login_border">#d1d1d1</color>
+    <color name = "vml_login_btn">#39c6b4</color>
+    <color name = "vml_login_btn_text">#ffffff</color>
+    <color name = "tli_text">#39c6b4</color>
+    <color name = "aci_btn_bright">#9ce3da</color>
+    <color name = "aci_btn_dark">#39c6b4</color>
+    <color name = "aci_btn_text">#ffffff</color>
+    <color name = "tli_btn_red">#ef6262</color>
+    <color name = "tli_btn_green">#67bf73</color>
+    
     
 </resources>

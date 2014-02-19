@@ -17,13 +17,13 @@ public class StdTableLoader {
 	Constants mConstants;
 	String Tablefile;
 	TimeUtil mTimeUtil;
+	Constants c = new Constants();
 	
 	public StdTableLoader(){
 		mArrayList = new ArrayList<ClassTableItem>();
 		mConstants = new Constants();
 		mTimeUtil = new TimeUtil();
-		Tablefile = android.os.Environment.getExternalStorageDirectory()
-				+"/clover/day"+String.valueOf(mTimeUtil.getdayofweek())+".txt";
+		Tablefile = c.appdir+"/day"+String.valueOf(mTimeUtil.getdayofweek())+".txt";
 	}
 	
 	/**
