@@ -64,7 +64,7 @@ public class StdTableUtil {
 			str.delete(0, str.indexOf(">")+1);
 			String classroom = (String) str.substring(0, str.indexOf("("));
 			str.delete(0, str.indexOf("(")+1);
-			String classteacher = (String) str.substring(0, str.indexOf(""));
+			String classteacher = (String) str.substring(0, str.indexOf(")"));
 			str.delete(0, str.indexOf(";")+1);
 			
 			NumofClass[classweek]++;
@@ -112,6 +112,7 @@ public class StdTableUtil {
 						bw.write(classitem[week][havingclass[i]].code + "\n");
 						bw.write(classitem[week][havingclass[i]].name + "\n");
 						bw.write(classitem[week][havingclass[i]].classroom + "\n");
+						bw.write(classitem[week][havingclass[i]].teacher + "\n");
 					}
 					else{
 						bw.write("0\n");

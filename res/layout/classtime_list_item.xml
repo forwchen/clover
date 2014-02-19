@@ -1,48 +1,65 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <RelativeLayout android:layout_width="fill_parent" 
                 android:layout_height="wrap_content" 
-                android:background="@drawable/list_selector" 
                 android:orientation="horizontal" 
-                android:padding="5dip" 
+                android:background="@drawable/list_selector"
+                android:padding="10dip"
                 xmlns:android="http://schemas.android.com/apk/res/android">
 	<Button 
 	    	android:id="@+id/lesson_btn"
 	    	android:text=""
 	    	android:textSize="40dip"
-	    	android:textColor="#FA7500"
+	    	android:textColor="@color/cli_lesson_btn_text"
 	    	android:clickable="false"
 	    	android:width="80dp"
 	    	android:height="80dp"
-	    	android:background="#36fdf8"
+	    	android:background="@color/cli_lesson_btn_bg"
 	    	android:layout_width="wrap_content" 
 	        android:layout_height="wrap_content" 
 	    	android:layout_alignParentLeft="true"
 	    	android:layout_centerVertical="true"/>
+	
 	<TextView android:id="@+id/lesson_name" 
 	          android:layout_width="wrap_content" 
 	          android:layout_height="wrap_content" 
 	          android:layout_toRightOf="@id/lesson_btn"
+	          android:layout_marginLeft="10dp"
 	          android:text="" 
-	          android:textColor="#8BCFE1" 
+	          android:textColor="@color/cli_lesson_name_text" 
 	          android:textSize="20dip" 
 	          android:typeface="sans" />
-	<TextView android:id="@+id/lesson_time" 
+	
+	<TextView android:id="@+id/lesson_teacher" 
 	          android:layout_width="wrap_content" 
 	          android:layout_height="wrap_content"
 	          android:layout_below="@id/lesson_name"
 	          android:layout_toRightOf="@id/lesson_btn"
+	          android:layout_marginLeft="10dp"
 	          android:text="" 
-	          android:textColor="#f39519" 
+	          android:textColor="@color/cli_lesson_time_text" 
 	          android:textSize="15dip" 
 	          android:typeface="sans" />
+
+	<TextView android:id="@+id/lesson_time" 
+	          android:layout_width="wrap_content" 
+	          android:layout_height="wrap_content"
+	          android:layout_below="@id/lesson_name"
+	          android:layout_toRightOf="@id/lesson_teacher"
+	          android:layout_marginLeft="10dp"
+	          android:text="" 
+	          android:textColor="@color/cli_lesson_time_text" 
+	          android:textSize="15dip" 
+	          android:typeface="sans" />
+	
 	<TextView android:id="@+id/lesson_classroom" 
 	          android:layout_width="wrap_content" 
 	          android:layout_height="wrap_content" 
 	          android:layout_below="@id/lesson_time"
 	          android:layout_toRightOf="@id/lesson_btn"
+	          android:layout_marginLeft="10dp"
 	          android:text="" 
-	          android:textColor="#8BCFE1" 
-	          android:textSize="15dip" 
+	          android:textColor="@color/cli_lesson_classroom_text" 
+	          android:textSize="20dip" 
 	          android:typeface="sans" />
 
 </RelativeLayout>

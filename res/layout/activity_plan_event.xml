@@ -9,7 +9,11 @@
     tools:context=".PlanEvent" >
 
     <ListView
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
         android:id="@+id/eventlist"
+        android:divider="#ebebeb"
+        android:dividerHeight="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"

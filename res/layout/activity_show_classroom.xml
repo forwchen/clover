@@ -9,6 +9,10 @@
     tools:context=".ShowClassroom" >
 
     <ListView
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:divider="#ebebeb"
+        android:dividerHeight="3dp"
         android:id="@+id/spare_classroom_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

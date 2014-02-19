@@ -518,7 +518,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		
 		
 		String EventInfoDate = mSharedprefUtil.readString(EVENT_INFO_DATE);
-		if (EventInfoDate !=mTimeUtil.getdate()) {
+		if (!EventInfoDate.equals(mTimeUtil.getdate())) {
 			fetchEvent mfetchEvent = new fetchEvent();
 			mfetchEvent.execute((Void) null);
 		}
@@ -583,7 +583,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		mSharedprefUtil = new SharedprefUtil("setting",getApplicationContext());
 		
 		String ClassroomInfoDate = mSharedprefUtil.readString(CLASSROOM_INFO_DATE);
-		if (ClassroomInfoDate != mTimeUtil.getdate()){
+		if (!ClassroomInfoDate.equals(mTimeUtil.getdate())){
 			if (! isNetworkOn()){
 				Toast.makeText(getApplicationContext(),
 						"下载空教室信息失败，\n请检查网络连接。",

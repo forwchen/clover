@@ -17,6 +17,8 @@ public class ClassTableItem {
 	public String name;
 	///上课教室
 	public String classroom;
+	///教师
+	public String teacher;
 	
 	public ClassTableItem(){
 		type = 0;

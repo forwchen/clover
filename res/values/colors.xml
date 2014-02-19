@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name = "cli_lesson_btn_text">#6fdfba</color>
+    <color name = "cli_lesson_btn_bg">#f8ed7b</color>
+    <color name = "cli_lesson_name_text">#000000</color>
+    <color name = "cli_lesson_time_text">#000000</color>
+    <color name = "cli_lesson_classroom_text">#d1d1d1</color>
+    <color name = "cli_row_bg">#ffffff</color>
+    <color name = "fli_free_text">#71e471</color>
+    <color name = "fli_freetm_text">#000000</color>
+    <color name = "vcl_list_divider">#d1d1d1</color>
+</resources>

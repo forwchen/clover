@@ -53,6 +53,7 @@ public class StdTableLoader {
 					ctable.code = br.readLine();
 					ctable.name = br.readLine();
 					ctable.classroom = br.readLine();
+					ctable.teacher = br.readLine();
 				}
 
 				mArrayList.add(ctable);

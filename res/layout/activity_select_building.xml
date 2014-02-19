@@ -9,6 +9,10 @@
     tools:context=".SelectBuilding" >
 
     <ListView
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:divider="#ebebeb"
+        android:dividerHeight="3dp"
         android:id="@+id/buildinglist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -65,9 +65,9 @@ public class ClassroomInfo extends Activity {
 		
 		
 		
-		Button button0 = (Button) findViewById(R.id.morning);
-		Button button1 = (Button) findViewById(R.id.midday);
-		Button button2 = (Button) findViewById(R.id.night);
+		final Button button0 = (Button) findViewById(R.id.morning);
+		final Button button1 = (Button) findViewById(R.id.midday);
+		final Button button2 = (Button) findViewById(R.id.night);
 		
 		
 		final ListView mylistview = (ListView) findViewById(R.id.classroomlist);
@@ -93,12 +93,14 @@ public class ClassroomInfo extends Activity {
 		button0.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View view){
 				mylistview.setAdapter(mAdapter0);
+				button0.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
 			}
 		});
 		
 		button1.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View view){
 				mylistview.setAdapter(mAdapter1);
+				button1.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
 			}
 		});
 		

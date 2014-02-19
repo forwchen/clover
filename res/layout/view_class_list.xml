@@ -9,14 +9,15 @@
     tools:context=".MainActivity" >
 
     <ListView
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
         android:id="@+id/classlist"
-        android:divider="#8BCFE1"
-        android:dividerHeight="1dp"
+        android:divider="#ebebeb"
+        android:dividerHeight="3dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" 
-        android:listSelector="@drawable/list_selector">
+        android:layout_alignParentTop="true" >
     </ListView>
 
 </RelativeLayout>
