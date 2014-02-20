@@ -145,7 +145,6 @@ public class ShowClassroom extends Activity implements OnItemClickListener{
 		InfoItem mItem = mList.get(arg2);
 		TimeUtil mTimeUtil = new TimeUtil();
 		
-		System.out.println(mItem.name);
 		Intent intent = new Intent(this, ClassroomInfo.class);
 		intent.putExtra("building_name", mItem.name);
 		intent.putExtra("unit", mTimeUtil.getunit());

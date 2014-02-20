@@ -71,7 +71,6 @@ public class GPSUtil {
 				}
 		for (int i = 0; i < 7; i++) {
 			result.add(index[i]);
-			System.out.println(dis[i]);
 		}
 		
 		return result;

@@ -142,7 +142,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			}
 			else {
 				Log.d(TAG, "wrong usrname or psword");
-				Toast.makeText(getApplicationContext(), "请检查您的学号和密码是否正确", Toast.LENGTH_LONG).show();
 			}
 		}
 		
@@ -255,7 +254,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					String url = "http://61.129.42.58:9083/sid/queryClassroomService/vid/buildDetail?"
 							//+"year="+mTimeUtil.getyear()+"&month="+mTimeUtil.getmonth()+"&day="+mTimeUtil.getday()
 							+"&timeFlag="+c.TIME[j]+"&idBuilding="+c.BUILDING[i]+"&returnType=android";
-					System.out.println(url);
+					
 					String jsonData = new String();
 
 					try 
@@ -660,6 +659,10 @@ public class MainActivity extends Activity implements OnItemClickListener{
 							return;
 						}
 						
+						if (musrText.getText().toString().length() != 11){
+							Toast.makeText(getApplicationContext(), "请检查您的学号是否正确", Toast.LENGTH_LONG).show();
+							return;
+						}
 //						InputMethodManager  mInputMethodManager = (InputMethodManager)
 //								MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
 //						mInputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS); 
@@ -675,6 +678,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 						
 						if (result == false) {
 							mpwdText.requestFocus();
+							Toast.makeText(getApplicationContext(), "请检查您的学号和密码是否正确", Toast.LENGTH_LONG).show();
+
 						}
 					}
 				});

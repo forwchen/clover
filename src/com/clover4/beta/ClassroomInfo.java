@@ -52,8 +52,6 @@ public class ClassroomInfo extends Activity {
 					cstat.stat[2] = br.readLine();
 				}
 				
-				System.out.println(cstat.name+" "+cstat.stat[0]+" "+cstat.stat[1]+" "+cstat.stat[2]);
-				
 				mArrayList.add(cstat);
 
 			}
