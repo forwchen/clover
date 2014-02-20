@@ -34,7 +34,7 @@ public class ClassDBUtil {
 	 */
 	public ArrayList<String> mQuery(String table, int start_unit, int end_unit) {
 		ArrayList<String> result = new ArrayList<String>();
-		
+		if (!isDBexists()) return result;
 		int mask = 0;
 		for (int i = start_unit; i <= end_unit; i++) mask += (1<<i);
 		String MASK = String.valueOf(mask);

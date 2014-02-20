@@ -11,8 +11,9 @@
     <ListView
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
-        android:divider="#ebebeb"
+        android:divider="@color/asc_list_divider"
         android:dividerHeight="3dp"
+        android:descendantFocusability="blocksDescendants"
         android:id="@+id/spare_classroom_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

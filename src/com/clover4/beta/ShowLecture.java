@@ -7,6 +7,7 @@ import com.clover4.beta.utils.EventLoader;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.view.Menu;
 import android.widget.ListView;
 
@@ -23,6 +24,14 @@ public class ShowLecture extends Activity {
 		
 		EventLoader mEventLoader = new EventLoader();
 		ArrayList<EventItem> mArrayList = mEventLoader.loadEvent(1);
+		
+		if (mArrayList.size() == 0){
+			new AlertDialog.Builder(this)
+			.setTitle("讲座信息未找到").
+			setMessage("可能是还未下载，请打开网络再试一试").
+			setPositiveButton("确定", null).
+			show();
+		}
 		
 		ListView mListView = (ListView)findViewById(R.id.lecturelist);
 		LAdapter mAdapter = new LAdapter(this, mArrayList);

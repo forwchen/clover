@@ -47,6 +47,7 @@
 	    	android:textSize="40dip"
 	    	android:textColor="@color/ili_info_btn_text"
 	    	android:clickable="false"
+	    	android:focusable="false"
 	    	android:width="75dp"
 	    	android:height="75dp"
 	    	android:layout_width="wrap_content" 

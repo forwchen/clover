@@ -9,6 +9,7 @@ import com.clover4.beta.utils.Constants;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -64,6 +65,13 @@ public class ClassroomInfo extends Activity {
 			e.printStackTrace();
 		}
 		
+		if (mArrayList.size() == 0){
+			new AlertDialog.Builder(this)
+			.setTitle("空教室信息未找到").
+			setMessage("可能是还未下载，请打开网络再试一试").
+			setPositiveButton("确定", null).
+			show();
+		}
 		
 		
 		final Button button0 = (Button) findViewById(R.id.morning);
@@ -130,12 +138,12 @@ public class ClassroomInfo extends Activity {
 	}
 	
 	public void setbright(Button btn){
-			btn.setBackgroundColor(getResources().getColor(R.color.aci_btn_bright));
+		btn.setBackgroundColor(getResources().getColor(R.color.aci_btn_bright));
 	}
 	
 	public void setdark(Button btn){
 		btn.setBackgroundColor(getResources().getColor(R.color.aci_btn_dark));
-}
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

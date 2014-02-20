@@ -15,7 +15,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:width="107dp"
-        android:background="#5ddee1"
         android:text="早上" 
         android:textColor="@color/aci_btn_text"/>
     
@@ -26,7 +25,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:width="107dp"
-        android:background="#5ddee1"
         android:text="中午" 
         android:textColor="@color/aci_btn_text"/>
 
@@ -37,7 +35,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:width="107dp"
-        android:background="#5ddee1"
         android:text="晚上" 
         android:textColor="@color/aci_btn_text"/>
 

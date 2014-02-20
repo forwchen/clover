@@ -31,6 +31,9 @@
     <color name = "aci_btn_text">#ffffff</color>
     <color name = "tli_btn_red">#ef6262</color>
     <color name = "tli_btn_green">#67bf73</color>
-    
+    <color name = "asc_list_divider">#ebebeb</color>
+    <color name = "am_bg">#ffffff</color>
+    <color name = "am_weekend_bg">#8fcf0b</color>
+    <color name = "am_btn_text">#ffffff</color>
     
 </resources>

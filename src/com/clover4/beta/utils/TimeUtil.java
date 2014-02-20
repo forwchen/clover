@@ -36,8 +36,6 @@ public class TimeUtil {
 	}
 	
 	public int getdayofweek() {
-		dayofweek = 2;
-		
 		return dayofweek;
 	}
 	
@@ -54,17 +52,12 @@ public class TimeUtil {
 	}
 	
 	public String getdate() {
-		date = "2013-12-17";
-		
 		return date;
 	}
 	
 	public String getTime(){
 		mDate = new Date(System.currentTimeMillis());
 		time = mSimpleDateFormat.format(mDate).substring(11, 16);
-		
-		time = "18:30";
-		
 		return time;
 	}
 	/**

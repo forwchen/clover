@@ -140,6 +140,10 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				Log.d(TAG, SUCC+"checking usr info");
 				doMain();
 			}
+			else {
+				Log.d(TAG, "wrong usrname or psword");
+				Toast.makeText(getApplicationContext(), "请检查您的学号和密码是否正确", Toast.LENGTH_LONG).show();
+			}
 		}
 		
 	}
@@ -205,6 +209,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				doInflate();
 			}
 			else{
+				Log.d(TAG, "Failed downloading stdtable");
 				Toast.makeText(getApplicationContext(), 
 						"登录失败，请检查网络连接情况。\n 建议使用wifi连接", 
 						Toast.LENGTH_LONG).show();
@@ -215,7 +220,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		@Override
 		protected void onPreExecute(){
 			mProgressDialog = new ProgressDialog(MainActivity.this);
-			mProgressDialog.setMessage("Downloading...");
+			mProgressDialog.setMessage("正在登录...");
 			mProgressDialog.setCancelable(false);
 			mProgressDialog.show();
 		}
@@ -248,8 +253,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					
 					HttpResponse mHttpResponse = null;
 					String url = "http://61.129.42.58:9083/sid/queryClassroomService/vid/buildDetail?"
-							+"year="+mTimeUtil.getyear()+"&month="+mTimeUtil.getmonth()+"&day="+mTimeUtil.getday()+
-							"&timeFlag="+c.TIME[j]+"&idBuilding="+c.BUILDING[i]+"&returnType=android";
+							//+"year="+mTimeUtil.getyear()+"&month="+mTimeUtil.getmonth()+"&day="+mTimeUtil.getday()
+							+"&timeFlag="+c.TIME[j]+"&idBuilding="+c.BUILDING[i]+"&returnType=android";
 					System.out.println(url);
 					String jsonData = new String();
 
@@ -433,6 +438,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				Log.d(TAG, SUCC+"downloading classroom info");
 			}
 			else{
+				Log.d(TAG, "Failed downloading classroom info");
 				Toast.makeText(getApplicationContext(),
 						"下载空教室信息失败，\n请检查网络连接。",
 						Toast.LENGTH_LONG).show();
@@ -489,6 +495,9 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			if (result == true) {
 				mSharedprefUtil.modifyString(EVENT_INFO_DATE, mTimeUtil.getdate());
 				Log.d(TAG, SUCC+"downloading event info");
+			}
+			else {
+				Log.d(TAG, "Failed downloading event info");
 			}
 		}
 		
@@ -651,9 +660,9 @@ public class MainActivity extends Activity implements OnItemClickListener{
 							return;
 						}
 						
-						InputMethodManager  mInputMethodManager = (InputMethodManager)
-								MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-						mInputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS); 
+//						InputMethodManager  mInputMethodManager = (InputMethodManager)
+//								MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+//						mInputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS); 
 	        
 						LoginTask mLoginTask = new LoginTask();
 						Boolean result = false;

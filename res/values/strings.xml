@@ -3,7 +3,7 @@
 
     <string name="app_name">复旦助手</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">You are free today!</string>
+    <string name="hello_world">今天是周末~</string>
     <string name="logintext">Login</string>
     <string name="title_activity_select_building">SelectBuilding</string>
     <string name="title_activity_classroon_info">ClassroonInfo</string>

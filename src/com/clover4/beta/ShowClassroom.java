@@ -6,17 +6,23 @@ import com.clover4.beta.utils.ClassDBUtil;
 import com.clover4.beta.utils.Constants;
 import com.clover4.beta.utils.GPSUtil;
 import com.clover4.beta.utils.InfoItem;
+import com.clover4.beta.utils.TimeUtil;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * 显示特定时间段的空教室
  *
  */
-public class ShowClassroom extends Activity {
+public class ShowClassroom extends Activity implements OnItemClickListener{
 
 	boolean updated = false;
 	double latitude = 0;
@@ -111,10 +117,19 @@ public class ShowClassroom extends Activity {
 			}
 		}
 		
+		if (mList.size() == 0){
+			new AlertDialog.Builder(this)
+			.setTitle("空教室信息未找到").
+			setMessage("可能是还未下载，请打开网络再试一试").
+			setPositiveButton("确定", null).
+			show();
+		}
 		
 		ListView mListView = (ListView)findViewById(R.id.spare_classroom_list);
 		InfoAdapter mAdapter = new InfoAdapter(this, mList);
 		mListView.setAdapter(mAdapter);
+		
+		mListView.setOnItemClickListener(this);
 	}
 
 	@Override
@@ -122,6 +137,19 @@ public class ShowClassroom extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.show_classroom, menu);
 		return true;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
+		InfoItem mItem = mList.get(arg2);
+		TimeUtil mTimeUtil = new TimeUtil();
+		
+		System.out.println(mItem.name);
+		Intent intent = new Intent(this, ClassroomInfo.class);
+		intent.putExtra("building_name", mItem.name);
+		intent.putExtra("unit", mTimeUtil.getunit());
+        startActivity(intent);
 	}
 
 }
