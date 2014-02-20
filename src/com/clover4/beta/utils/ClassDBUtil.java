@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+/**
+ * 工具类 
+ * 访问空教室信息的数据库
+ *
+ */
 public class ClassDBUtil {
 
 	String dbPath;

@@ -10,7 +10,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 
-
+/**
+ * 后台GPS服务
+ *
+ */
 public class GpsService extends Service implements LocationListener {
 
 	private final Context mContext;
@@ -34,6 +37,10 @@ public class GpsService extends Service implements LocationListener {
 		locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
 	}
 
+	/**
+	 * 开始使用GPS
+	 * @return
+	 */
 	public Location getLocation() {
 		
 		locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
@@ -48,6 +55,9 @@ public class GpsService extends Service implements LocationListener {
 		return location;
 	}
 
+	/**
+	 * 停止使用GPS
+	 */
 	public void stopUsingGPS(){
 		if(locationManager != null){
 			locationManager.removeUpdates(GpsService.this);
@@ -56,6 +66,9 @@ public class GpsService extends Service implements LocationListener {
 
 
 	@Override
+	/**
+	 * 接收到位置更新，此时关闭GPS
+	 */
 	public void onLocationChanged(Location location) {
 		this.location = location;
 		this.latitude = location.getLatitude();

@@ -526,6 +526,14 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		
 		String EventInfoDate = mSharedprefUtil.readString(EVENT_INFO_DATE);
 		if (!EventInfoDate.equals(mTimeUtil.getdate())) {
+			try {
+				File mFile = new File(c.appdir+"/chche");
+				if (mFile.exists()) mFile.delete();
+				Log.d(TAG, "old cache file deleted");
+			}
+			catch (Exception e){
+				e.printStackTrace();
+			}
 			fetchEvent mfetchEvent = new fetchEvent();
 			mfetchEvent.execute((Void) null);
 		}
@@ -591,6 +599,26 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		
 		String ClassroomInfoDate = mSharedprefUtil.readString(CLASSROOM_INFO_DATE);
 		if (!ClassroomInfoDate.equals(mTimeUtil.getdate())){
+			//删除过期文件
+			try {
+				File mFile = new File(c.appdir+"/HGD.txt");
+				if (mFile.exists()) mFile.delete();
+				mFile = new File(c.appdir+"/HGX.txt");
+				if (mFile.exists()) mFile.delete();
+				mFile = new File(c.appdir+"/H2.txt");
+				if (mFile.exists()) mFile.delete();
+				mFile = new File(c.appdir+"/H3.txt");
+				if (mFile.exists()) mFile.delete();
+				mFile = new File(c.appdir+"/H4.txt");
+				if (mFile.exists()) mFile.delete();
+				mFile = new File(c.appdir+"/H5.txt");
+				if (mFile.exists()) mFile.delete();
+				mFile = new File(c.appdir+"/H6.txt");
+				if (mFile.exists()) mFile.delete();
+				Log.d(TAG, "old file deleted");
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 			if (! isNetworkOn()){
 				Toast.makeText(getApplicationContext(),
 						"下载空教室信息失败，\n请检查网络连接。",
@@ -727,7 +755,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     				if (mTimeUtil.calc(nowtime, stime) < 0.35){
     					for (int j = 0; j < 7; j++)
     					if (mItem.building.equals(c.BUILDING[j])){
-    						if (mList.get(j) < 50){
+    						if (mList.get(j) < 80){
     							lecture_notified = true;
     							Intent lectureIntent = new Intent(MainActivity.this,ShowLecture.class);
     							PendingIntent mPendingIntent= 
@@ -756,7 +784,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     				if (mTimeUtil.calc(nowtime, stime) < 0.35){
     					for (int j = 0; j < 7; j++)
     					if (mItem.building.equals(c.BUILDING[j])){
-    						if (mList.get(j) < 50){
+    						if (mList.get(j) < 80){
     							act_notified = true;
     							Intent lectureIntent = new Intent(MainActivity.this,ShowAct.class);
     							PendingIntent mPendingIntent= 

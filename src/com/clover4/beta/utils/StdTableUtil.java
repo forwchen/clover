@@ -6,7 +6,8 @@ import java.io.IOException;
 
 
 /**
- * 临时的课程信息类
+ * 工具类
+ * 处理临时的课程信息
  *
  */
 class ClassItem{

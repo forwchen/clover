@@ -2,7 +2,11 @@ package com.clover4.beta.utils;
 
 import java.util.ArrayList;
 
-
+/**
+ * 工具类
+ * 根据GPS信息计算距离
+ *
+ */
 public class GPSUtil {
 
 	private final double EARTH_RADIUS = 6378137.0;

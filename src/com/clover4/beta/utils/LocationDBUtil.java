@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
+ * 工具类 
  * 访问每个教学楼位置信息的数据库
  *
  */

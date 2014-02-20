@@ -19,7 +19,7 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * 显示特定时间段的空教室
+ * 显示特定时间段的空教室界面
  *
  */
 public class ShowClassroom extends Activity implements OnItemClickListener{

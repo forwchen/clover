@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 /**
- * 显示空教室信息
+ * 显示空教室信息的界面
  *
  */
 public class ClassroomInfo extends Activity {
@@ -134,11 +134,17 @@ public class ClassroomInfo extends Activity {
 		});
 		
 	}
-	
+	/**
+	 * 将btn按钮设置为亮色
+	 * @param btn
+	 */
 	public void setbright(Button btn){
 		btn.setBackgroundColor(getResources().getColor(R.color.aci_btn_bright));
 	}
-	
+	/**
+	 * 将btn按钮设置为暗色
+	 * @param btn
+	 */
 	public void setdark(Button btn){
 		btn.setBackgroundColor(getResources().getColor(R.color.aci_btn_dark));
 	}

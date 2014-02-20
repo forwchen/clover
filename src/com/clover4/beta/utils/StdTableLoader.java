@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 
 /**
+ * 工具类
  * 从存储卡中加载课程表信息
  *
  */
