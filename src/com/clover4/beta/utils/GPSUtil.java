@@ -12,7 +12,7 @@ public class GPSUtil {
 	private final double EARTH_RADIUS = 6378137.0;
 	private Constants c = new Constants();
 	private LocationDBUtil mDbUtil;
-
+	private TimeUtil mTimeUtil;
 
 	public GPSUtil() {
 		// TODO Auto-generated constructor stub
@@ -81,13 +81,13 @@ public class GPSUtil {
 	}
 	
 	/**
-	 * 计算所有教学楼离lon,lat的距离
+	 * 
 	 * @param lon longitude
 	 * @param lat latitude
-	 * @return 每个教学楼的距离
+	 * @return 附近的活动
 	 */
-	public ArrayList<Double> getDis(double lon, double lat) {
-		ArrayList<Double> result = new ArrayList<Double>();
+	public EventItem getNearbyEvent(double lon, double lat) {
+		ArrayList<Double> Dist = new ArrayList<Double>();
 		
 		for (int i = 0; i < 7; i++){
 			ArrayList<Double> mlon = mDbUtil.getLon(c.BUILDING[i]);
@@ -97,10 +97,35 @@ public class GPSUtil {
 				double d = gps2m(lon, lat, mlon.get(j), mlat.get(j));
 				if (d < dis) dis = d;
 			}
-			result.add(dis);
+			Dist.add(dis);
 		}
 		
-		return result;
+		EventLoader mEventLoader = new EventLoader();
+		ArrayList<EventItem> lectureList = mEventLoader.loadEvent(1);
+		ArrayList<EventItem> actList = mEventLoader.loadEvent(0);
+		String nowtime = mTimeUtil.getTime();
+		EventItem mItem;
+		String stime;
+		
+		for (int i = 0; i < lectureList.size(); i++){
+			mItem = lectureList.get(i);
+			stime = mItem.stime.substring(11,16);
+			if (mTimeUtil.calc(nowtime, stime) < 0.35){
+				for (int j = 0; j < 7; j++)
+				if (mItem.building.equals(c.BUILDING[j]) && Dist.get(j) < 80) return mItem;
+			}
+		}
+		
+		for (int i = 0; i < actList.size(); i++){
+			mItem = actList.get(i);
+			stime = mItem.stime.substring(11,16);
+			if (mTimeUtil.calc(nowtime, stime) < 0.35){
+				for (int j = 0; j < 7; j++)
+				if (mItem.building.equals(c.BUILDING[j]) && Dist.get(j) < 80) return mItem;
+			}
+		}
+		
+		return null;
 	}
 	
 }

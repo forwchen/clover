@@ -51,7 +51,7 @@ public class TimeUtil {
 		return date.substring(8,10);
 	}
 	
-	public String getdate() {		
+	public String getdate() {
 		return date;
 	}
 	

@@ -1,5 +1,9 @@
 package com.clover4.beta;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+
 import android.app.Service;
 import android.content.Context;
 
@@ -23,18 +27,22 @@ public class GpsService extends Service implements LocationListener {
 	Location location;
 	double latitude = 0;
 	double longitude = 0;
-	boolean updated = false;
 
 	///更新位置的最小间隔距离
 	private static final long MIN_DISTANCE = 5; 
 	///更新位置的最小间隔时间
 	private static final long MIN_TIME = 1000 * 2;
+	///运行GPS的时间
+	private static final long TIME_LIMIT = 30 * 1000;
 
 	protected LocationManager locationManager;
 
 	public GpsService(Context context) {
 		this.mContext = context;
 		locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+		getLocation();
+		Timer mTimer = new Timer();
+		mTimer.schedule(new mTimertask(), TIME_LIMIT);
 	}
 
 	/**
@@ -53,6 +61,16 @@ public class GpsService extends Service implements LocationListener {
 		}
 
 		return location;
+	}
+	
+	public class mTimertask extends TimerTask{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			stopUsingGPS();
+		}
+		
 	}
 
 	/**
@@ -73,7 +91,6 @@ public class GpsService extends Service implements LocationListener {
 		this.location = location;
 		this.latitude = location.getLatitude();
 		this.longitude = location.getLongitude();
-		this.updated = true;
 		
 		Intent broadcastIntent = new Intent("com.clover.LocationChangedBroadcast");
 		broadcastIntent.putExtra("lat", location.getLatitude());

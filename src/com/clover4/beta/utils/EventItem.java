@@ -6,6 +6,8 @@ package com.clover4.beta.utils;
  *
  */
 public class EventItem {
+	///0:活动 1:讲座
+	public int type;
 	///活动名称
 	public String title;
 	///开始时间

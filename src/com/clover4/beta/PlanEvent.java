@@ -2,14 +2,10 @@ package com.clover4.beta;
 
 
 
-import java.util.ArrayList;
 
 
-import com.clover4.beta.utils.Constants;
 import com.clover4.beta.utils.EventItem;
-import com.clover4.beta.utils.EventLoader;
 import com.clover4.beta.utils.GPSUtil;
-import com.clover4.beta.utils.TimeUtil;
 
 
 import android.os.Bundle;
@@ -38,10 +34,7 @@ public class PlanEvent extends Activity implements OnItemClickListener{
 	double longitude = 0;
 	int start_unit;
 	int end_unit;
-	GpsService mGpsService;
 	CustomReceiver mCustomReceiver;
-	private Constants c = new Constants();
-	private TimeUtil mTimeUtil = new TimeUtil();
 
 	
 	
@@ -50,17 +43,12 @@ public class PlanEvent extends Activity implements OnItemClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_plan_event);
 		
-		
+		updated = getIntent().getBooleanExtra("updated", false);
+		latitude = getIntent().getDoubleExtra("lat", 0);
+		longitude = getIntent().getDoubleExtra("lon", 0);
 		start_unit = getIntent().getIntExtra("start_unit", -1);
 		end_unit = getIntent().getIntExtra("end_unit", -1);
 		
-		updated = getIntent().getBooleanExtra("updated", false);
-		
-		if (! updated) mGpsService = new GpsService(PlanEvent.this);
-		else {
-			latitude = getIntent().getDoubleExtra("lat", 0);
-			longitude = getIntent().getDoubleExtra("lon", 0);
-		}
 		mCustomReceiver = new CustomReceiver();
 		
 		
@@ -92,100 +80,65 @@ public class PlanEvent extends Activity implements OnItemClickListener{
     		// TODO Auto-generated method stub
     		if ("com.clover.LocationChangedBroadcast".equals(intent.getAction())){
     			updated = true;
-    			latitude = intent.getDoubleExtra("lat", 0);
-    			longitude = intent.getDoubleExtra("lon", 0);
+    			double latitude = intent.getDoubleExtra("lat", 0);
+    			double longitude = intent.getDoubleExtra("lon", 0);
     			
     			GPSUtil mGpsUtil = new GPSUtil();
-    			ArrayList<Double> mList = mGpsUtil.getDis(longitude, latitude);
-    			EventLoader mEventLoader = new EventLoader();
-    			ArrayList<EventItem> lectureList = mEventLoader.loadEvent(1);
-    			ArrayList<EventItem> actList = mEventLoader.loadEvent(0);
-    			boolean lecture_notified = false;
-    			boolean act_notified = false;
-    			NotificationManager mNotificationManager = 
-    					(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-    			String nowtime = mTimeUtil.getTime();
+    			EventItem mEventItem= mGpsUtil.getNearbyEvent(longitude, latitude);
     			
-    			for (int i = 0; i < lectureList.size(); i++){
-    				EventItem mItem = lectureList.get(i);
-    				String stime = mItem.stime.substring(11,16);
-    				if (mTimeUtil.calc(nowtime, stime) < 0.35){
-    					for (int j = 0; j < 7; j++)
-    					if (mItem.building.equals(c.BUILDING[j])){
-    						if (mList.get(j) < 80){
-    							lecture_notified = true;
-    							Intent lectureIntent = new Intent(PlanEvent.this,ShowLecture.class);
-    							PendingIntent mPendingIntent= 
-    									PendingIntent.getActivity(PlanEvent.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-    							Notification mNotification = new Notification.Builder(PlanEvent.this).
-    									setSmallIcon(R.drawable.ic_launcher).
-    									setContentTitle("附近 "+mItem.place+" 有讲座"). 
-    									setContentText("点击查看").
-    									setContentIntent(mPendingIntent).
-    									setAutoCancel(true).
-    									setDefaults(3).
-    									build();
-    							
-    							mNotificationManager.notify(202, mNotification);
-    							//notify lecture
-    						}
-    						break;
-    					}
+    			if (mEventItem != null){
+
+    				if (mEventItem.type == 1){
+    					NotificationManager mNotificationManager = 
+    							(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    					Intent lectureIntent = new Intent(PlanEvent.this,ShowLecture.class);
+						PendingIntent mPendingIntent= 
+								PendingIntent.getActivity(PlanEvent.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+						Notification mNotification = new Notification.Builder(PlanEvent.this).
+								setSmallIcon(R.drawable.ic_launcher).
+								setContentTitle("附近 "+mEventItem.place+" 有讲座"). 
+								setContentText("点击查看").
+								setContentIntent(mPendingIntent).
+								setAutoCancel(true).
+								setDefaults(3).
+								build();
+						
+						mNotificationManager.notify(202, mNotification);
     				}
-    				if (lecture_notified) break;
-    			}
-    			
-    			for (int i = 0; i < actList.size(); i++){
-    				EventItem mItem = actList.get(i);
-    				String stime = mItem.stime.substring(11,16);
-    				if (mTimeUtil.calc(nowtime, stime) < 0.35){
-    					for (int j = 0; j < 7; j++)
-    					if (mItem.building.equals(c.BUILDING[j])){
-    						if (mList.get(j) < 80){
-    							act_notified = true;
-    							Intent lectureIntent = new Intent(PlanEvent.this,ShowAct.class);
-    							PendingIntent mPendingIntent= 
-    									PendingIntent.getActivity(PlanEvent.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-    							Notification mNotification = new Notification.Builder(PlanEvent.this).
-    									setSmallIcon(R.drawable.ic_launcher).
-    									setContentTitle("附近 "+mItem.place+" 有活动"). 
-    									setContentText("点击查看").
-    									setContentIntent(mPendingIntent).
-    									setAutoCancel(true).
-    									setDefaults(3).
-    									build();
-    							
-    							mNotificationManager.notify(203, mNotification);
-    							
-    							//notify act
-    						}
-    						break;
-    					}
+    				else {
+						NotificationManager mNotificationManager = 
+								(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+						Intent lectureIntent = new Intent(PlanEvent.this,ShowAct.class);
+						PendingIntent mPendingIntent= 
+								PendingIntent.getActivity(PlanEvent.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+						Notification mNotification = new Notification.Builder(PlanEvent.this).
+								setSmallIcon(R.drawable.ic_launcher).
+								setContentTitle("附近 "+mEventItem.place+" 有活动"). 
+								setContentText("点击查看").
+								setContentIntent(mPendingIntent).
+								setAutoCancel(true).
+								setDefaults(3).
+								build();
+						
+						mNotificationManager.notify(203, mNotification);
     				}
-    				if (act_notified) break;
     			}
-    		unregisterReceiver(this);
     		}
     	}
-
     }
 	
     
     public void onResume(){
     	super.onResume();
-    	if (!updated) {
-    		registerReceiver(mCustomReceiver, new IntentFilter("com.clover.LocationChangedBroadcast"));
-    		mGpsService.getLocation();
-    	}
+    	registerReceiver(mCustomReceiver, new IntentFilter("com.clover.LocationChangedBroadcast"));
+    	
     }
     
     
     public void onPause() {
     	super.onPause();
-    	if (!updated){
-    		unregisterReceiver(mCustomReceiver);
-    		mGpsService.stopUsingGPS();
-    	}
+    	unregisterReceiver(mCustomReceiver);
+
 	}
 
 	@Override

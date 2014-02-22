@@ -36,7 +36,7 @@ public class EventLoader {
 			while ((line = br.readLine()) != null){
 
 				EventItem mItem = new EventItem();
-
+				mItem.type = i;
 				mItem.title = br.readLine();
 				mItem.stime = br.readLine();
 				mItem.place = br.readLine();

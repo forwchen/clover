@@ -4,12 +4,22 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+import com.clover4.beta.PlanEvent.CustomReceiver;
 import com.clover4.beta.utils.ClassroomItem;
 import com.clover4.beta.utils.Constants;
+import com.clover4.beta.utils.EventItem;
+import com.clover4.beta.utils.GPSUtil;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -22,13 +32,15 @@ import android.widget.ListView;
 public class ClassroomInfo extends Activity {
 
 	Constants c = new Constants();
+	CustomReceiver mCustomReceiver;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_classroom_info);
 		
 		getActionBar().hide();
-		
+		mCustomReceiver = new CustomReceiver();
 		String building_name = getIntent().getStringExtra("building_name");
 		int unit = getIntent().getIntExtra("unit", 0);
 		
@@ -147,6 +159,81 @@ public class ClassroomInfo extends Activity {
 	 */
 	public void setdark(Button btn){
 		btn.setBackgroundColor(getResources().getColor(R.color.aci_btn_dark));
+	}
+	
+    public class CustomReceiver extends BroadcastReceiver {
+
+    	public CustomReceiver() {
+    		// TODO Auto-generated constructor stub
+
+    	}
+
+    	@Override
+    	/**
+    	 * 当获取到GPS位置更新的时候，检查附近有无讲座或者活动，有则提醒
+    	 */
+    	public void onReceive(Context context, Intent intent) {
+    		// TODO Auto-generated method stub
+    		if ("com.clover.LocationChangedBroadcast".equals(intent.getAction())){
+    			double latitude = intent.getDoubleExtra("lat", 0);
+    			double longitude = intent.getDoubleExtra("lon", 0);
+    			
+    			GPSUtil mGpsUtil = new GPSUtil();
+    			EventItem mEventItem= mGpsUtil.getNearbyEvent(longitude, latitude);
+    			
+    			if (mEventItem != null){
+
+    				if (mEventItem.type == 1){
+    					NotificationManager mNotificationManager = 
+    							(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    					Intent lectureIntent = new Intent(ClassroomInfo.this,ShowLecture.class);
+						PendingIntent mPendingIntent= 
+								PendingIntent.getActivity(ClassroomInfo.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+						Notification mNotification = new Notification.Builder(ClassroomInfo.this).
+								setSmallIcon(R.drawable.ic_launcher).
+								setContentTitle("附近 "+mEventItem.place+" 有讲座"). 
+								setContentText("点击查看").
+								setContentIntent(mPendingIntent).
+								setAutoCancel(true).
+								setDefaults(3).
+								build();
+						
+						mNotificationManager.notify(202, mNotification);
+    				}
+    				else {
+						NotificationManager mNotificationManager = 
+								(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+						Intent lectureIntent = new Intent(ClassroomInfo.this,ShowAct.class);
+						PendingIntent mPendingIntent= 
+								PendingIntent.getActivity(ClassroomInfo.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+						Notification mNotification = new Notification.Builder(ClassroomInfo.this).
+								setSmallIcon(R.drawable.ic_launcher).
+								setContentTitle("附近 "+mEventItem.place+" 有活动"). 
+								setContentText("点击查看").
+								setContentIntent(mPendingIntent).
+								setAutoCancel(true).
+								setDefaults(3).
+								build();
+						
+						mNotificationManager.notify(203, mNotification);
+    				}
+    			}
+    		}
+    	}
+    }
+	
+    
+    public void onResume(){
+    	super.onResume();
+    	registerReceiver(mCustomReceiver, new IntentFilter("com.clover.LocationChangedBroadcast"));
+    	
+    }
+    
+    
+    public void onPause() {
+    	super.onPause();
+    	unregisterReceiver(mCustomReceiver);
+
 	}
 	
 	@Override
