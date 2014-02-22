@@ -17,6 +17,7 @@ public class GPSUtil {
 	public GPSUtil() {
 		// TODO Auto-generated constructor stub
 		mDbUtil = new LocationDBUtil();
+		mTimeUtil = new TimeUtil();
 	}
 
 	/**
