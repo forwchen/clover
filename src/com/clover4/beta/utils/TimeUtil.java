@@ -18,8 +18,8 @@ public class TimeUtil {
 	private String date;
 	private String time;
 	private int dayofweek;
-	
-	
+	private Constants c = new Constants();
+
 	public TimeUtil() {
 		// TODO Auto-generated constructor stub
 		mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -103,6 +103,25 @@ public class TimeUtil {
 		if (h<=11) return 0;
 		if (h<=16) return 1;
 		return 2;
+	}
+	
+	/**
+	 * 获取当前所在准确时间段
+	 * @return
+	 */
+	public int getCurrentUnit() {
+		int result = 0;
+		String etime;
+		getTime();
+		for (int i = 14; i >= 0; i++){
+			etime = c.start_time[i];
+			if (etime.length() == 4) etime = "0" + etime;
+			if (lt(etime, time)){
+				result = i + 1;
+				break;
+			}
+		}
+		return result;
 	}
 	
 	/**

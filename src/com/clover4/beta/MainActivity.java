@@ -57,8 +57,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private boolean updated = false;
 	private double latitude = 0;
 	private double longitude = 0;
-	GpsService mGpsService;
-	CustomReceiver mCustomReceiver;
 	
 	private EditText mpwdText;
 	private EditText musrText;
@@ -510,11 +508,24 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		
 		StdTableLoader mStdTableLoader = new StdTableLoader();
 		ClassList = mStdTableLoader.getTable();
-		
+		String isfree = "0";
 		for (int i = 0; i < ClassList.size(); i++){
-			if (ClassList.get(i).type == 1) isFree[i] = false;
-			else isFree[i] = true;
+			ClassTableItem mItem = ClassList.get(i);
+			if (mItem.type == 1) {
+				for (int j = 0; j < mItem.units; j++) isfree = isfree + "0";
+				isFree[i] = false;
+			}
+			else {
+				for (int j = 0; j < mItem.units; j++) isfree = isfree + "1";
+				isFree[i] = true;
+			}
 		}
+		isfree = isfree + "0";
+		
+		mSharedprefUtil.modifyString("ISFREE", isfree);
+		
+		Intent mIntent = new Intent(this,GpsService.class);
+		startService(mIntent);
 		
 		ListView mListView = (ListView) findViewById(R.id.classlist);
 		TableAdapter mTableAdapter = new TableAdapter(MainActivity.this,ClassList);
@@ -557,11 +568,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		//初始化GPS Service
 
-		mGpsService = new GpsService(MainActivity.this);
-		mCustomReceiver = new CustomReceiver();
 		
 		//创建应用程序目录
 		File f= new File(c.appdir);
@@ -716,78 +723,16 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		
 	}
 	
-	public class CustomReceiver extends BroadcastReceiver {
 
-    	public CustomReceiver() {
-    		// TODO Auto-generated constructor stub
-
-    	}
-    	
-    	@Override
-    	/**
-    	 * 当获取到GPS位置更新的时候，检查附近有无讲座或者活动，有则提醒
-    	 */
-    	public void onReceive(Context context, Intent intent) {
-    		// TODO Auto-generated method stub
-    		if ("com.clover.LocationChangedBroadcast".equals(intent.getAction())){
-    			updated = true;
-    			latitude = intent.getDoubleExtra("lat", 0);
-    			longitude = intent.getDoubleExtra("lon", 0);
-    			
-    			GPSUtil mGpsUtil = new GPSUtil();
-    			EventItem mEventItem= mGpsUtil.getNearbyEvent(longitude, latitude);
-    			
-    			if (mEventItem != null){
-
-    				if (mEventItem.type == 1){
-    					NotificationManager mNotificationManager = 
-    							(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-    					Intent lectureIntent = new Intent(MainActivity.this,ShowLecture.class);
-						PendingIntent mPendingIntent= 
-								PendingIntent.getActivity(MainActivity.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-						Notification mNotification = new Notification.Builder(MainActivity.this).
-								setSmallIcon(R.drawable.ic_launcher).
-								setContentTitle("附近 "+mEventItem.place+" 有讲座"). 
-								setContentText("点击查看").
-								setContentIntent(mPendingIntent).
-								setAutoCancel(true).
-								setDefaults(3).
-								build();
-						
-						mNotificationManager.notify(202, mNotification);
-    				}
-    				else {
-						NotificationManager mNotificationManager = 
-								(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-						Intent lectureIntent = new Intent(MainActivity.this,ShowAct.class);
-						PendingIntent mPendingIntent= 
-								PendingIntent.getActivity(MainActivity.this, 0, lectureIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-						Notification mNotification = new Notification.Builder(MainActivity.this).
-								setSmallIcon(R.drawable.ic_launcher).
-								setContentTitle("附近 "+mEventItem.place+" 有活动"). 
-								setContentText("点击查看").
-								setContentIntent(mPendingIntent).
-								setAutoCancel(true).
-								setDefaults(3).
-								build();
-						
-						mNotificationManager.notify(203, mNotification);
-    				}
-    			}
-    		}
-    	}
-	}
-	
 	public void onResume(){
     	super.onResume();
-    	registerReceiver(mCustomReceiver, new IntentFilter("com.clover.LocationChangedBroadcast"));
     	
     }
     
     
     public void onPause() {
     	super.onPause();
-    	unregisterReceiver(mCustomReceiver);
+    	
 	}
 	
 
@@ -810,9 +755,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		// TODO Auto-generated method stub
 		if (isFree[arg2]) {
 			Intent intent = new Intent(MainActivity.this, PlanEvent.class);
-			intent.putExtra("updated", updated);
-			intent.putExtra("lon", longitude);
-			intent.putExtra("lat", latitude);
 			intent.putExtra("start_unit", ClassList.get(arg2).startunit - 1);
 			intent.putExtra("end_unit", ClassList.get(arg2).startunit + ClassList.get(arg2).units - 2);
 			startActivity(intent);

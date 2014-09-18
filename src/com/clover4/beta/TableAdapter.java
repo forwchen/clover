@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.clover4.beta.utils.*;
 
-import android.R.string;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

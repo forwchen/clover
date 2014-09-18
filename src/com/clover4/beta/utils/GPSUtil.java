@@ -12,12 +12,10 @@ public class GPSUtil {
 	private final double EARTH_RADIUS = 6378137.0;
 	private Constants c = new Constants();
 	private LocationDBUtil mDbUtil;
-	private TimeUtil mTimeUtil;
 
 	public GPSUtil() {
 		// TODO Auto-generated constructor stub
 		mDbUtil = new LocationDBUtil();
-		mTimeUtil = new TimeUtil();
 	}
 
 	/**
@@ -48,7 +46,6 @@ public class GPSUtil {
 	 */
 	public ArrayList<Integer> getClosest(double lon, double lat){
 		ArrayList<Integer> result = new ArrayList<Integer>();
-		
 		int [] index = new int[7];
 		double [] dis = new double[7];
 		
@@ -82,13 +79,13 @@ public class GPSUtil {
 	}
 	
 	/**
-	 * 
+	 * 计算所有教学楼离 lon,lat 点的距离
 	 * @param lon longitude
 	 * @param lat latitude
-	 * @return 附近的活动
+	 * @return 距离值列表
 	 */
-	public EventItem getNearbyEvent(double lon, double lat) {
-		ArrayList<Double> Dist = new ArrayList<Double>();
+	public ArrayList<Double> getDist(double lon, double lat){
+		ArrayList<Double> dist = new ArrayList<Double>();
 		
 		for (int i = 0; i < 7; i++){
 			ArrayList<Double> mlon = mDbUtil.getLon(c.BUILDING[i]);
@@ -98,35 +95,11 @@ public class GPSUtil {
 				double d = gps2m(lon, lat, mlon.get(j), mlat.get(j));
 				if (d < dis) dis = d;
 			}
-			Dist.add(dis);
+			dist.add(dis);
 		}
 		
-		EventLoader mEventLoader = new EventLoader();
-		ArrayList<EventItem> lectureList = mEventLoader.loadEvent(1);
-		ArrayList<EventItem> actList = mEventLoader.loadEvent(0);
-		String nowtime = mTimeUtil.getTime();
-		EventItem mItem;
-		String stime;
-		
-		for (int i = 0; i < lectureList.size(); i++){
-			mItem = lectureList.get(i);
-			stime = mItem.stime.substring(11,16);
-			if (mTimeUtil.calc(nowtime, stime) < 0.35){
-				for (int j = 0; j < 7; j++)
-				if (mItem.building.equals(c.BUILDING[j]) && Dist.get(j) < 80) return mItem;
-			}
-		}
-		
-		for (int i = 0; i < actList.size(); i++){
-			mItem = actList.get(i);
-			stime = mItem.stime.substring(11,16);
-			if (mTimeUtil.calc(nowtime, stime) < 0.35){
-				for (int j = 0; j < 7; j++)
-				if (mItem.building.equals(c.BUILDING[j]) && Dist.get(j) < 80) return mItem;
-			}
-		}
-		
-		return null;
+		return dist;
 	}
 	
 }
+

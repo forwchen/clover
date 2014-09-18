@@ -2,7 +2,6 @@ package com.clover4.beta;
 
 import java.util.ArrayList;
 
-import com.clover4.beta.utils.Constants;
 import com.clover4.beta.utils.ClassroomItem;
 
 import android.app.Activity;
@@ -52,7 +51,6 @@ public class ClassroomAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		View mView = convertView;
 		ClassroomItem mItem = mlist.get(position);
-		Constants c = new Constants();
 		
 		if (time_of_day == 2){
 			mView = mLayoutInflater.inflate(R.layout.table2_list_item, null);
